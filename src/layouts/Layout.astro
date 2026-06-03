@@ -9,22 +9,73 @@ export interface Props {
   description?: string;
   /** Absolute URL of the LCP image to <link rel=preload> for this page (e.g. the homepage hero). */
   preloadImage?: string;
+  image?: string;
+  ogType?: string;
 }
 
 const {
   title = 'Generando Ideas — Artículos Promocionales',
   description = 'Generando Ideas: la agencia de artículos promocionales que convierte cada pluma, taza, textil o gadget en un embajador de tu marca. Una sola ventanilla para todo lo que necesitas.',
   preloadImage,
+  image = 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=1200&q=80',
+  ogType = 'website',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const orgSchema = {
+  "@type": "Organization",
+  "@id": "https://generandoideas.com/#organization",
+  "name": "Generando Ideas",
+  "url": "https://generandoideas.com",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://generandoideas.com/favicon.svg"
+  },
+  "telephone": "+52-55-7098-8100",
+  "email": "marketing@generandoideas.com",
+  "foundingDate": "2013",
+  "description": "Agencia de artículos promocionales 100% mexicana. Servicios: promocionales, fulfillment, proyectos especiales, talleres de personalizado, textil y talabartería.",
+  "areaServed": {
+    "@type": "Country",
+    "name": "México"
+  },
+  "inLanguage": "es-MX"
+};
+
+const websiteSchema = {
+  "@type": "WebSite",
+  "@id": "https://generandoideas.com/#website",
+  "url": "https://generandoideas.com",
+  "name": "Generando Ideas",
+  "inLanguage": "es-MX",
+  "publisher": { "@id": "https://generandoideas.com/#organization" }
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [orgSchema, websiteSchema]
+};
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:locale" content="es_MX" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,6 +88,7 @@ const {
       <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
     )}
     <meta name="generator" content={Astro.generator} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(siteJsonLd)} />
   </head>
   <body>
     <Nav />

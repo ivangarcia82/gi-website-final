@@ -1,12 +1,28 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ServicesShowcase from '../../components/ServicesShowcase.astro';
-import { SERVICES, ROUTES } from '../../data/site.ts';
+import { SERVICES, SERVICE_DETAILS, ROUTES } from '../../data/site.ts';
+
+const offerCatalogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  "name": "Servicios de Generando Ideas",
+  "provider": { "@id": "https://generandoideas.com/#organization" },
+  "itemListElement": SERVICES.map((s) => ({
+    "@type": "Service",
+    "name": s.title,
+    "description": SERVICE_DETAILS[s.id]?.intro ?? s.desc,
+    "url": `https://generandoideas.com/servicios/${s.id}`,
+    "provider": { "@id": "https://generandoideas.com/#organization" },
+    "areaServed": { "@type": "Country", "name": "México" }
+  }))
+};
 ---
 <Layout
   title="Servicios — Generando Ideas"
   description="Cinco servicios, una sola relación: promocionales, fulfillment, proyectos especiales, talleres y textil & talabartería."
 >
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(offerCatalogJsonLd)} />
   <div class="page svc-index">
     <!-- ===== Hero ===== -->
     <section class="section svc-hero-sec">

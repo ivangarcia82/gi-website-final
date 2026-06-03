@@ -3,8 +3,39 @@ import Layout from '../layouts/Layout.astro';
 import MexicoMap from '../components/MexicoMap.astro';
 import { OFFICES } from '../data/site.ts';
 const initial = 'cdmx';
+
+const phoneMap: Record<string, string> = {
+  cdmx: '+52-55-7098-8100',
+  bcs: '+52-612-123-4500',
+  sonora: '+52-662-789-0012',
+  yucatan: '+52-999-456-7890',
+};
+
+const localBusinessGraph = {
+  "@context": "https://schema.org",
+  "@graph": OFFICES.map((o) => ({
+    "@type": ["LocalBusiness", "ProfessionalService"],
+    "@id": `https://generandoideas.com/contacto#office-${o.id}`,
+    "name": `Generando Ideas — ${o.name}`,
+    "url": "https://generandoideas.com/contacto",
+    "telephone": phoneMap[o.id] ?? o.phone,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": o.address,
+      "addressLocality": o.state,
+      "addressRegion": o.state,
+      "addressCountry": "MX"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "México"
+    },
+    "parentOrganization": { "@id": "https://generandoideas.com/#organization" }
+  }))
+};
 ---
 <Layout title="Contacto — Generando Ideas" description="Platícanos tu idea. Respondemos en menos de 24 horas hábiles con propuesta, tiempos y presupuesto estimado.">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessGraph)} />
   <div class="page contacto">
     <section class="section" style="padding-bottom: 40px;">
       <div class="wrap">

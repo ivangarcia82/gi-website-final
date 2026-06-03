@@ -44,7 +44,7 @@ const rest = BLOG_POSTS.slice(1);
               </h2>
               <p class="blog-feature-excerpt">{featured.excerpt}</p>
               <span class="blog-meta">
-                {featured.date} · {featured.read} lectura
+                <time datetime={featured.iso}>{featured.date}</time> · {featured.read} lectura
               </span>
             </div>
           </a>
@@ -57,7 +57,7 @@ const rest = BLOG_POSTS.slice(1);
                   <span class="blog-card-cat">{p.cat}</span>
                   <h3 class="blog-card-title">{p.title}</h3>
                   <p class="blog-card-excerpt">{p.excerpt}</p>
-                  <span class="blog-card-meta">{p.date} · {p.read}</span>
+                  <span class="blog-card-meta"><time datetime={p.iso}>{p.date}</time> · {p.read}</span>
                 </div>
               </a>
             ))}
@@ -198,7 +198,7 @@ const rest = BLOG_POSTS.slice(1);
           <span class="eyebrow">Destacado · ${esc(p.cat)}</span>
           <h2 class="blog-feature-title display">${esc(p.title)}</h2>
           <p class="blog-feature-excerpt">${esc(p.excerpt)}</p>
-          <span class="blog-meta">${esc(p.date)} · ${esc(p.read)} lectura</span>
+          <span class="blog-meta"><time datetime="${esc(p.iso)}">${esc(p.date)}</time> · ${esc(p.read)} lectura</span>
         </div>
       </a>`;
 
@@ -209,7 +209,7 @@ const rest = BLOG_POSTS.slice(1);
           <span class="blog-card-cat">${esc(p.cat)}</span>
           <h3 class="blog-card-title">${esc(p.title)}</h3>
           <p class="blog-card-excerpt">${esc(p.excerpt)}</p>
-          <span class="blog-card-meta">${esc(p.date)} · ${esc(p.read)}</span>
+          <span class="blog-card-meta"><time datetime="${esc(p.iso)}">${esc(p.date)}</time> · ${esc(p.read)}</span>
         </div>
       </a>`;
 

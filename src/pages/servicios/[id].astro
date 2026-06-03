@@ -18,8 +18,35 @@ const titleWords = s.title.split(' ');
 const gradFirst = titleWords.length > 1;
 const headFirst = titleWords[0];
 const headRest = gradFirst ? titleWords.slice(1).join(' ') : '';
+
+const svcCanonical = new URL(`/servicios/${id}`, Astro.site).href;
+
+const servicePageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": s.title,
+      "description": s.intro,
+      "image": s.hero,
+      "url": svcCanonical,
+      "provider": { "@id": "https://generandoideas.com/#organization" },
+      "areaServed": { "@type": "Country", "name": "México" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": svcCanonical }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://generandoideas.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Servicios", "item": "https://generandoideas.com/servicios" },
+        { "@type": "ListItem", "position": 3, "name": s.title, "item": svcCanonical }
+      ]
+    }
+  ]
+};
 ---
 <Layout title={`${s.title} — Generando Ideas`} description={`${s.tagline} ${s.intro}`}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(servicePageJsonLd)} />
   <div class="page svc-detail">
     <section class="section svc-intro">
       <div class="wrap">

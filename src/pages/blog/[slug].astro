@@ -9,8 +9,48 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const post = BLOG_POSTS.find((p) => p.id === slug);
 if (!post) return Astro.redirect('/blog');
+
+const canonical = new URL(`/blog/${post.id}`, Astro.site).href;
+
+const blogPostingJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": {
+        "@type": "ImageObject",
+        "url": post.img
+      },
+      "datePublished": post.iso,
+      "dateModified": post.iso,
+      "author": { "@id": "https://generandoideas.com/#organization" },
+      "publisher": {
+        "@id": "https://generandoideas.com/#organization",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://generandoideas.com/favicon.svg"
+        }
+      },
+      "inLanguage": "es-MX",
+      "articleSection": post.cat,
+      "mainEntityOfPage": { "@type": "WebPage", "@id": canonical },
+      "url": canonical
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://generandoideas.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://generandoideas.com/blog" },
+        { "@type": "ListItem", "position": 3, "name": post.title, "item": canonical }
+      ]
+    }
+  ]
+};
 ---
 <Layout title={`${post.title} — Blog Generando Ideas`} description={post.excerpt}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(blogPostingJsonLd)} />
   <article class="page article">
     <section class="section article-head">
       <div class="wrap">
@@ -30,7 +70,7 @@ if (!post) return Astro.redirect('/blog');
           </svg>
           Volver al blog
         </a>
-        <span class="eyebrow article-meta reveal">{post.cat} · {post.date} · {post.read} lectura</span>
+        <span class="eyebrow article-meta reveal">{post.cat} · <time datetime={post.iso}>{post.date}</time> · {post.read} lectura</span>
         <h1 class="display article-title reveal">{post.title}</h1>
       </div>
     </section>
