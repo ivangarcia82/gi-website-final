@@ -1,0 +1,81 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Generando Ideas — Artículos Promocionales',
+  description = 'Generando Ideas: la agencia de artículos promocionales que convierte cada pluma, taza, textil o gadget en un embajador de tu marca. Una sola ventanilla para todo lo que necesitas.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // ----- Scroll reveal (ports useReveal from shared.jsx) -----
+      const initReveal = () => {
+        const els = document.querySelectorAll('.reveal:not(.in)');
+        if (!('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('in'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        els.forEach((el) => io.observe(el));
+      };
+
+      // ----- Generic carousel wiring (ports scroll() helpers) -----
+      const initCarousels = () => {
+        document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+          const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+          if (!track) return;
+          const amount = Number(root.dataset.scroll) || 320;
+          root
+            .querySelector<HTMLElement>('[data-carousel-prev]')
+            ?.addEventListener('click', () => track.scrollBy({ left: -amount, behavior: 'smooth' }));
+          root
+            .querySelector<HTMLElement>('[data-carousel-next]')
+            ?.addEventListener('click', () => track.scrollBy({ left: amount, behavior: 'smooth' }));
+        });
+      };
+
+      initReveal();
+      initCarousels();
+    </script>
+  </body>
+</html>

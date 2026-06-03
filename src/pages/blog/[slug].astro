@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { BLOG_POSTS, ROUTES } from '../../data/site.ts';
+
+export function getStaticPaths() {
+  return BLOG_POSTS.map((p) => ({ params: { slug: p.id } }));
+}
+
+const { slug } = Astro.params;
+const post = BLOG_POSTS.find((p) => p.id === slug);
+if (!post) return Astro.redirect('/blog');
+---
+<Layout title={`${post.title} — Blog Generando Ideas`} description={post.excerpt}>
+  <div class="page">
+    <section class="section" style="padding-bottom: 20px;">
+      <div class="wrap">
+        <a class="btn btn-ghost" href={ROUTES.blog} style="margin-bottom: 24px;">
+          ← Volver al blog
+        </a>
+        <span class="eyebrow">{post.cat} · {post.date} · {post.read} lectura</span>
+        <h1 class="display" style="font-size: clamp(40px, 6vw, 80px); margin: 20px 0 32px; max-width: 1000px; letter-spacing: -0.03em;">
+          {post.title}
+        </h1>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 60px;">
+      <div class="wrap">
+        <img src={post.img} alt={post.title} style="width: 100%; aspect-ratio: 16/8; object-fit: cover; border-radius: var(--radius-lg);" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap" style="max-width: 760px;">
+        <p style="font-size: 22px; line-height: 1.5; color: var(--ink); margin: 0 0 32px;">
+          {post.excerpt}
+        </p>
+        <p style="font-size: 17px; line-height: 1.7; color: var(--gray-700); margin: 0 0 24px;">
+          En Generando Ideas llevamos más de 12 años observando cómo las marcas usan los artículos
+          promocionales para conectar con su audiencia. Este artículo recopila lo que hemos aprendido
+          trabajando con más de 500 marcas en México y LATAM.
+        </p>
+        <h3 class="display" style="font-size: 32px; margin: 40px 0 16px; letter-spacing: -0.02em;">
+          Lo esencial en 30 segundos
+        </h3>
+        <ul style="font-size: 17px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
+          <li>Empieza siempre por el objetivo de la campaña, no por el producto.</li>
+          <li>El costo por impresión del promocional vence al CPM digital a los 6 meses.</li>
+          <li>La sustentabilidad ya no es opcional para audiencias menores de 35.</li>
+          <li>Medir retorno es posible — con los tags correctos desde el día 0.</li>
+        </ul>
+        <blockquote style="margin: 40px 0; padding: 24px 32px; border-left: 4px solid var(--orange-500); background: var(--paper-2); border-radius: 0 var(--radius) var(--radius) 0; font-size: 22px; line-height: 1.4; font-family: var(--font-display); font-style: italic;">
+          "El promocional no es un gasto de marketing. Es una inversión que se lleva puesta."
+        </blockquote>
+        <p style="font-size: 17px; line-height: 1.7; color: var(--gray-700);">
+          Si quieres seguir la conversación, escríbenos. Compartimos hallazgos con clientes aliados
+          cada trimestre en sesiones cerradas.
+        </p>
+      </div>
+    </section>
+  </div>
+</Layout>

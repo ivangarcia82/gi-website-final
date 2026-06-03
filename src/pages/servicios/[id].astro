@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SERVICE_DETAILS, ROUTES } from '../../data/site.ts';
+
+export function getStaticPaths() {
+  return Object.keys(SERVICE_DETAILS).map((id) => ({ params: { id } }));
+}
+
+const { id } = Astro.params;
+const s = SERVICE_DETAILS[id as string];
+if (!s) return Astro.redirect('/servicios');
+const other = Object.entries(SERVICE_DETAILS).filter(([k]) => k !== id);
+---
+<Layout title={`${s.title} — Generando Ideas`} description={`${s.tagline} ${s.intro}`}>
+  <div class="page">
+    <section class="section" style="padding-bottom: 40px;">
+      <div class="wrap">
+        <a class="btn btn-ghost" href={ROUTES.services} style="margin-bottom: 24px;">
+          ← Todos los servicios
+        </a>
+        <span class="eyebrow">Servicio {s.num}</span>
+        <h1 class="display" style="font-size: clamp(56px, 8vw, 128px); margin: 20px 0 24px; letter-spacing: -0.035em; max-width: 1100px;">
+          {s.title}
+        </h1>
+        <p style={`font-size: 26px; color: ${s.color}; font-family: var(--font-display); font-style: italic; margin: 0 0 32px; letter-spacing: -0.01em;`}>
+          {s.tagline}
+        </p>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 60px;">
+      <div class="wrap">
+        <img src={s.hero} alt={s.title} style="width: 100%; aspect-ratio: 16/7; object-fit: cover; border-radius: var(--radius-lg);" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap reveal" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;">
+        <div>
+          <span class="eyebrow">Por qué nosotros</span>
+          <h2 class="display" style="font-size: 48px; margin: 12px 0 24px; letter-spacing: -0.02em;">
+            Lo que incluye
+          </h2>
+          <p style="font-size: 17px; line-height: 1.6; color: var(--gray-700); margin-bottom: 32px;">{s.intro}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            {s.examples.map((e) => (
+              <span style="padding: 8px 14px; background: var(--paper-2); border-radius: 999px; font-size: 13px; font-family: var(--font-mono); color: var(--ink-soft);">{e}</span>
+            ))}
+          </div>
+        </div>
+        <div style="display: grid; gap: 20px;">
+          {s.features.map((f, i) => (
+            <div class="svc-feature" style="padding: 28px; border: 1px solid var(--gray-200); border-radius: var(--radius); background: white; transition: all 0.25s;">
+              <span style={`font-family: var(--font-mono); font-size: 12px; color: ${s.color}; letter-spacing: 0.08em;`}>0{i + 1}</span>
+              <h4 style="font-family: var(--font-display); font-size: 22px; margin: 8px 0 8px; letter-spacing: -0.015em;">{f.t}</h4>
+              <p style="color: var(--gray-700); font-size: 14px; line-height: 1.5; margin: 0;">{f.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark">
+      <div class="wrap" style="text-align: center;">
+        <h2 class="display" style="font-size: clamp(40px, 6vw, 80px); letter-spacing: -0.03em; margin: 0 auto 24px; max-width: 900px;">
+          ¿Te interesa {s.title}?
+        </h2>
+        <p style="color: var(--gray-300); font-size: 18px; max-width: 600px; margin: 0 auto 32px;">
+          Hablemos. Respuesta en menos de 24 horas hábiles.
+        </p>
+        <a href={ROUTES.contact} class="btn btn-accent btn-lg">
+          Cotizar ahora
+        </a>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap">
+        <span class="eyebrow">Más servicios</span>
+        <h3 class="display" style="font-size: 40px; margin: 12px 0 32px; letter-spacing: -0.02em;">Explora nuestro portafolio</h3>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+          {other.map(([k, v]) => (
+            <a href={ROUTES.service(k)} class="other-svc" style="display: block; text-align: left; padding: 24px; background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); transition: all 0.25s; cursor: pointer;">
+              <span style={`font-family: var(--font-mono); font-size: 11px; color: ${v.color}; letter-spacing: 0.08em;`}>{v.num}</span>
+              <h4 style="font-family: var(--font-display); font-size: 22px; margin: 8px 0 0; letter-spacing: -0.02em;">{v.title}</h4>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

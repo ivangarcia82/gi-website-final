@@ -1,0 +1,116 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { BLOG_POSTS, BLOG_CATEGORIES } from '../../data/site.ts';
+
+const featured = BLOG_POSTS[0];
+const rest = BLOG_POSTS.slice(1);
+---
+<Layout title="Blog — Generando Ideas" description="Tendencias, casos reales, guías técnicas y opiniones de nuestro equipo sobre artículos promocionales.">
+  <div class="page">
+    <section class="section" style="padding-bottom: 40px;">
+      <div class="wrap">
+        <span class="eyebrow">Blog · Ideas en acción</span>
+        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 32px; max-width: 1100px; letter-spacing: -0.035em;">
+          Lo que aprendemos, <em style="font-style: italic; color: var(--orange-500);">lo compartimos.</em>
+        </h1>
+        <p style="font-size: 20px; color: var(--gray-700); line-height: 1.5; max-width: 720px;">
+          Tendencias, casos reales, guías técnicas y opiniones de nuestro equipo.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap">
+        <div class="cat-filter" id="blog-filter" style="margin-bottom: 40px;">
+          {BLOG_CATEGORIES.map((c, i) => (
+            <button class:list={['chip', { active: i === 0 }]} data-cat={c}>{c}</button>
+          ))}
+        </div>
+
+        <div id="blog-content">
+          <a class="blog-feature reveal" href={`/blog/${featured.id}`}>
+            <div class="blog-feature-img">
+              <img src={featured.img} alt={featured.title} loading="lazy" />
+            </div>
+            <div class="blog-feature-body">
+              <span class="eyebrow">Destacado · {featured.cat}</span>
+              <h2 class="display" style="font-size: clamp(36px, 4.5vw, 56px); margin: 12px 0 16px; letter-spacing: -0.025em; line-height: 1;">
+                {featured.title}
+              </h2>
+              <p style="color: var(--gray-700); font-size: 17px; line-height: 1.5; margin-bottom: 20px;">{featured.excerpt}</p>
+              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--gray-500); letter-spacing: 0.1em; text-transform: uppercase;">
+                {featured.date} · {featured.read} lectura
+              </span>
+            </div>
+          </a>
+
+          <div class="blog-grid reveal">
+            {rest.map((p) => (
+              <a class="blog-card" href={`/blog/${p.id}`}>
+                <div class="blog-card-img"><img src={p.img} alt={p.title} loading="lazy" /></div>
+                <div class="blog-card-body">
+                  <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-700);">{p.cat}</span>
+                  <h3 style="font-family: var(--font-display); font-size: 24px; margin: 8px 0 8px; letter-spacing: -0.02em; line-height: 1.1;">{p.title}</h3>
+                  <p style="color: var(--gray-700); font-size: 14px; line-height: 1.5; margin: 0 0 16px;">{p.excerpt}</p>
+                  <span style="font-size: 12px; color: var(--gray-500); font-family: var(--font-mono);">{p.date} · {p.read}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script define:vars={{ posts: BLOG_POSTS }}>
+    const filter = document.getElementById('blog-filter');
+    const content = document.getElementById('blog-content');
+
+    const esc = (s) =>
+      String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+    const featuredHTML = (p) => `
+      <a class="blog-feature reveal" href="/blog/${p.id}">
+        <div class="blog-feature-img"><img src="${esc(p.img)}" alt="${esc(p.title)}" loading="lazy" /></div>
+        <div class="blog-feature-body">
+          <span class="eyebrow">Destacado · ${esc(p.cat)}</span>
+          <h2 class="display" style="font-size: clamp(36px, 4.5vw, 56px); margin: 12px 0 16px; letter-spacing: -0.025em; line-height: 1;">${esc(p.title)}</h2>
+          <p style="color: var(--gray-700); font-size: 17px; line-height: 1.5; margin-bottom: 20px;">${esc(p.excerpt)}</p>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--gray-500); letter-spacing: 0.1em; text-transform: uppercase;">${esc(p.date)} · ${esc(p.read)} lectura</span>
+        </div>
+      </a>`;
+
+    const cardHTML = (p) => `
+      <a class="blog-card" href="/blog/${p.id}">
+        <div class="blog-card-img"><img src="${esc(p.img)}" alt="${esc(p.title)}" loading="lazy" /></div>
+        <div class="blog-card-body">
+          <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-700);">${esc(p.cat)}</span>
+          <h3 style="font-family: var(--font-display); font-size: 24px; margin: 8px 0 8px; letter-spacing: -0.02em; line-height: 1.1;">${esc(p.title)}</h3>
+          <p style="color: var(--gray-700); font-size: 14px; line-height: 1.5; margin: 0 0 16px;">${esc(p.excerpt)}</p>
+          <span style="font-size: 12px; color: var(--gray-500); font-family: var(--font-mono);">${esc(p.date)} · ${esc(p.read)}</span>
+        </div>
+      </a>`;
+
+    function render(cat) {
+      const filtered = cat === 'Todos' ? posts : posts.filter((p) => p.cat === cat);
+      const featured = filtered[0];
+      const rest = filtered.slice(1);
+      let html = featured ? featuredHTML(featured) : '';
+      html += `<div class="blog-grid reveal">${rest.map(cardHTML).join('')}</div>`;
+      content.innerHTML = html;
+      // Freshly injected nodes aren't seen by the load-time reveal observer,
+      // so play their fade-up on the next frame (matches the prototype's
+      // re-render, which re-ran its IntersectionObserver on filter change).
+      requestAnimationFrame(() => {
+        content.querySelectorAll('.reveal:not(.in)').forEach((el) => el.classList.add('in'));
+      });
+    }
+
+    filter?.querySelectorAll('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        filter.querySelectorAll('.chip').forEach((c) => c.classList.toggle('active', c === chip));
+        render(chip.dataset.cat);
+      });
+    });
+  </script>
+</Layout>

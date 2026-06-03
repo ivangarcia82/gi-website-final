@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { JOBS } from '../../data/site.ts';
+
+const stats = [
+  { n: '6', t: 'Vacantes abiertas' },
+  { n: '140+', t: 'Colaboradores actuales' },
+  { n: '4.7/5', t: 'Rating en Glassdoor' },
+];
+---
+<Layout title="Bolsa de trabajo — Generando Ideas" description="Gente que genera ideas. Buscamos personas curiosas, detallistas y apasionadas por hacer que las marcas sean memorables.">
+  <div class="page">
+    <section class="section" style="padding-bottom: 40px;">
+      <div class="wrap">
+        <span class="eyebrow">Bolsa de trabajo · Únete</span>
+        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 24px; letter-spacing: -0.035em; max-width: 1100px;">
+          Gente que <em style="font-style: italic; color: var(--orange-500);">genera ideas.</em>
+        </h1>
+        <p style="font-size: 20px; color: var(--gray-700); line-height: 1.5; max-width: 720px;">
+          Buscamos personas curiosas, detallistas y apasionadas por hacer que las marcas sean memorables.
+          Si te entusiasma lo que hacemos, probablemente haya un lugar para ti.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap reveal">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 60px;">
+          {stats.map((s) => (
+            <div style="padding: 32px; background: var(--paper-2); border-radius: var(--radius-lg);">
+              <div style="font-family: var(--font-display); font-size: 56px; font-weight: 700; color: var(--blue-700); letter-spacing: -0.03em; line-height: 0.9;">{s.n}</div>
+              <div style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-500); margin-top: 12px;">{s.t}</div>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="display" style="font-size: 40px; margin: 0 0 24px; letter-spacing: -0.02em;">Vacantes disponibles</h2>
+        <div class="jobs-list">
+          {JOBS.map((j) => (
+            <a class="job-row" href={`/bolsa-de-trabajo/${j.id}`}>
+              <div>
+                <h4 style="font-family: var(--font-display); font-size: 26px; margin: 0 0 6px; letter-spacing: -0.02em;">{j.title}</h4>
+                <span style="font-size: 14px; color: var(--gray-500);">{j.dept} · {j.location}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <span style="padding: 6px 12px; background: var(--blue-100); color: var(--blue-700); border-radius: 999px; font-size: 12px; font-family: var(--font-mono); font-weight: 500;">
+                  {j.type}
+                </span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div style="margin-top: 60px; padding: 48px; background: var(--ink); color: white; border-radius: var(--radius-lg); text-align: center;">
+          <h3 class="display" style="font-size: 36px; margin: 0 0 12px; letter-spacing: -0.02em;">¿No encuentras tu rol ideal?</h3>
+          <p style="color: var(--gray-300); margin: 0 0 24px; font-size: 16px;">
+            Envíanos tu CV de cualquier forma. Estamos creciendo y abrimos nuevas posiciones cada mes.
+          </p>
+          <button class="btn btn-accent btn-lg">Enviar CV abierto</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

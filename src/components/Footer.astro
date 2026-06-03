@@ -1,0 +1,54 @@
+---
+import { BRAND, ROUTES } from '../data/site.ts';
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-brand">
+      Vivimos de <em>promocionales.</em>
+    </div>
+    <div class="footer-grid">
+      <div>
+        <h5>Contáctanos</h5>
+        <p style="color: var(--gray-300); font-size: 14px; line-height: 1.6; margin: 0;">
+          {BRAND.phone}<br />
+          {BRAND.email}<br />
+          CDMX · Sonora · Yucatán · BCS
+        </p>
+      </div>
+      <div>
+        <h5>Empresa</h5>
+        <ul>
+          <li><a href={ROUTES.about}>Conócenos</a></li>
+          <li><a href={ROUTES.about}>Misión</a></li>
+          <li><a href={ROUTES.about}>Visión</a></li>
+          <li><a href={ROUTES.about}>Valores</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Servicios</h5>
+        <ul>
+          <li><a href={ROUTES.services}>Promocionales</a></li>
+          <li><a href={ROUTES.services}>Fulfillment</a></li>
+          <li><a href={ROUTES.services}>Proyectos Especiales</a></li>
+          <li><a href={ROUTES.services}>Talleres</a></li>
+          <li><a href={ROUTES.services}>Textiles</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Recursos</h5>
+        <ul>
+          <li><a href={ROUTES.catalog}>Catálogos</a></li>
+          <li><a href={ROUTES.blog}>Blog</a></li>
+          <li><a href={ROUTES.careers}>Bolsa de trabajo</a></li>
+          <li><a>e-Store</a></li>
+          <li><a>Responsabilidad social</a></li>
+          <li><a>Aviso de privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Generando Ideas · 100% Empresa Mexicana</span>
+      <span>Hecho con ideas · <span style="color: var(--orange-500);">●</span> MX</span>
+    </div>
+  </div>
+</footer>

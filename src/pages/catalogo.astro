@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CATALOGS, PRODUCTS, PRODUCT_CATEGORIES } from '../data/site.ts';
+
+const counts: Record<string, number> = Object.fromEntries(
+  PRODUCT_CATEGORIES.map((c) => [c, c === 'Todos' ? PRODUCTS.length : PRODUCTS.filter((p) => p.cat === c).length])
+);
+---
+<Layout title="Catálogo — Generando Ideas" description="11 catálogos, miles de ideas. Explora nuestras líneas de productos promocionales y filtra por categoría.">
+  <div class="page">
+    <section class="section" style="padding-bottom: 40px;">
+      <div class="wrap">
+        <span class="eyebrow">Catálogos 2026</span>
+        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 32px; max-width: 1100px;">
+          11 catálogos, miles de <em style="font-style: italic; color: var(--blue-700);">ideas.</em>
+        </h1>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap reveal">
+        <h3 class="display" style="font-size: 32px; margin: 0 0 24px;">Explora nuestros catálogos</h3>
+        <div data-carousel data-scroll="320">
+          <div class="carousel">
+            <div class="carousel-track" data-carousel-track>
+              {CATALOGS.map((c) => (
+                <button
+                  class="cat-card"
+                  data-lightbox-trigger
+                  data-type="cat"
+                  data-name={c.name}
+                  data-img={c.img}
+                  data-cat="Catálogo"
+                  style="text-align: left;"
+                >
+                  <div class="cat-card-img"><img src={c.img} alt={c.name} loading="lazy" /></div>
+                  <div class="cat-card-body">
+                    <h4>{c.name}</h4>
+                    <span>{c.tag}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div class="carousel-nav">
+            <button class="carousel-btn" data-carousel-prev aria-label="Anterior">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+            </button>
+            <button class="carousel-btn" data-carousel-next aria-label="Siguiente">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap reveal">
+        <div class="section-head" style="margin-bottom: 32px;">
+          <div>
+            <span class="eyebrow">Productos destacados</span>
+            <h2 class="display" style="font-size: 56px; margin: 12px 0 0; letter-spacing: -0.03em;">
+              Filtra por <em style="font-style: italic; color: var(--orange-500);">categoría.</em>
+            </h2>
+          </div>
+        </div>
+        <div class="cat-filter">
+          {PRODUCT_CATEGORIES.map((c, i) => (
+            <button class:list={['chip', { active: i === 0 }]} data-cat={c}>
+              {c}
+              <span class="chip-count" style="opacity: 0.6; margin-left: 4px;" hidden={i !== 0}>{counts[c]}</span>
+            </button>
+          ))}
+        </div>
+        <div class="product-grid">
+          {PRODUCTS.map((p) => (
+            <button
+              class="product"
+              data-cat={p.cat}
+              data-lightbox-trigger
+              data-type="product"
+              data-name={p.name}
+              data-img={p.img}
+            >
+              <img src={p.img} alt={p.name} loading="lazy" />
+              <div class="product-meta">
+                <h5>{p.name}</h5>
+                <span>{p.cat}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" style="display: none;">
+      <button class="lightbox-close" data-lightbox-close aria-label="Cerrar">×</button>
+      <div class="lightbox-inner">
+        <div class="lightbox-img"><img id="lb-img" src="" alt="" /></div>
+        <div class="lightbox-body">
+          <span class="eyebrow" id="lb-eyebrow"></span>
+          <h3 class="display" id="lb-title" style="font-size: 40px; margin: 12px 0 16px; letter-spacing: -0.02em;"></h3>
+          <p id="lb-desc" style="color: var(--gray-700); line-height: 1.6; flex: 1;"></p>
+          <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn btn-primary">Solicitar cotización</button>
+            <button class="btn btn-ghost" data-lightbox-close>Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- Category filter ----
+    const chips = Array.from(document.querySelectorAll<HTMLElement>('.cat-filter .chip'));
+    const products = Array.from(document.querySelectorAll<HTMLElement>('.product-grid .product'));
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.cat;
+        chips.forEach((c) => {
+          const isActive = c === chip;
+          c.classList.toggle('active', isActive);
+          const count = c.querySelector<HTMLElement>('.chip-count');
+          if (count) count.hidden = !isActive;
+        });
+        products.forEach((p) => {
+          p.style.display = cat === 'Todos' || p.dataset.cat === cat ? '' : 'none';
+        });
+      });
+    });
+
+    // ---- Lightbox ----
+    const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+    const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
+    const lbEyebrow = document.getElementById('lb-eyebrow');
+    const lbTitle = document.getElementById('lb-title');
+    const lbDesc = document.getElementById('lb-desc');
+
+    function openLightbox(el: HTMLElement) {
+      if (!lightbox || !lbImg) return;
+      const { type, name = '', img = '', cat = '' } = el.dataset;
+      lbImg.src = img;
+      lbImg.alt = name;
+      if (lbEyebrow) lbEyebrow.textContent = type === 'cat' ? 'Catálogo' : cat;
+      if (lbTitle) lbTitle.textContent = name;
+      if (lbDesc) {
+        lbDesc.textContent =
+          type === 'cat'
+            ? `Descubre más de 200 productos en nuestra línea ${name}. Cada pieza personalizable con el método que tu marca necesita: impresión digital, serigrafía, bordado, sublimación, grabado láser y más.`
+            : `${name} personalizable con tu marca. Disponible en múltiples colores y acabados. Pedidos desde 50 piezas con producción en México.`;
+      }
+      lightbox.style.display = 'grid';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-lightbox-trigger]').forEach((el) => {
+      el.addEventListener('click', () => openLightbox(el));
+    });
+    document.querySelectorAll<HTMLElement>('[data-lightbox-close]').forEach((el) => {
+      el.addEventListener('click', closeLightbox);
+    });
+    lightbox?.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.lightbox-inner')) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</Layout>

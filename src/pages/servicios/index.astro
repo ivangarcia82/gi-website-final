@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ServicesShowcase from '../../components/ServicesShowcase.astro';
+---
+<Layout title="Servicios — Generando Ideas" description="Cinco servicios, una sola relación: promocionales, fulfillment, proyectos especiales, talleres y textil & talabartería.">
+  <div class="page">
+    <section class="section" style="padding-bottom: 40px;">
+      <div class="wrap">
+        <span class="eyebrow">Servicios</span>
+        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 32px; max-width: 1100px;">
+          Cinco servicios, <em style="font-style: italic; color: var(--orange-500);">una sola</em> relación.
+        </h1>
+        <p style="font-size: 20px; color: var(--gray-700); line-height: 1.5; max-width: 720px;">
+          Tu promocional puede ser una pieza, o puede ser un ecosistema completo: producción,
+          almacenamiento, envío, experiencia. Elige hasta donde quieras llegar.
+        </p>
+      </div>
+    </section>
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap reveal">
+        <ServicesShowcase layout="mosaic" />
+      </div>
+    </section>
+  </div>
+</Layout>

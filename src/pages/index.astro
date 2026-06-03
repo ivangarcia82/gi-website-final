@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Ticker from '../components/Ticker.astro';
+import ServicesShowcase from '../components/ServicesShowcase.astro';
+import CatalogsCarousel from '../components/CatalogsCarousel.astro';
+import ProcessSection from '../components/ProcessSection.astro';
+import TestimonialsCarousel from '../components/TestimonialsCarousel.astro';
+---
+<Layout>
+  <div class="page">
+    <Hero />
+    <Ticker />
+
+    <section class="section">
+      <div class="wrap reveal">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Servicios</span>
+            <h2>Todo lo que tu marca necesita, <em style="color: var(--orange-500); font-style: italic;">bajo un mismo techo.</em></h2>
+          </div>
+          <p>Cinco líneas integradas que cubren desde la idea hasta el envío final. Tú eliges dónde empezamos.</p>
+        </div>
+        <ServicesShowcase layout="mosaic" />
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap reveal">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Catálogos 2026</span>
+            <h2>11 catálogos, <em style="color: var(--blue-700); font-style: italic;">miles</em> de productos.</h2>
+          </div>
+          <p>Desde clásicos eternos hasta ediciones especiales por temporada. Explora y encuentra lo que necesitas.</p>
+        </div>
+        <CatalogsCarousel />
+      </div>
+    </section>
+
+    <ProcessSection />
+
+    <section class="section">
+      <div class="wrap reveal">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Lo que dicen nuestros clientes</span>
+            <h2>Relaciones que <em style="color: var(--magenta); font-style: italic;">duran años.</em></h2>
+          </div>
+          <p>Más del 80% de nuestros clientes nos recompra en los primeros 12 meses.</p>
+        </div>
+        <TestimonialsCarousel />
+      </div>
+    </section>
+  </div>
+</Layout>

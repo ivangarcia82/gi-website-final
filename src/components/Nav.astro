@@ -1,0 +1,39 @@
+---
+import Logo from './Logo.astro';
+import { NAV_ITEMS, ROUTES } from '../data/site.ts';
+
+// Determine the active nav item from the current path.
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+function isActive(href: string): boolean {
+  // Home and Servicios match exactly: in the prototype no nav item is highlighted
+  // on a service-detail view (active rule was an exact `page === id`, and the
+  // detail's page is "service/<id>", never "services").
+  if (href === '/' || href === '/servicios') return path === href;
+  // Other items keep the prefix fallback so /blog/<slug> still lights up "Blog"
+  // (the prototype renders blog details as in-page state with page === "blog").
+  return path === href || path.startsWith(href + '/');
+}
+---
+<nav class="nav">
+  <div class="nav-inner">
+    <a href={ROUTES.home} style="background: none; padding: 0;" aria-label="Inicio">
+      <Logo />
+    </a>
+    <div class="nav-links">
+      {NAV_ITEMS.map((p) => (
+        <a
+          href={p.href}
+          class:list={['nav-link', 'hide-mobile', { active: isActive(p.href) }]}
+        >
+          {p.label}
+        </a>
+      ))}
+      <a href={ROUTES.catalog} class="btn btn-accent" style="margin-left: 8px;">
+        Ver catálogo
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</nav>

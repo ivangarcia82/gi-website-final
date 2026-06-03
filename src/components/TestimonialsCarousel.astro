@@ -1,0 +1,40 @@
+---
+import { TESTIMONIALS } from '../data/site.ts';
+
+function initials(name: string): string {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('');
+}
+---
+<div data-carousel data-scroll="460">
+  <div class="testimonials">
+    <div class="testimonial-track" data-carousel-track>
+      {TESTIMONIALS.map((t) => (
+        <div class="testimonial">
+          <blockquote>"{t.quote}"</blockquote>
+          <cite>
+            <div class="avatar">{initials(t.name)}</div>
+            <div class="testimonial-meta">
+              <strong>{t.name}</strong>
+              <span>{t.role}</span>
+            </div>
+          </cite>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="carousel-nav">
+    <button class="carousel-btn" data-carousel-prev aria-label="Anterior">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M19 12H5M11 18l-6-6 6-6" />
+      </svg>
+    </button>
+    <button class="carousel-btn" data-carousel-next aria-label="Siguiente">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </button>
+  </div>
+</div>

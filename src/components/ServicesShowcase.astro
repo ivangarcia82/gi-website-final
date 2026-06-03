@@ -1,0 +1,110 @@
+---
+import { SERVICES, IMAGES, ROUTES } from '../data/site.ts';
+
+export interface Props {
+  layout?: 'mosaic' | 'list' | 'stacked';
+}
+const { layout = 'mosaic' } = Astro.props;
+
+const arrow = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const stackedImgs = [IMAGES.img25, IMAGES.img26, IMAGES.img27, IMAGES.img28, IMAGES.img29];
+---
+{layout === 'list' && (
+  <div class="services-list">
+    {SERVICES.map((s) => (
+      <div class="svc-row">
+        <span class="num">{s.num}</span>
+        <h3>{s.title}</h3>
+        <p>{s.desc}</p>
+        <a href={ROUTES.service(s.id)} class="btn btn-ghost">
+          Explorar
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+    ))}
+  </div>
+)}
+
+{layout === 'stacked' && (
+  <div class="services-stacked">
+    {SERVICES.map((s, i) => (
+      <div class="svc-card">
+        <div class="svc-card-text">
+          <span class="eyebrow">Servicio {s.num}</span>
+          <h3>{s.title}</h3>
+          <p style="color: var(--gray-700); font-size: 16px; line-height: 1.6;">{s.desc}</p>
+          <a href={ROUTES.service(s.id)} class="btn btn-primary" style="margin-top: 20px;">
+            Saber más
+          </a>
+        </div>
+        <div class="svc-card-img">
+          <img src={stackedImgs[i % stackedImgs.length]} alt={s.title} loading="lazy" />
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
+{layout === 'mosaic' && (
+  <div class="services-grid">
+    <a class="svc svc-hero" href={ROUTES.service('promo')}>
+      <div class="svc-decoration"></div>
+      <div>
+        <span class="svc-num" style="color: rgba(255,255,255,0.7);">{SERVICES[0].num} — Servicio principal</span>
+        <h3 style="margin-top: 12px;">{SERVICES[0].title}</h3>
+        <p>{SERVICES[0].desc}</p>
+      </div>
+      <span class="svc-cta">
+        Explorar línea
+        <Fragment set:html={arrow} />
+      </span>
+    </a>
+    <a class="svc svc-a" href={ROUTES.service('fulfillment')}>
+      <div class="svc-decoration"></div>
+      <div>
+        <span class="svc-num">{SERVICES[1].num}</span>
+        <h3 style="margin-top: 12px;">{SERVICES[1].title}</h3>
+        <p style="color: rgba(16,17,20,0.7);">{SERVICES[1].desc}</p>
+      </div>
+      <span class="svc-cta">
+        Ver más
+        <Fragment set:html={arrow} />
+      </span>
+    </a>
+    <a class="svc svc-b" href={ROUTES.service('proyectos')}>
+      <div>
+        <span class="svc-num">{SERVICES[2].num}</span>
+        <h3 style="margin-top: 12px;">{SERVICES[2].title}</h3>
+        <p>{SERVICES[2].desc}</p>
+      </div>
+      <span class="svc-cta">
+        Ver más
+        <Fragment set:html={arrow} />
+      </span>
+    </a>
+    <a class="svc svc-c" href={ROUTES.service('talleres')}>
+      <div>
+        <span class="svc-num" style="color: var(--orange-500);">{SERVICES[3].num}</span>
+        <h3 style="margin-top: 12px;">{SERVICES[3].title}</h3>
+        <p>{SERVICES[3].desc}</p>
+      </div>
+      <span class="svc-cta">
+        Ver más
+        <Fragment set:html={arrow} />
+      </span>
+    </a>
+    <a class="svc svc-d" href={ROUTES.service('textiles')}>
+      <div>
+        <span class="svc-num">{SERVICES[4].num}</span>
+        <h3 style="margin-top: 12px;">{SERVICES[4].title}</h3>
+        <p>{SERVICES[4].desc}</p>
+      </div>
+      <span class="svc-cta">
+        Ver más
+        <Fragment set:html={arrow} />
+      </span>
+    </a>
+  </div>
+)}

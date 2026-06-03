@@ -1,0 +1,108 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { IMAGES, ROUTES } from '../data/site.ts';
+
+const values = [
+  { m: '①', t: 'Compromiso', d: 'Nos jugamos el pellejo con cada entrega. Si prometemos algo, se cumple.' },
+  { m: '②', t: 'Creatividad', d: 'No vendemos catálogos, vendemos ideas. Cada brief es un problema nuevo.' },
+  { m: '③', t: 'Integridad', d: 'Precios claros, tiempos reales, calidad prometida. Sin letras chiquitas.' },
+  { m: '④', t: 'Pasión', d: 'Amamos los promocionales. Se nota en cada pluma que sale de producción.' },
+  { m: '⑤', t: 'Innovación', d: 'Siempre un paso adelante: nuevos materiales, nuevas técnicas, nuevas ideas.' },
+  { m: '⑥', t: 'Servicio', d: 'Tu éxito es nuestro éxito. Estamos disponibles cuando nos necesitas.' },
+];
+---
+<Layout title="Conócenos — Generando Ideas" description="Somos una empresa 100% mexicana que vive, respira y crea promocionales desde 2013. Cuatro oficinas, una sola ventanilla.">
+  <div class="page">
+    <section class="section" style="padding-bottom: 60px;">
+      <div class="wrap">
+        <span class="eyebrow">Conócenos · Desde 2013</span>
+        <h1 class="display" style="font-size: clamp(56px, 8vw, 128px); margin: 20px 0 0; max-width: 1000px;">
+          Somos una empresa <em style="font-style: italic; color: var(--blue-700);">100% mexicana</em> que vive, respira y crea promocionales.
+        </h1>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 40px;">
+      <div class="wrap reveal" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start;">
+        <div>
+          <img src={IMAGES.img41} alt="Equipo Generando Ideas" style="border-radius: var(--radius-lg); aspect-ratio: 3/4; object-fit: cover; width: 100%;" loading="lazy" />
+        </div>
+        <div>
+          <span class="eyebrow">¿Quiénes somos?</span>
+          <h2 class="display" style="font-size: 52px; margin: 16px 0 24px; letter-spacing: -0.02em;">
+            Líderes en la industria promocional
+          </h2>
+          <p style="font-size: 18px; color: var(--gray-700); line-height: 1.6; margin-bottom: 24px;">
+            Iniciamos operaciones en 2013 con una idea clara: las marcas necesitan más que un
+            producto con logo. Necesitan un socio que entienda su voz, su audiencia y sus
+            objetivos — y que convierta cada artículo en una extensión de su identidad.
+          </p>
+          <p style="font-size: 18px; color: var(--gray-700); line-height: 1.6;">
+            Hoy operamos cuatro oficinas en México (CDMX, Sonora, Yucatán y Baja California Sur),
+            producimos localmente, y ofrecemos una ventanilla única: promocionales, fulfillment,
+            proyectos especiales, talleres y manufactura textil y de talabartería.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+        <div class="reveal" style="padding: 48px; background: white; border-radius: var(--radius-lg);">
+          <span class="eyebrow">Misión</span>
+          <h3 class="display" style="font-size: 40px; margin: 12px 0 16px; letter-spacing: -0.02em;">Amplificar marcas</h3>
+          <p style="color: var(--gray-700); line-height: 1.6; font-size: 16px; margin: 0;">
+            Ser el aliado estratégico de las marcas que quieren conectar con su audiencia a
+            través de productos memorables, entregados con excelencia y siempre a tiempo.
+          </p>
+        </div>
+        <div class="reveal" style="padding: 48px; background: var(--ink); color: white; border-radius: var(--radius-lg);">
+          <span class="eyebrow" style="color: var(--orange-500);">Visión</span>
+          <h3 class="display" style="font-size: 40px; margin: 12px 0 16px; letter-spacing: -0.02em;">Referente LATAM</h3>
+          <p style="color: var(--gray-300); line-height: 1.6; font-size: 16px; margin: 0;">
+            Convertirnos en el referente de artículos promocionales en Latinoamérica, reconocidos
+            por innovación, calidad y el impacto medible que generamos para nuestros clientes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap reveal">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Nuestros valores</span>
+            <h2 class="display" style="font-size: 64px; margin: 12px 0 0; letter-spacing: -0.03em;">
+              Los principios que <em style="font-style: italic; color: var(--orange-500);">no negociamos.</em>
+            </h2>
+          </div>
+        </div>
+        <div class="values-grid">
+          {values.map((v) => (
+            <div class="value">
+              <div class="mark">{v.m}</div>
+              <div>
+                <h4>{v.t}</h4>
+                <p>{v.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark">
+      <div class="wrap" style="text-align: center;">
+        <h2 class="display" style="font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.03em; margin: 0 auto 32px; max-width: 900px;">
+          ¿Listo para amplificar tu marca?
+        </h2>
+        <a href={ROUTES.contact} class="btn btn-accent btn-lg">
+          Empecemos a trabajar
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>

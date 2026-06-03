@@ -1,0 +1,15 @@
+---
+import { TICKER_WORDS } from '../data/site.ts';
+// Triple the words so the -50% scroll loop is seamless.
+const loop = [...TICKER_WORDS, ...TICKER_WORDS, ...TICKER_WORDS];
+---
+<div class="ticker">
+  <div class="ticker-track">
+    {loop.map((w) => (
+      <>
+        <span>{w}</span>
+        <span class="dot">●</span>
+      </>
+    ))}
+  </div>
+</div>

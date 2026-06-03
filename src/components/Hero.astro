@@ -1,0 +1,65 @@
+---
+import { IMAGES, ROUTES } from '../data/site.ts';
+---
+<section class="hero">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">★ Your one-stop solution · 12+ años</span>
+      <h1>
+        Ideas que tu <em>marca</em> se lleva puesta.
+      </h1>
+      <p class="hero-sub">
+        Somos Generando Ideas: la agencia de artículos promocionales que convierte cada pluma,
+        taza, textil o gadget en un embajador de tu marca. Una sola ventanilla para todo lo que
+        necesitas.
+      </p>
+      <div class="hero-cta">
+        <a href={ROUTES.catalog} class="btn btn-primary btn-lg">
+          Ver catálogo
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+        <a href={ROUTES.contact} class="btn btn-ghost btn-lg">
+          Cotiza tu proyecto
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <strong>12+</strong>
+          <span>Años activos</span>
+        </div>
+        <div class="stat">
+          <strong>11</strong>
+          <span>Catálogos</span>
+        </div>
+        <div class="stat">
+          <strong>4</strong>
+          <span>Oficinas MX</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="h-card hc-1">
+        <img src={IMAGES.img22} alt="" loading="eager" />
+        <span class="tag">Drinkware</span>
+      </div>
+      <div class="h-card hc-2">
+        <img src={IMAGES.img23} alt="" loading="eager" />
+        <span class="tag">Textiles</span>
+      </div>
+      <div class="h-card hc-3">
+        <img src={IMAGES.img24} alt="" loading="eager" />
+        <span class="tag">Oficina</span>
+      </div>
+      <div class="h-card hc-4">
+        <span>Your<br />brand<br />here.</span>
+      </div>
+    </div>
+  </div>
+</section>

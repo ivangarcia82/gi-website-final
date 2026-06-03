@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { JOBS, ROUTES } from '../../data/site.ts';
+
+export function getStaticPaths() {
+  return JOBS.map((j) => ({ params: { id: String(j.id) } }));
+}
+
+const { id } = Astro.params;
+const job = JOBS.find((j) => String(j.id) === id);
+if (!job) return Astro.redirect('/bolsa-de-trabajo');
+---
+<Layout title={`${job.title} — Bolsa de trabajo · Generando Ideas`} description={`Vacante: ${job.title} · ${job.dept} · ${job.location}`}>
+  <div class="page">
+    <section class="section" style="padding-bottom: 40px;">
+      <div class="wrap">
+        <a class="btn btn-ghost" href={ROUTES.careers} style="margin-bottom: 24px;">
+          ← Todas las vacantes
+        </a>
+        <span class="eyebrow">{job.dept} · {job.location}</span>
+        <h1 class="display" style="font-size: clamp(48px, 7vw, 96px); margin: 20px 0 24px; letter-spacing: -0.03em; max-width: 1100px;">
+          {job.title}
+        </h1>
+        <div style="display: flex; gap: 8px; margin-bottom: 32px;">
+          <span class="chip active">{job.type}</span>
+          <span class="chip">{job.location}</span>
+        </div>
+      </div>
+    </section>
+    <section class="section" style="padding-top: 0;">
+      <div class="wrap" style="max-width: 760px;">
+        <h3 class="display" style="font-size: 28px; margin: 0 0 16px; letter-spacing: -0.02em;">Sobre el rol</h3>
+        <p style="font-size: 17px; line-height: 1.7; color: var(--gray-700);">
+          Buscamos una persona que quiera unirse al equipo que está redefiniendo la industria
+          promocional en México. Trabajarás cerca de marcas que retan el status quo y con un
+          equipo que celebra las buenas ideas.
+        </p>
+        <h3 class="display" style="font-size: 28px; margin: 40px 0 16px; letter-spacing: -0.02em;">Lo que harás</h3>
+        <ul style="font-size: 16px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
+          <li>Colaborar con clientes desde el brief inicial hasta la entrega final.</li>
+          <li>Desarrollar propuestas creativas y comerciales dentro del presupuesto y tiempos.</li>
+          <li>Coordinar con producción interna y proveedores aliados.</li>
+          <li>Medir el desempeño de cada campaña y proponer mejoras.</li>
+        </ul>
+        <h3 class="display" style="font-size: 28px; margin: 40px 0 16px; letter-spacing: -0.02em;">Lo que buscamos</h3>
+        <ul style="font-size: 16px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
+          <li>3+ años de experiencia en roles similares (industria promocional, publicidad o marketing).</li>
+          <li>Excelente comunicación escrita y verbal.</li>
+          <li>Organización, atención al detalle y capacidad para gestionar múltiples proyectos.</li>
+          <li>Pasión por las ideas creativas y la ejecución impecable.</li>
+        </ul>
+        <h3 class="display" style="font-size: 28px; margin: 40px 0 16px; letter-spacing: -0.02em;">Lo que ofrecemos</h3>
+        <ul style="font-size: 16px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
+          <li>Sueldo competitivo + esquema de comisiones / bonos.</li>
+          <li>Prestaciones superiores a la ley.</li>
+          <li>Seguro de gastos médicos menores.</li>
+          <li>Capacitación continua y plan de carrera.</li>
+          <li>Ambiente creativo, colaborativo y sin formalismos.</li>
+        </ul>
+        <div style="margin-top: 40px; padding: 32px; background: var(--paper-2); border-radius: var(--radius-lg);">
+          <h4 class="display" style="font-size: 24px; margin: 0 0 12px; letter-spacing: -0.02em;">¿Listo para postularte?</h4>
+          <p style="color: var(--gray-700); margin: 0 0 20px;">
+            Envía tu CV y un mensaje contándonos por qué te interesa este rol a{' '}
+            <strong>talento@generandoideas.com</strong>
+          </p>
+          <button class="btn btn-primary btn-lg">Enviar aplicación</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,28 @@
+---
+const steps = [
+  { n: '01', t: 'Briefing', d: 'Nos compartes objetivo, target, presupuesto y tiempos. Salimos con un norte claro.' },
+  { n: '02', t: 'Propuesta', d: 'Curamos opciones del catálogo + ideas originales en menos de 48 horas.' },
+  { n: '03', t: 'Producción', d: 'Impresión, bordado, sublimación, láser — todo bajo control de calidad propio.' },
+  { n: '04', t: 'Entrega', d: 'Fulfillment a tu bodega o directo a tus destinatarios, a donde sea que estén.' },
+];
+---
+<section class="section section-dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Cómo trabajamos</span>
+        <h2>De la idea al <em style="color: var(--orange-500); font-style: italic;">entregable</em>, sin fricciones.</h2>
+      </div>
+      <p>Un proceso probado con +500 clientes que funciona igual para 100 piezas que para 100,000.</p>
+    </div>
+    <div class="process-list">
+      {steps.map((s) => (
+        <div class="process-step">
+          <span class="num">{s.n}</span>
+          <h4>{s.t}</h4>
+          <p>{s.d}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
