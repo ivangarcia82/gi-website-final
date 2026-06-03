@@ -1,0 +1,23 @@
+/* ===== Motion primitives =====
+   NOTE: .reveal is intentionally NOT defined here. It already lives in
+   global.css and the Layout's IntersectionObserver adds the .in class.
+   This file adds only NEW primitives used by the redesign's motion islands. */
+
+/* Pin wrapper used by the services horizontal pan. */
+.pin-track { display: flex; will-change: transform; }
+
+/* Marquee base (GSAP drives x / xPercent). */
+.marquee { display: inline-flex; white-space: nowrap; will-change: transform; }
+
+/* Magnetic button wrapper — GSAP writes x/y (px). */
+.magnetic { display: inline-block; will-change: transform; }
+
+/* Single authoritative reduced-motion override for these primitives. */
+@media (prefers-reduced-motion: reduce) {
+  .pin-track,
+  .marquee,
+  .magnetic {
+    transform: none !important;
+    will-change: auto;
+  }
+}
