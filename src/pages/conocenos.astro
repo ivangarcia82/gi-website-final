@@ -79,9 +79,9 @@ const values = [
             </h2>
           </div>
         </div>
-        <div class="values-grid" data-values>
-          {values.map((v) => (
-            <div class="value value-mark-fix reveal">
+        <div class="values-grid reveal">
+          {values.map((v, i) => (
+            <div class="value value-mark-fix" style={`--i:${i}`}>
               <div class="mark">{v.n}</div>
               <div>
                 <h3 class="value-title">{v.t}</h3>
@@ -236,6 +236,26 @@ const values = [
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
   }
+  /* Single-driver staggered reveal: the global .reveal observer adds .in to the
+     grid; the cards then cascade purely via CSS transition-delay (no GSAP — this
+     avoids a competing-animator race on opacity/transform). */
+  @media (prefers-reduced-motion: no-preference) {
+    .values-grid .value {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .values-grid.in .value {
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.6s cubic-bezier(.2, .8, .2, 1),
+        transform 0.6s cubic-bezier(.2, .8, .2, 1);
+      transition-delay: calc(var(--i, 0) * 0.08s);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .values-grid .value { opacity: 1; transform: none; }
+  }
 
   /* ===== Dark closing CTA — magnetic button ===== */
   .about-cta-inner {
@@ -298,22 +318,9 @@ const values = [
   const reduce = prefersReducedMotion();
 
   if (!reduce) {
-    // Staggered reveal on the values grid (transform/opacity only). The global
-    // .reveal handles single blocks; here we batch the six cards so they cascade.
-    const cards = gsap.utils.toArray<HTMLElement>('[data-values] .value');
-    ScrollTrigger.batch(cards, {
-      start: 'top 88%',
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: 'power3.out',
-          stagger: 0.08,
-          overwrite: true,
-        }),
-    });
+    // The values cascade is CSS-driven (global .reveal on the grid + per-card
+    // --i transition-delay), so there is no GSAP batch here — only the magnetic
+    // CTA. One system owns opacity/transform on the cards.
 
     // Magnetic CTA — fine-pointer (mouse) devices only, motion allowed.
     const wrap = document.querySelector<HTMLElement>('[data-magnetic]');

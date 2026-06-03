@@ -21,14 +21,13 @@ const rest = BLOG_POSTS.slice(1);
 
     <section class="section blog-body">
       <div class="wrap">
-        <div class="cat-filter blog-filter" id="blog-filter" role="tablist" aria-label="Filtrar artículos por categoría">
+        <div class="cat-filter blog-filter" id="blog-filter" role="group" aria-label="Filtrar artículos por categoría">
           {BLOG_CATEGORIES.map((c, i) => (
             <button
               class:list={['chip', { active: i === 0 }]}
               data-cat={c}
               type="button"
-              role="tab"
-              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-pressed={i === 0 ? 'true' : 'false'}
             >{c}</button>
           ))}
         </div>
@@ -112,7 +111,7 @@ const rest = BLOG_POSTS.slice(1);
     .blog-card-meta {
       font-family: var(--font-mono);
       font-size: 12px;
-      color: var(--gray-500);
+      color: var(--gray-700);
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -148,7 +147,7 @@ const rest = BLOG_POSTS.slice(1);
 
     /* Empty state (used when a category has no posts after filtering). */
     .blog-empty {
-      color: var(--gray-500);
+      color: var(--gray-700);
       font-size: 16px;
       line-height: 1.5;
       padding: 40px 0;
@@ -238,7 +237,7 @@ const rest = BLOG_POSTS.slice(1);
         filter.querySelectorAll('.chip').forEach((c) => {
           const active = c === chip;
           c.classList.toggle('active', active);
-          c.setAttribute('aria-selected', active ? 'true' : 'false');
+          c.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
         render(chip.dataset.cat);
       });
