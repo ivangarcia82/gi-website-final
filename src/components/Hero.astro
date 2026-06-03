@@ -1,65 +1,215 @@
 ---
 import { IMAGES, ROUTES } from '../data/site.ts';
 ---
-<section class="hero">
-  <div class="hero-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">★ Your one-stop solution · 12+ años</span>
-      <h1>
-        Ideas que tu <em>marca</em> se lleva puesta.
-      </h1>
-      <p class="hero-sub">
-        Somos Generando Ideas: la agencia de artículos promocionales que convierte cada pluma,
-        taza, textil o gadget en un embajador de tu marca. Una sola ventanilla para todo lo que
-        necesitas.
-      </p>
-      <div class="hero-cta">
-        <a href={ROUTES.catalog} class="btn btn-primary btn-lg">
-          Ver catálogo
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </a>
-        <a href={ROUTES.contact} class="btn btn-ghost btn-lg">
-          Cotiza tu proyecto
-        </a>
+<section class="hero-cine">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <span class="eyebrow">Una sola ventanilla · 12+ años</span>
+        <h1>Ideas que tu <span class="text-grad-word">marca</span> se lleva puesta.</h1>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <strong>12+</strong>
-          <span>Años activos</span>
-        </div>
-        <div class="stat">
-          <strong>11</strong>
-          <span>Catálogos</span>
-        </div>
-        <div class="stat">
-          <strong>4</strong>
-          <span>Oficinas MX</span>
+      <div class="hero-aside">
+        <p class="hero-sub">
+          Convertimos cada pluma, taza, textil o gadget en un embajador de tu marca.
+          Todo lo que necesitas, en un solo lugar.
+        </p>
+        <div class="hero-cta">
+          <a href={ROUTES.catalog} class="btn btn-primary btn-lg">
+            Ver catálogo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href={ROUTES.contact} class="btn btn-ghost btn-lg">Cotiza tu proyecto</a>
         </div>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="h-card hc-1">
-        <img src={IMAGES.img22} alt="" loading="eager" />
-        <span class="tag">Drinkware</span>
-      </div>
-      <div class="h-card hc-2">
-        <img src={IMAGES.img23} alt="" loading="eager" />
-        <span class="tag">Textiles</span>
-      </div>
-      <div class="h-card hc-3">
-        <img src={IMAGES.img24} alt="" loading="eager" />
-        <span class="tag">Oficina</span>
-      </div>
-      <div class="h-card hc-4">
-        <span>Your<br />brand<br />here.</span>
-      </div>
+  </div>
+  <div class="hero-stage" data-hero-stage>
+    <img
+      src={IMAGES.img36}
+      alt="Productos promocionales personalizados de Generando Ideas"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      data-hero-img
+    />
+    <div class="hero-badge glass">
+      <div class="t">Edición 2026</div>
+      <div class="v">+5,000 productos personalizables</div>
+    </div>
+    <div class="hero-chips">
+      <div class="stat"><strong>11</strong><span>Catálogos</span></div>
+      <div class="stat"><strong>4</strong><span>Oficinas MX</span></div>
     </div>
   </div>
 </section>
+
+<style>
+  .hero-cine {
+    position: relative;
+    padding: clamp(64px, 9vh, 120px) 0 0;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-cine .wrap {
+    flex: 0 0 auto;
+  }
+  .hero-top {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: end;
+  }
+  .hero-top h1 {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6.5vw, 104px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    font-weight: 700;
+    margin: 14px 0 0;
+  }
+  .hero-aside {
+    padding-bottom: 8px;
+  }
+  .hero-aside .hero-sub {
+    font-size: 17px;
+    color: var(--gray-700);
+    max-width: 320px;
+    margin: 0 0 18px;
+    line-height: 1.5;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 46vh;
+    margin-top: clamp(28px, 5vh, 56px);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    overflow: hidden;
+  }
+  .hero-stage img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.04);
+    will-change: transform;
+  }
+  .hero-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(250, 250, 247, 0.12) 0%,
+      transparent 22%,
+      transparent 62%,
+      var(--paper) 100%
+    );
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    position: absolute;
+    left: clamp(16px, 4vw, 40px);
+    bottom: clamp(20px, 5vh, 44px);
+    z-index: 1;
+    border-radius: 16px;
+    padding: 14px 18px;
+    color: #fff;
+    background: rgba(16, 17, 20, 0.55);
+    backdrop-filter: saturate(150%) blur(12px);
+    -webkit-backdrop-filter: saturate(150%) blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+  .hero-badge .t {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-300);
+  }
+  .hero-badge .v {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin-top: 2px;
+  }
+
+  .hero-chips {
+    position: absolute;
+    right: clamp(16px, 4vw, 40px);
+    bottom: clamp(20px, 5vh, 44px);
+    z-index: 1;
+    display: flex;
+    gap: 24px;
+  }
+  .hero-chips .stat strong {
+    color: #fff;
+  }
+  .hero-chips .stat span {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  @media (max-width: 860px) {
+    .hero-top {
+      grid-template-columns: 1fr;
+    }
+    .hero-aside .hero-sub {
+      max-width: none;
+    }
+    .hero-chips {
+      display: none;
+    }
+    .hero-stage {
+      min-height: 320px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-stage img {
+      transform: scale(1.04);
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+  initMotion();
+
+  if (!prefersReducedMotion()) {
+    const img = document.querySelector('[data-hero-img]') as HTMLElement | null;
+    const stage = document.querySelector('[data-hero-stage]') as HTMLElement | null;
+    if (img && stage) {
+      gsap.fromTo(
+        img,
+        { scale: 1.04 },
+        {
+          scale: 1.16,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: stage,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        },
+      );
+    }
+  }
+
+  document.addEventListener(
+    'astro:before-swap',
+    () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+    { once: true },
+  );
+</script>

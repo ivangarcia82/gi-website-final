@@ -1,15 +1,97 @@
 ---
 import { TICKER_WORDS } from '../data/site.ts';
-// Triple the words so the -50% scroll loop is seamless.
-const loop = [...TICKER_WORDS, ...TICKER_WORDS, ...TICKER_WORDS];
+// Duplicate the list once so a -50% transform lands exactly on the start of the
+// second copy, producing a seamless, jump-free loop.
+const words = [...TICKER_WORDS, ...TICKER_WORDS];
 ---
-<div class="ticker">
-  <div class="ticker-track">
-    {loop.map((w) => (
-      <>
-        <span>{w}</span>
-        <span class="dot">●</span>
-      </>
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-marquee" data-marquee>
+    {words.map((w) => (
+      <span class="ticker-item">
+        {w}<b class="ticker-dot"> · </b>
+      </span>
     ))}
   </div>
 </div>
+
+<style>
+  .ticker {
+    position: relative;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 20px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Inline-flex keeps the two copies on a single unbroken line so xPercent: -50
+     wraps seamlessly. */
+  .ticker-marquee {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    will-change: transform;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 8px;
+    line-height: 1;
+  }
+
+  .ticker-dot {
+    color: var(--orange-500);
+    font-weight: 700;
+    margin: 0 8px;
+  }
+
+  @media (max-width: 860px) {
+    .ticker { padding: 16px 0; }
+    .ticker-item { font-size: 22px; }
+  }
+
+  /* Reduced motion: no transform, fully visible static row. */
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-marquee { will-change: auto; }
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+  const track = document.querySelector<HTMLElement>('[data-marquee]');
+
+  if (track && !prefersReducedMotion()) {
+    // Base perpetual loop: shift one full copy of the list to the left.
+    const base = gsap.to(track, {
+      xPercent: -50,
+      repeat: -1,
+      duration: 24,
+      ease: 'none',
+    });
+
+    // Speed reacts to scroll velocity, then eases back to its normal pace.
+    const st = ScrollTrigger.create({
+      onUpdate: (self) => {
+        const v = 1 + Math.min(Math.abs(self.getVelocity() / 300), 6);
+        gsap.to(base, { timeScale: v, overwrite: true, duration: 0.2 });
+        gsap.to(base, { timeScale: 1, duration: 1, delay: 0.2, overwrite: false });
+      },
+    });
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        base.kill();
+        st.kill();
+      },
+      { once: true }
+    );
+  }
+</script>
