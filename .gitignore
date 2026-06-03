@@ -16,3 +16,6 @@ pnpm-debug.log*
 .DS_Store
 # design handoff bundle (reference only, not part of the site)
 .design-extract/
+
+# Brainstorming visual companion
+.superpowers/
