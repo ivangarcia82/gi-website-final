@@ -2,66 +2,365 @@
 import Layout from '../../layouts/Layout.astro';
 import { JOBS } from '../../data/site.ts';
 
-const stats = [
-  { n: '6', t: 'Vacantes abiertas' },
-  { n: '140+', t: 'Colaboradores actuales' },
-  { n: '4.7/5', t: 'Rating en Glassdoor' },
+// Hairline stat band (no card boxes) — modeled on ImpactBand. Only the clean
+// integer (6) counts up; non-integers (140+, 4.7/5) render statically.
+const STATS = [
+  { value: 6, suffix: '', display: '6', count: true, label: 'Vacantes abiertas' },
+  { value: 140, suffix: '+', display: '140+', count: false, label: 'Colaboradores actuales' },
+  { value: 4.7, suffix: '/5', display: '4.7/5', count: false, label: 'Rating en Glassdoor' },
 ];
 ---
 <Layout title="Bolsa de trabajo — Generando Ideas" description="Gente que genera ideas. Buscamos personas curiosas, detallistas y apasionadas por hacer que las marcas sean memorables.">
   <div class="page">
-    <section class="section" style="padding-bottom: 40px;">
+    <section class="section careers-hero">
       <div class="wrap">
         <span class="eyebrow">Bolsa de trabajo · Únete</span>
-        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 24px; letter-spacing: -0.035em; max-width: 1100px;">
-          Gente que <em style="font-style: italic; color: var(--orange-500);">genera ideas.</em>
+        <h1 class="display careers-h1">
+          Gente que <span class="text-grad-word">genera ideas.</span>
         </h1>
-        <p style="font-size: 20px; color: var(--gray-700); line-height: 1.5; max-width: 720px;">
+        <p class="careers-lede">
           Buscamos personas curiosas, detallistas y apasionadas por hacer que las marcas sean memorables.
           Si te entusiasma lo que hacemos, probablemente haya un lugar para ti.
         </p>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
+    <section class="section careers-stats-sec" aria-label="Generando Ideas en números">
       <div class="wrap reveal">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 60px;">
-          {stats.map((s) => (
-            <div style="padding: 32px; background: var(--paper-2); border-radius: var(--radius-lg);">
-              <div style="font-family: var(--font-display); font-size: 56px; font-weight: 700; color: var(--blue-700); letter-spacing: -0.03em; line-height: 0.9;">{s.n}</div>
-              <div style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-500); margin-top: 12px;">{s.t}</div>
+        <div class="stat-band">
+          {STATS.map((s) => (
+            <div class="stat-cell">
+              {s.count ? (
+                <strong
+                  class="stat-n"
+                  data-count
+                  data-value={s.value}
+                  data-suffix={s.suffix}
+                >0{s.suffix}</strong>
+              ) : (
+                <strong class="stat-n">{s.display}</strong>
+              )}
+              <span class="stat-label">{s.label}</span>
             </div>
           ))}
         </div>
+      </div>
+    </section>
 
-        <h2 class="display" style="font-size: 40px; margin: 0 0 24px; letter-spacing: -0.02em;">Vacantes disponibles</h2>
-        <div class="jobs-list">
+    <section class="section careers-jobs-sec">
+      <div class="wrap">
+        <h2 class="display careers-h2 reveal">Vacantes disponibles</h2>
+        <div class="jobs-list reveal">
           {JOBS.map((j) => (
-            <a class="job-row" href={`/bolsa-de-trabajo/${j.id}`}>
-              <div>
-                <h4 style="font-family: var(--font-display); font-size: 26px; margin: 0 0 6px; letter-spacing: -0.02em;">{j.title}</h4>
-                <span style="font-size: 14px; color: var(--gray-500);">{j.dept} · {j.location}</span>
+            <a class="job-row careers-job" href={`/bolsa-de-trabajo/${j.id}`}>
+              <div class="job-main">
+                <h3 class="job-title">{j.title}</h3>
+                <span class="job-meta">{j.dept} · {j.location}</span>
               </div>
-              <div style="display: flex; align-items: center; gap: 16px;">
-                <span style="padding: 6px 12px; background: var(--blue-100); color: var(--blue-700); border-radius: 999px; font-size: 12px; font-family: var(--font-mono); font-weight: 500;">
-                  {j.type}
+              <div class="job-tail">
+                <span class="job-type">{j.type}</span>
+                <span class="job-arrow" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
                 </span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
               </div>
             </a>
           ))}
         </div>
+      </div>
+    </section>
 
-        <div style="margin-top: 60px; padding: 48px; background: var(--ink); color: white; border-radius: var(--radius-lg); text-align: center;">
-          <h3 class="display" style="font-size: 36px; margin: 0 0 12px; letter-spacing: -0.02em;">¿No encuentras tu rol ideal?</h3>
-          <p style="color: var(--gray-300); margin: 0 0 24px; font-size: 16px;">
+    <section class="section careers-cta-sec">
+      <div class="wrap reveal">
+        <div class="open-cv section-dark">
+          <h2 class="display open-cv-h">¿No encuentras tu rol ideal?</h2>
+          <p class="open-cv-p">
             Envíanos tu CV de cualquier forma. Estamos creciendo y abrimos nuevas posiciones cada mes.
           </p>
-          <button class="btn btn-accent btn-lg">Enviar CV abierto</button>
+          <span class="magnetic" data-magnetic>
+            <a class="btn btn-accent btn-lg open-cv-btn" href="/contacto">
+              Enviar CV abierto
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </a>
+          </span>
         </div>
       </div>
     </section>
   </div>
 </Layout>
+
+<style>
+  /* ===== Hero ===== */
+  .careers-hero {
+    padding-bottom: 40px;
+  }
+  .careers-h1 {
+    font-size: clamp(52px, 8vw, 120px);
+    margin: 20px 0 24px;
+    letter-spacing: -0.035em;
+    line-height: 0.94;
+    max-width: 1100px;
+    text-wrap: balance;
+  }
+  .careers-lede {
+    font-size: clamp(17px, 2.2vw, 20px);
+    color: var(--gray-700);
+    line-height: 1.55;
+    max-width: 720px;
+  }
+
+  /* ===== Hairline stat band (no boxes) — Impact-style ===== */
+  .careers-stats-sec {
+    padding-top: 0;
+    padding-bottom: clamp(56px, 8vw, 88px);
+  }
+  .stat-band {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--gray-200);
+  }
+  .stat-cell {
+    padding: 36px 28px 4px;
+    border-left: 1px solid var(--gray-200);
+    min-width: 0;
+  }
+  .stat-cell:first-child {
+    border-left: none;
+  }
+  .stat-n {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 5vw, 68px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--blue-700);
+    display: block;
+    line-height: 0.95;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-500);
+    display: block;
+    margin-top: 14px;
+  }
+
+  /* ===== Vacantes ===== */
+  .careers-jobs-sec {
+    padding-top: 0;
+  }
+  .careers-h2 {
+    font-size: clamp(30px, 4.5vw, 40px);
+    margin: 0 0 24px;
+    letter-spacing: -0.02em;
+  }
+
+  /* Refined job rows. The global .job-row supplies layout + the slide-right
+     hover; these scoped rules tune the inner type, the pill, and an arrow that
+     eases forward on hover/focus (transform only). */
+  .careers-job {
+    text-decoration: none;
+    color: inherit;
+  }
+  .job-main {
+    min-width: 0;
+  }
+  .job-title {
+    font-family: var(--font-display);
+    font-size: clamp(21px, 3vw, 26px);
+    font-weight: 600;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    transition: color 0.2s ease;
+  }
+  .job-meta {
+    font-size: 14px;
+    color: var(--gray-500);
+  }
+  .job-tail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .job-type {
+    padding: 7px 13px;
+    background: var(--blue-100);
+    color: var(--blue-700);
+    border-radius: 999px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .job-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    color: var(--blue-700);
+    flex-shrink: 0;
+  }
+  .careers-job:hover .job-title,
+  .careers-job:focus-visible .job-title {
+    color: var(--blue-700);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .job-arrow {
+      transition: transform 0.25s cubic-bezier(.2,.8,.2,1);
+    }
+    .careers-job:hover .job-arrow,
+    .careers-job:focus-visible .job-arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  /* ===== Open-CV CTA (dark, kept) ===== */
+  .careers-cta-sec {
+    padding-top: clamp(40px, 6vw, 60px);
+  }
+  .open-cv {
+    padding: clamp(40px, 6vw, 56px);
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .open-cv-h {
+    font-size: clamp(28px, 4vw, 36px);
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .open-cv-p {
+    color: var(--gray-300);
+    margin: 0 auto 24px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 52ch;
+  }
+  /* Magnetic wrapper: inline-block so its transform doesn't disturb the centered
+     layout (mirrors ClosingCTA). */
+  .magnetic {
+    display: inline-block;
+  }
+  .open-cv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .magnetic {
+      will-change: transform;
+    }
+  }
+
+  /* ===== Mobile (< 861px): collapse the inline stat grid; no overflow ===== */
+  @media (max-width: 860px) {
+    .stat-band {
+      grid-template-columns: 1fr;
+    }
+    .stat-cell {
+      border-left: none;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 28px 0 24px;
+    }
+    .stat-cell:last-child {
+      border-bottom: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .open-cv-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .magnetic {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/motion';
+  import { formatCount } from '../../lib/format';
+
+  initMotion();
+
+  const cells = document.querySelectorAll<HTMLElement>('[data-count]');
+
+  const set = (el: HTMLElement, v: number) => {
+    el.textContent = formatCount({
+      value: v,
+      suffix: el.dataset.suffix || '',
+    });
+  };
+
+  if (prefersReducedMotion()) {
+    // Reduced motion: final value immediately, fully visible.
+    cells.forEach((el) => set(el, Number(el.dataset.value)));
+  } else {
+    cells.forEach((el) => {
+      const target = Number(el.dataset.value);
+      const obj = { v: 0 };
+      gsap.to(obj, {
+        v: target,
+        duration: 1.4,
+        ease: 'power2.out',
+        onUpdate: () => set(el, obj.v),
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      });
+    });
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true },
+    );
+  }
+
+  // Magnetic open-CV button — mouse + motion only (mirrors ClosingCTA). Touch
+  // and reduced-motion users get a plain, static button.
+  const mag = document.querySelector<HTMLElement>('[data-magnetic]');
+  if (
+    mag &&
+    !prefersReducedMotion() &&
+    window.matchMedia('(pointer: fine)').matches
+  ) {
+    const xTo = gsap.quickTo(mag, 'x', { duration: 0.4, ease: 'power3' });
+    const yTo = gsap.quickTo(mag, 'y', { duration: 0.4, ease: 'power3' });
+
+    const onMove = (e: PointerEvent) => {
+      const r = mag.getBoundingClientRect();
+      xTo((e.clientX - (r.left + r.width / 2)) * 0.3);
+      yTo((e.clientY - (r.top + r.height / 2)) * 0.3);
+    };
+    const onLeave = () => {
+      xTo(0);
+      yTo(0);
+    };
+
+    mag.addEventListener('pointermove', onMove);
+    mag.addEventListener('pointerleave', onLeave);
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        mag.removeEventListener('pointermove', onMove);
+        mag.removeEventListener('pointerleave', onLeave);
+        gsap.killTweensOf(mag);
+      },
+      { once: true },
+    );
+  }
+</script>

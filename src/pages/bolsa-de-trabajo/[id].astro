@@ -9,63 +9,443 @@ export function getStaticPaths() {
 const { id } = Astro.params;
 const job = JOBS.find((j) => String(j.id) === id);
 if (!job) return Astro.redirect('/bolsa-de-trabajo');
+
+// Section content preserved verbatim from the shipped page (real copy/data).
+const RESPONSIBILITIES = [
+  'Colaborar con clientes desde el brief inicial hasta la entrega final.',
+  'Desarrollar propuestas creativas y comerciales dentro del presupuesto y tiempos.',
+  'Coordinar con producción interna y proveedores aliados.',
+  'Medir el desempeño de cada campaña y proponer mejoras.',
+];
+
+const REQUIREMENTS = [
+  '3+ años de experiencia en roles similares (industria promocional, publicidad o marketing).',
+  'Excelente comunicación escrita y verbal.',
+  'Organización, atención al detalle y capacidad para gestionar múltiples proyectos.',
+  'Pasión por las ideas creativas y la ejecución impecable.',
+];
+
+const BENEFITS = [
+  'Sueldo competitivo + esquema de comisiones / bonos.',
+  'Prestaciones superiores a la ley.',
+  'Seguro de gastos médicos menores.',
+  'Capacitación continua y plan de carrera.',
+  'Ambiente creativo, colaborativo y sin formalismos.',
+];
 ---
 <Layout title={`${job.title} — Bolsa de trabajo · Generando Ideas`} description={`Vacante: ${job.title} · ${job.dept} · ${job.location}`}>
-  <div class="page">
-    <section class="section" style="padding-bottom: 40px;">
+  <div class="page job-detail">
+    <section class="section job-hero">
       <div class="wrap">
-        <a class="btn btn-ghost" href={ROUTES.careers} style="margin-bottom: 24px;">
-          ← Todas las vacantes
+        <a class="btn btn-ghost back-link" href={ROUTES.careers}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 18l-6-6 6-6" />
+          </svg>
+          Todas las vacantes
         </a>
         <span class="eyebrow">{job.dept} · {job.location}</span>
-        <h1 class="display" style="font-size: clamp(48px, 7vw, 96px); margin: 20px 0 24px; letter-spacing: -0.03em; max-width: 1100px;">
-          {job.title}
-        </h1>
-        <div style="display: flex; gap: 8px; margin-bottom: 32px;">
+        <h1 class="display job-h1">{job.title}</h1>
+        <div class="job-chips">
           <span class="chip active">{job.type}</span>
           <span class="chip">{job.location}</span>
         </div>
       </div>
     </section>
-    <section class="section" style="padding-top: 0;">
-      <div class="wrap" style="max-width: 760px;">
-        <h3 class="display" style="font-size: 28px; margin: 0 0 16px; letter-spacing: -0.02em;">Sobre el rol</h3>
-        <p style="font-size: 17px; line-height: 1.7; color: var(--gray-700);">
-          Buscamos una persona que quiera unirse al equipo que está redefiniendo la industria
-          promocional en México. Trabajarás cerca de marcas que retan el status quo y con un
-          equipo que celebra las buenas ideas.
-        </p>
-        <h3 class="display" style="font-size: 28px; margin: 40px 0 16px; letter-spacing: -0.02em;">Lo que harás</h3>
-        <ul style="font-size: 16px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
-          <li>Colaborar con clientes desde el brief inicial hasta la entrega final.</li>
-          <li>Desarrollar propuestas creativas y comerciales dentro del presupuesto y tiempos.</li>
-          <li>Coordinar con producción interna y proveedores aliados.</li>
-          <li>Medir el desempeño de cada campaña y proponer mejoras.</li>
-        </ul>
-        <h3 class="display" style="font-size: 28px; margin: 40px 0 16px; letter-spacing: -0.02em;">Lo que buscamos</h3>
-        <ul style="font-size: 16px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
-          <li>3+ años de experiencia en roles similares (industria promocional, publicidad o marketing).</li>
-          <li>Excelente comunicación escrita y verbal.</li>
-          <li>Organización, atención al detalle y capacidad para gestionar múltiples proyectos.</li>
-          <li>Pasión por las ideas creativas y la ejecución impecable.</li>
-        </ul>
-        <h3 class="display" style="font-size: 28px; margin: 40px 0 16px; letter-spacing: -0.02em;">Lo que ofrecemos</h3>
-        <ul style="font-size: 16px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
-          <li>Sueldo competitivo + esquema de comisiones / bonos.</li>
-          <li>Prestaciones superiores a la ley.</li>
-          <li>Seguro de gastos médicos menores.</li>
-          <li>Capacitación continua y plan de carrera.</li>
-          <li>Ambiente creativo, colaborativo y sin formalismos.</li>
-        </ul>
-        <div style="margin-top: 40px; padding: 32px; background: var(--paper-2); border-radius: var(--radius-lg);">
-          <h4 class="display" style="font-size: 24px; margin: 0 0 12px; letter-spacing: -0.02em;">¿Listo para postularte?</h4>
-          <p style="color: var(--gray-700); margin: 0 0 20px;">
-            Envía tu CV y un mensaje contándonos por qué te interesa este rol a{' '}
-            <strong>talento@generandoideas.com</strong>
-          </p>
-          <button class="btn btn-primary btn-lg">Enviar aplicación</button>
-        </div>
+
+    <section class="section job-body-sec">
+      <div class="wrap job-layout">
+        <article class="job-prose">
+          <div class="prose-block reveal">
+            <h2 class="prose-h">Sobre el rol</h2>
+            <p class="prose-lede">
+              Buscamos una persona que quiera unirse al equipo que está redefiniendo la industria
+              promocional en México. Trabajarás cerca de marcas que retan el status quo y con un
+              equipo que celebra las <span class="text-accent">buenas ideas</span>.
+            </p>
+          </div>
+
+          <div class="prose-block reveal">
+            <h2 class="prose-h">Lo que harás</h2>
+            <ul class="prose-list">
+              {RESPONSIBILITIES.map((item) => (
+                <li>
+                  <span class="li-mark" aria-hidden="true">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="prose-block reveal">
+            <h2 class="prose-h">Lo que buscamos</h2>
+            <ul class="prose-list">
+              {REQUIREMENTS.map((item) => (
+                <li>
+                  <span class="li-mark" aria-hidden="true">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="prose-block reveal">
+            <h2 class="prose-h">Lo que ofrecemos</h2>
+            <ul class="prose-list prose-list-check">
+              {BENEFITS.map((item) => (
+                <li>
+                  <span class="li-mark li-mark-good" aria-hidden="true">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+
+        <aside class="job-aside">
+          <div class="apply-box reveal">
+            <h2 class="apply-h">¿Listo para postularte?</h2>
+            <p class="apply-p">
+              Envía tu CV y un mensaje contándonos por qué te interesa este rol a
+              <a class="apply-mail" href={`mailto:talento@generandoideas.com?subject=${encodeURIComponent('Postulación: ' + job.title)}`}>talento@generandoideas.com</a>
+            </p>
+            <span class="magnetic" data-magnetic>
+              <a class="btn btn-primary btn-lg apply-btn" href={`mailto:talento@generandoideas.com?subject=${encodeURIComponent('Postulación: ' + job.title)}`}>
+                Enviar aplicación
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            </span>
+            <dl class="apply-meta">
+              <div>
+                <dt>Área</dt>
+                <dd>{job.dept}</dd>
+              </div>
+              <div>
+                <dt>Ubicación</dt>
+                <dd>{job.location}</dd>
+              </div>
+              <div>
+                <dt>Modalidad</dt>
+                <dd>{job.type}</dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
       </div>
     </section>
   </div>
 </Layout>
+
+<style>
+  /* ===== Hero ===== */
+  .job-hero {
+    padding-bottom: clamp(32px, 5vw, 48px);
+  }
+  .back-link {
+    margin-bottom: clamp(20px, 3vw, 28px);
+    min-height: 44px;
+  }
+  /* The back arrow eases left on hover/focus (transform only). */
+  .back-link svg {
+    flex-shrink: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .back-link svg {
+      transition: transform 0.25s cubic-bezier(.2, .8, .2, 1);
+    }
+    .back-link:hover svg,
+    .back-link:focus-visible svg {
+      transform: translateX(-3px);
+    }
+  }
+  .job-h1 {
+    /* Plain H1 (no gradient word) per the playbook. */
+    font-size: clamp(40px, 6.5vw, 88px);
+    margin: clamp(16px, 2.4vw, 22px) 0 clamp(20px, 3vw, 28px);
+    letter-spacing: -0.03em;
+    line-height: 0.96;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .job-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  /* chips inherit .chip from global; keep them comfortably tappable */
+  .job-chips .chip {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* ===== Body layout: prose + sticky apply aside ===== */
+  .job-body-sec {
+    padding-top: 0;
+  }
+  .job-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+
+  /* ===== Prose ===== */
+  .job-prose {
+    min-width: 0;
+    max-width: 68ch;
+  }
+  .prose-block + .prose-block {
+    margin-top: clamp(36px, 5vw, 52px);
+  }
+  .prose-h {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.2vw, 30px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 18px;
+    color: var(--ink);
+    position: relative;
+    padding-left: 22px;
+  }
+  /* A short brand-blue tick before each section title — quiet rhythm marker. */
+  .prose-h::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.12em;
+    bottom: 0.12em;
+    width: 4px;
+    border-radius: 999px;
+    background: var(--blue-700);
+  }
+  .prose-lede {
+    font-size: clamp(17px, 2vw, 19px);
+    line-height: 1.7;
+    color: var(--gray-700);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .prose-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 62ch;
+  }
+  .prose-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: clamp(15.5px, 1.8vw, 17px);
+    line-height: 1.65;
+    color: var(--gray-700);
+  }
+  .li-mark {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    margin-top: 0.18em;
+    background: var(--blue-100);
+    color: var(--blue-700);
+  }
+  .li-mark-good {
+    background: var(--orange-100);
+    color: var(--orange-700);
+  }
+
+  /* ===== Apply box (kept) ===== */
+  .job-aside {
+    position: relative;
+  }
+  .apply-box {
+    padding: clamp(28px, 3.5vw, 36px);
+    background: var(--paper-2);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 28px 60px -34px rgba(6, 46, 95, 0.22);
+  }
+  @media (min-width: 861px) {
+    .apply-box {
+      position: sticky;
+      top: 100px;
+    }
+  }
+  .apply-h {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.6vw, 26px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .apply-p {
+    color: var(--gray-700);
+    margin: 0 0 22px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .apply-mail {
+    color: var(--blue-700);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .apply-mail:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  /* Magnetic wrapper: inline-block so its transform doesn't disturb the layout
+     (mirrors ClosingCTA / the careers index CTA). */
+  .magnetic {
+    display: inline-block;
+    width: 100%;
+  }
+  .apply-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+  }
+  .apply-btn svg {
+    flex-shrink: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .magnetic {
+      will-change: transform;
+    }
+    .apply-btn svg {
+      transition: transform 0.25s cubic-bezier(.2, .8, .2, 1);
+    }
+    .apply-btn:hover svg,
+    .apply-btn:focus-visible svg {
+      transform: translateX(3px);
+    }
+  }
+
+  .apply-meta {
+    margin: 26px 0 0;
+    padding-top: 22px;
+    border-top: 1px solid var(--gray-300);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .apply-meta div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .apply-meta dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-500);
+  }
+  .apply-meta dd {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: right;
+  }
+
+  /* ===== Mobile (< 861px): collapse to one column, no overflow ===== */
+  @media (max-width: 860px) {
+    .job-layout {
+      grid-template-columns: 1fr;
+      gap: clamp(36px, 8vw, 48px);
+    }
+    .apply-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/motion';
+
+  initMotion();
+
+  // Staggered reveal of prose blocks + the apply box (transform/opacity only).
+  if (!prefersReducedMotion()) {
+    const blocks = document.querySelectorAll<HTMLElement>('.job-detail .reveal');
+    blocks.forEach((el, i) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        once: true,
+        onEnter: () => {
+          gsap.to(el, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            delay: Math.min(i, 4) * 0.06,
+            ease: 'power2.out',
+          });
+        },
+      });
+    });
+
+    // Magnetic apply button — mouse + motion only (mirrors ClosingCTA). Touch
+    // and reduced-motion users get a plain, static button.
+    const mag = document.querySelector<HTMLElement>('[data-magnetic]');
+    if (mag && window.matchMedia('(pointer: fine)').matches) {
+      const xTo = gsap.quickTo(mag, 'x', { duration: 0.4, ease: 'power3' });
+      const yTo = gsap.quickTo(mag, 'y', { duration: 0.4, ease: 'power3' });
+
+      const onMove = (e: PointerEvent) => {
+        const r = mag.getBoundingClientRect();
+        xTo((e.clientX - (r.left + r.width / 2)) * 0.22);
+        yTo((e.clientY - (r.top + r.height / 2)) * 0.22);
+      };
+      const onLeave = () => {
+        xTo(0);
+        yTo(0);
+      };
+
+      mag.addEventListener('pointermove', onMove);
+      mag.addEventListener('pointerleave', onLeave);
+
+      document.addEventListener(
+        'astro:before-swap',
+        () => {
+          mag.removeEventListener('pointermove', onMove);
+          mag.removeEventListener('pointerleave', onLeave);
+          gsap.killTweensOf(mag);
+        },
+        { once: true },
+      );
+    }
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true },
+    );
+  }
+</script>

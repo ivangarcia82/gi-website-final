@@ -7,19 +7,26 @@ const counts: Record<string, number> = Object.fromEntries(
 );
 ---
 <Layout title="Catálogo — Generando Ideas" description="11 catálogos, miles de ideas. Explora nuestras líneas de productos promocionales y filtra por categoría.">
-  <div class="page">
-    <section class="section" style="padding-bottom: 40px;">
+  <div class="page catalogo">
+    <section class="section cat-hero">
       <div class="wrap">
-        <span class="eyebrow">Catálogos 2026</span>
-        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 32px; max-width: 1100px;">
-          11 catálogos, miles de <em style="font-style: italic; color: var(--blue-700);">ideas.</em>
+        <span class="eyebrow reveal">Catálogos 2026</span>
+        <h1 class="display cat-h1 reveal">
+          11 catálogos, miles de <span class="text-grad-word">ideas.</span>
         </h1>
+        <p class="cat-lead reveal">
+          Cada línea es un punto de partida. Personalizamos con el método que tu marca
+          necesita y producimos en México, desde 50 piezas.
+        </p>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
+    <section class="section cat-carousel-sec">
       <div class="wrap reveal">
-        <h3 class="display" style="font-size: 32px; margin: 0 0 24px;">Explora nuestros catálogos</h3>
+        <div class="cat-sec-head">
+          <h2 class="display cat-sec-title">Explora nuestros catálogos</h2>
+          <span class="cat-sec-hint">Arrastra para explorar</span>
+        </div>
         <div data-carousel data-scroll="320">
           <div class="carousel">
             <div class="carousel-track" data-carousel-track>
@@ -31,11 +38,10 @@ const counts: Record<string, number> = Object.fromEntries(
                   data-name={c.name}
                   data-img={c.img}
                   data-cat="Catálogo"
-                  style="text-align: left;"
                 >
-                  <div class="cat-card-img"><img src={c.img} alt={c.name} loading="lazy" /></div>
+                  <div class="cat-card-img"><img src={c.img} alt={`Portada del catálogo ${c.name}`} loading="lazy" /></div>
                   <div class="cat-card-body">
-                    <h4>{c.name}</h4>
+                    <h3>{c.name}</h3>
                     <span>{c.tag}</span>
                   </div>
                 </button>
@@ -44,31 +50,31 @@ const counts: Record<string, number> = Object.fromEntries(
           </div>
           <div class="carousel-nav">
             <button class="carousel-btn" data-carousel-prev aria-label="Anterior">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
             </button>
             <button class="carousel-btn" data-carousel-next aria-label="Siguiente">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </button>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt">
+    <section class="section section-alt cat-products-sec">
       <div class="wrap reveal">
-        <div class="section-head" style="margin-bottom: 32px;">
+        <div class="section-head cat-products-head">
           <div>
             <span class="eyebrow">Productos destacados</span>
-            <h2 class="display" style="font-size: 56px; margin: 12px 0 0; letter-spacing: -0.03em;">
-              Filtra por <em style="font-style: italic; color: var(--orange-500);">categoría.</em>
+            <h2 class="display cat-products-title">
+              Filtra por <span class="text-accent">categoría.</span>
             </h2>
           </div>
         </div>
-        <div class="cat-filter">
+        <div class="cat-filter" role="group" aria-label="Filtrar productos por categoría">
           {PRODUCT_CATEGORIES.map((c, i) => (
-            <button class:list={['chip', { active: i === 0 }]} data-cat={c}>
+            <button class:list={['chip', { active: i === 0 }]} data-cat={c} aria-pressed={i === 0 ? 'true' : 'false'}>
               {c}
-              <span class="chip-count" style="opacity: 0.6; margin-left: 4px;" hidden={i !== 0}>{counts[c]}</span>
+              <span class="chip-count" hidden={i !== 0}>{counts[c]}</span>
             </button>
           ))}
         </div>
@@ -82,9 +88,9 @@ const counts: Record<string, number> = Object.fromEntries(
               data-name={p.name}
               data-img={p.img}
             >
-              <img src={p.img} alt={p.name} loading="lazy" />
+              <img src={p.img} alt={`Producto promocional ${p.name}`} loading="lazy" />
               <div class="product-meta">
-                <h5>{p.name}</h5>
+                <h3>{p.name}</h3>
                 <span>{p.cat}</span>
               </div>
             </button>
@@ -94,16 +100,20 @@ const counts: Record<string, number> = Object.fromEntries(
     </section>
 
     <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" style="display: none;">
-      <button class="lightbox-close" data-lightbox-close aria-label="Cerrar">×</button>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lb-title" hidden>
+      <button class="lightbox-close" data-lightbox-close aria-label="Cerrar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
       <div class="lightbox-inner">
         <div class="lightbox-img"><img id="lb-img" src="" alt="" /></div>
         <div class="lightbox-body">
           <span class="eyebrow" id="lb-eyebrow"></span>
-          <h3 class="display" id="lb-title" style="font-size: 40px; margin: 12px 0 16px; letter-spacing: -0.02em;"></h3>
-          <p id="lb-desc" style="color: var(--gray-700); line-height: 1.6; flex: 1;"></p>
-          <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button class="btn btn-primary">Solicitar cotización</button>
+          <h3 class="display lb-title" id="lb-title"></h3>
+          <p id="lb-desc" class="lb-desc"></p>
+          <div class="lb-actions">
+            <a class="btn btn-primary" href="/contacto">Solicitar cotización</a>
             <button class="btn btn-ghost" data-lightbox-close>Cerrar</button>
           </div>
         </div>
@@ -111,7 +121,177 @@ const counts: Record<string, number> = Object.fromEntries(
     </div>
   </div>
 
+  <style>
+    /* ===== Hero ===== */
+    .cat-hero {
+      padding-bottom: clamp(40px, 6vh, 56px);
+    }
+    .cat-h1 {
+      font-size: clamp(48px, 8vw, 116px);
+      line-height: 0.92;
+      letter-spacing: -0.035em;
+      margin: 18px 0 24px;
+      max-width: 16ch;
+    }
+    .cat-lead {
+      font-size: 18px;
+      color: var(--gray-700);
+      line-height: 1.55;
+      max-width: 52ch;
+      margin: 0;
+    }
+
+    /* ===== Carousel section ===== */
+    .cat-carousel-sec {
+      padding-top: 0;
+    }
+    .cat-sec-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 0 0 24px;
+    }
+    .cat-sec-title {
+      font-size: clamp(26px, 4vw, 36px);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .cat-sec-hint {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gray-500);
+      flex: 0 0 auto;
+    }
+
+    /* Pointer-drag affordance for the catalog strip (mirrors CatalogsCarousel).
+       Native touch swipe and the Layout-wired prev/next buttons keep working;
+       this only layers grab cues + drag-click suppression. */
+    [data-carousel-track] {
+      cursor: grab;
+    }
+    [data-carousel-track].is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+    [data-carousel-track].is-dragging .cat-card,
+    [data-carousel-track].is-dragging img {
+      pointer-events: none;
+    }
+    [data-carousel-track] img {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    /* ===== Products section ===== */
+    .cat-products-head {
+      margin-bottom: 28px;
+    }
+    .cat-products-title {
+      font-size: clamp(40px, 5.5vw, 56px);
+      letter-spacing: -0.03em;
+      margin: 12px 0 0;
+    }
+    .chip {
+      min-height: 44px;
+    }
+    .chip-count {
+      opacity: 0.6;
+      margin-left: 4px;
+    }
+    .product-meta h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* ===== Lightbox refinements (built on the global .lightbox base) ===== */
+    .lightbox[hidden] {
+      display: none;
+    }
+    .lb-title {
+      font-size: clamp(28px, 4vw, 40px);
+      margin: 12px 0 16px;
+      letter-spacing: -0.02em;
+    }
+    .lb-desc {
+      color: var(--gray-700);
+      line-height: 1.6;
+      flex: 1;
+      margin: 0;
+    }
+    .lb-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .lb-actions .btn {
+      min-height: 44px;
+    }
+    .lightbox-close {
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.2s;
+    }
+    .lightbox-close:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ===== Mobile: collapse + no overflow + tap targets ===== */
+    @media (max-width: 860px) {
+      .cat-sec-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .lightbox {
+        padding: 16px;
+        align-items: start;
+        padding-top: 64px;
+      }
+      .lightbox-inner {
+        grid-template-columns: 1fr;
+        max-height: calc(100dvh - 80px);
+        overflow-y: auto;
+      }
+      .lightbox-img {
+        aspect-ratio: 4/3;
+      }
+      .lightbox-body {
+        padding: 28px;
+      }
+    }
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Reveal stagger cadence (guarded by the global reduced-motion rule which
+       resets .reveal to visible + no transition). */
+    @media (prefers-reduced-motion: no-preference) {
+      .cat-h1 {
+        transition-delay: 0.06s;
+      }
+      .cat-lead {
+        transition-delay: 0.12s;
+      }
+    }
+  </style>
+
   <script>
+    import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+    initMotion();
+
     // ---- Category filter ----
     const chips = Array.from(document.querySelectorAll<HTMLElement>('.cat-filter .chip'));
     const products = Array.from(document.querySelectorAll<HTMLElement>('.product-grid .product'));
@@ -121,6 +301,7 @@ const counts: Record<string, number> = Object.fromEntries(
         chips.forEach((c) => {
           const isActive = c === chip;
           c.classList.toggle('active', isActive);
+          c.setAttribute('aria-pressed', isActive ? 'true' : 'false');
           const count = c.querySelector<HTMLElement>('.chip-count');
           if (count) count.hidden = !isActive;
         });
@@ -130,16 +311,109 @@ const counts: Record<string, number> = Object.fromEntries(
       });
     });
 
-    // ---- Lightbox ----
+    // ---- Catalog carousel: pointer drag + inertia (mirrors CatalogsCarousel) ----
+    const carRoot = document.querySelector('.cat-carousel-sec [data-carousel]') as HTMLElement | null;
+    const carTrack = carRoot?.querySelector('[data-carousel-track]') as HTMLElement | null;
+    let carDragged = false;
+
+    if (carRoot && carTrack) {
+      let down = false;
+      let startX = 0;
+      let startScroll = 0;
+      let lastX = 0;
+      let v = 0;
+      let raf = 0;
+
+      const glide = () => {
+        if (Math.abs(v) < 0.4) {
+          v = 0;
+          return;
+        }
+        carTrack.scrollLeft -= v;
+        v *= 0.95;
+        raf = requestAnimationFrame(glide);
+      };
+
+      const onMove = (x: number) => {
+        const dx = x - lastX;
+        v = dx;
+        lastX = x;
+        if (Math.abs(x - startX) > 4) carDragged = true;
+        carTrack.scrollLeft = startScroll - (x - startX);
+      };
+
+      carTrack.addEventListener('pointerdown', (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+        down = true;
+        carDragged = false;
+        startX = lastX = e.clientX;
+        startScroll = carTrack.scrollLeft;
+        v = 0;
+        cancelAnimationFrame(raf);
+        carTrack.setPointerCapture(e.pointerId);
+        carTrack.classList.add('is-dragging');
+      });
+
+      carTrack.addEventListener('pointermove', (e) => {
+        if (down) onMove(e.clientX);
+      });
+
+      const release = (e: PointerEvent) => {
+        if (!down) return;
+        down = false;
+        carTrack.classList.remove('is-dragging');
+        if (carTrack.hasPointerCapture?.(e.pointerId)) carTrack.releasePointerCapture(e.pointerId);
+        raf = requestAnimationFrame(glide);
+      };
+
+      carTrack.addEventListener('pointerup', release);
+      carTrack.addEventListener('pointercancel', release);
+
+      // Suppress the click that opens the lightbox if the pointerup ended a real
+      // drag (capture phase so it runs before the card's own click handler).
+      carTrack.addEventListener(
+        'click',
+        (e) => {
+          if (carDragged) {
+            e.preventDefault();
+            e.stopPropagation();
+            carDragged = false;
+          }
+        },
+        true,
+      );
+
+      carTrack.addEventListener('dragstart', (e) => e.preventDefault());
+
+      document.addEventListener(
+        'astro:before-swap',
+        () => cancelAnimationFrame(raf),
+        { once: true },
+      );
+    }
+
+    // ---- Lightbox (accessible dialog: focus trap, aria, Esc/scrim/X, restore) ----
     const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+    const lbInner = lightbox?.querySelector<HTMLElement>('.lightbox-inner') ?? null;
     const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
     const lbEyebrow = document.getElementById('lb-eyebrow');
     const lbTitle = document.getElementById('lb-title');
     const lbDesc = document.getElementById('lb-desc');
+    let lastFocus: HTMLElement | null = null;
+
+    function focusableNodes(): HTMLElement[] {
+      if (!lightbox) return [];
+      return Array.from(
+        lightbox.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+    }
 
     function openLightbox(el: HTMLElement) {
       if (!lightbox || !lbImg) return;
       const { type, name = '', img = '', cat = '' } = el.dataset;
+      lastFocus = el;
       lbImg.src = img;
       lbImg.alt = name;
       if (lbEyebrow) lbEyebrow.textContent = type === 'cat' ? 'Catálogo' : cat;
@@ -150,27 +424,67 @@ const counts: Record<string, number> = Object.fromEntries(
             ? `Descubre más de 200 productos en nuestra línea ${name}. Cada pieza personalizable con el método que tu marca necesita: impresión digital, serigrafía, bordado, sublimación, grabado láser y más.`
             : `${name} personalizable con tu marca. Disponible en múltiples colores y acabados. Pedidos desde 50 piezas con producción en México.`;
       }
-      lightbox.style.display = 'grid';
+      lightbox.hidden = false;
       document.body.style.overflow = 'hidden';
+      (lightbox.querySelector('.lightbox-close') as HTMLElement | null)?.focus();
     }
 
     function closeLightbox() {
-      if (!lightbox) return;
-      lightbox.style.display = 'none';
+      if (!lightbox || lightbox.hidden) return;
+      lightbox.hidden = true;
       document.body.style.overflow = '';
+      lastFocus?.focus();
+    }
+
+    function trapFocus(e: KeyboardEvent) {
+      const nodes = focusableNodes();
+      if (nodes.length === 0) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey) {
+        if (active === first || !lightbox?.contains(active)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (active === last || !lightbox?.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     }
 
     document.querySelectorAll<HTMLElement>('[data-lightbox-trigger]').forEach((el) => {
-      el.addEventListener('click', () => openLightbox(el));
+      el.addEventListener('click', () => {
+        if (carDragged) return; // ignore the click that ended a drag
+        openLightbox(el);
+      });
     });
-    document.querySelectorAll<HTMLElement>('[data-lightbox-close]').forEach((el) => {
+    lightbox?.querySelectorAll('[data-lightbox-close]').forEach((el) => {
       el.addEventListener('click', closeLightbox);
     });
+    // Scrim click (outside the panel) closes.
     lightbox?.addEventListener('click', (e) => {
-      if (!(e.target as HTMLElement).closest('.lightbox-inner')) closeLightbox();
+      if (!lbInner?.contains(e.target as Node)) closeLightbox();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
+      if (lightbox?.hidden) return;
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'Tab') {
+        trapFocus(e);
+      }
     });
+
+    // Reveal/scroll teardown + body-scroll restore on view transitions.
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+        document.body.style.overflow = '';
+      },
+      { once: true },
+    );
   </script>
 </Layout>

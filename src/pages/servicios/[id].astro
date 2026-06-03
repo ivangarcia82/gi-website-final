@@ -10,79 +10,112 @@ const { id } = Astro.params;
 const s = SERVICE_DETAILS[id as string];
 if (!s) return Astro.redirect('/servicios');
 const other = Object.entries(SERVICE_DETAILS).filter(([k]) => k !== id);
+
+// Restrained accent: gradient at most ONE word of the H1, and only when the
+// service title has more than one word (gradienting a single-word title would
+// gradient the whole heading, which is banned). The first word carries it.
+const titleWords = s.title.split(' ');
+const gradFirst = titleWords.length > 1;
+const headFirst = titleWords[0];
+const headRest = gradFirst ? titleWords.slice(1).join(' ') : '';
 ---
 <Layout title={`${s.title} — Generando Ideas`} description={`${s.tagline} ${s.intro}`}>
-  <div class="page">
-    <section class="section" style="padding-bottom: 40px;">
+  <div class="page svc-detail">
+    <section class="section svc-intro">
       <div class="wrap">
-        <a class="btn btn-ghost" href={ROUTES.services} style="margin-bottom: 24px;">
-          ← Todos los servicios
+        <a class="btn btn-ghost back-link" href={ROUTES.services}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 18l-6-6 6-6" />
+          </svg>
+          Todos los servicios
         </a>
         <span class="eyebrow">Servicio {s.num}</span>
-        <h1 class="display" style="font-size: clamp(56px, 8vw, 128px); margin: 20px 0 24px; letter-spacing: -0.035em; max-width: 1100px;">
-          {s.title}
+        <h1 class="display svc-h1">
+          {gradFirst ? (
+            <><span class="text-grad-word">{headFirst}</span> {headRest}</>
+          ) : (
+            s.title
+          )}
         </h1>
-        <p style={`font-size: 26px; color: ${s.color}; font-family: var(--font-display); font-style: italic; margin: 0 0 32px; letter-spacing: -0.01em;`}>
-          {s.tagline}
-        </p>
+        <p class="svc-tagline" style={`color: ${s.color};`}>{s.tagline}</p>
       </div>
     </section>
 
-    <section style="padding: 0 0 60px;">
+    <section class="svc-hero-wrap">
       <div class="wrap">
-        <img src={s.hero} alt={s.title} style="width: 100%; aspect-ratio: 16/7; object-fit: cover; border-radius: var(--radius-lg);" loading="lazy" />
+        <div class="svc-hero-stage" data-hero-stage>
+          <img
+            src={s.hero}
+            alt={`${s.title} — ${s.tagline}`}
+            width="1400"
+            height="612"
+            loading="lazy"
+            decoding="async"
+            data-hero-img
+          />
+        </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
-      <div class="wrap reveal" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;">
-        <div>
+    <section class="section svc-includes">
+      <div class="wrap svc-includes-grid reveal">
+        <div class="svc-includes-lead">
           <span class="eyebrow">Por qué nosotros</span>
-          <h2 class="display" style="font-size: 48px; margin: 12px 0 24px; letter-spacing: -0.02em;">
-            Lo que incluye
+          <h2 class="display svc-h2">
+            Lo que <span class="text-accent">incluye</span>
           </h2>
-          <p style="font-size: 17px; line-height: 1.6; color: var(--gray-700); margin-bottom: 32px;">{s.intro}</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <p class="svc-intro-copy">{s.intro}</p>
+          <div class="svc-examples">
             {s.examples.map((e) => (
-              <span style="padding: 8px 14px; background: var(--paper-2); border-radius: 999px; font-size: 13px; font-family: var(--font-mono); color: var(--ink-soft);">{e}</span>
+              <span class="svc-chip">{e}</span>
             ))}
           </div>
         </div>
-        <div style="display: grid; gap: 20px;">
+        <ul class="svc-features">
           {s.features.map((f, i) => (
-            <div class="svc-feature" style="padding: 28px; border: 1px solid var(--gray-200); border-radius: var(--radius); background: white; transition: all 0.25s;">
-              <span style={`font-family: var(--font-mono); font-size: 12px; color: ${s.color}; letter-spacing: 0.08em;`}>0{i + 1}</span>
-              <h4 style="font-family: var(--font-display); font-size: 22px; margin: 8px 0 8px; letter-spacing: -0.015em;">{f.t}</h4>
-              <p style="color: var(--gray-700); font-size: 14px; line-height: 1.5; margin: 0;">{f.d}</p>
-            </div>
+            <li class="svc-feature">
+              <span class="svc-feature-num" style={`color: ${s.color};`}>0{i + 1}</span>
+              <h3 class="svc-feature-t">{f.t}</h3>
+              <p class="svc-feature-d">{f.d}</p>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
 
-    <section class="section section-dark">
-      <div class="wrap" style="text-align: center;">
-        <h2 class="display" style="font-size: clamp(40px, 6vw, 80px); letter-spacing: -0.03em; margin: 0 auto 24px; max-width: 900px;">
-          ¿Te interesa {s.title}?
+    <section class="section section-dark svc-cta">
+      <div class="wrap svc-cta-inner">
+        <h2 class="display svc-cta-h">
+          ¿Te interesa <span class="text-accent">{s.title}</span>?
         </h2>
-        <p style="color: var(--gray-300); font-size: 18px; max-width: 600px; margin: 0 auto 32px;">
+        <p class="svc-cta-sub">
           Hablemos. Respuesta en menos de 24 horas hábiles.
         </p>
-        <a href={ROUTES.contact} class="btn btn-accent btn-lg">
-          Cotizar ahora
-        </a>
+        <span class="magnetic" data-magnetic>
+          <a href={ROUTES.contact} class="btn btn-accent btn-lg">
+            Cotizar ahora
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </span>
       </div>
     </section>
 
-    <section class="section section-alt">
+    <section class="section section-alt svc-more">
       <div class="wrap">
         <span class="eyebrow">Más servicios</span>
-        <h3 class="display" style="font-size: 40px; margin: 12px 0 32px; letter-spacing: -0.02em;">Explora nuestro portafolio</h3>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+        <h2 class="display svc-h2 svc-more-h">Explora nuestro portafolio</h2>
+        <div class="svc-more-grid">
           {other.map(([k, v]) => (
-            <a href={ROUTES.service(k)} class="other-svc" style="display: block; text-align: left; padding: 24px; background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); transition: all 0.25s; cursor: pointer;">
-              <span style={`font-family: var(--font-mono); font-size: 11px; color: ${v.color}; letter-spacing: 0.08em;`}>{v.num}</span>
-              <h4 style="font-family: var(--font-display); font-size: 22px; margin: 8px 0 0; letter-spacing: -0.02em;">{v.title}</h4>
+            <a href={ROUTES.service(k)} class="svc-more-card reveal" style={`--svc-tint: ${v.color};`}>
+              <span class="svc-more-num" style={`color: ${v.color};`}>{v.num}</span>
+              <h3 class="svc-more-t">{v.title}</h3>
+              <span class="svc-more-arrow" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
             </a>
           ))}
         </div>
@@ -90,3 +123,399 @@ const other = Object.entries(SERVICE_DETAILS).filter(([k]) => k !== id);
     </section>
   </div>
 </Layout>
+
+<style>
+  /* ---- Intro ------------------------------------------------------------ */
+  .svc-intro {
+    padding-bottom: 40px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    min-height: 44px;
+  }
+  .back-link svg {
+    transition: transform 0.25s cubic-bezier(.2,.8,.2,1);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+  }
+  .svc-h1 {
+    font-size: clamp(56px, 8vw, 128px);
+    margin: 20px 0 24px;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+    max-width: 1100px;
+  }
+  .svc-tagline {
+    font-size: clamp(22px, 3vw, 26px);
+    font-family: var(--font-display);
+    font-style: italic;
+    margin: 0;
+    letter-spacing: -0.01em;
+    max-width: 720px;
+  }
+
+  /* ---- Hero image (zoom-parallax) -------------------------------------- */
+  .svc-hero-wrap {
+    padding: 8px 0 60px;
+  }
+  .svc-hero-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 28px 60px -28px rgba(6, 46, 95, 0.22);
+  }
+  .svc-hero-stage img {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.04);
+    will-change: transform;
+  }
+  .svc-hero-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(16, 17, 20, 0.06) 0%,
+      transparent 30%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* ---- Lo que incluye --------------------------------------------------- */
+  .svc-includes {
+    padding-top: 0;
+  }
+  .svc-includes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .svc-h2 {
+    font-size: clamp(34px, 4.5vw, 48px);
+    margin: 12px 0 24px;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+  .svc-intro-copy {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--gray-700);
+    margin: 0 0 32px;
+    max-width: 46ch;
+  }
+  .svc-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .svc-chip {
+    padding: 8px 14px;
+    background: var(--paper-2);
+    border: 1px solid var(--gray-200);
+    border-radius: 999px;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    color: var(--ink-soft);
+  }
+
+  .svc-features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 18px;
+  }
+  .svc-feature {
+    position: relative;
+    padding: 28px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    background: #fff;
+    transition: transform 0.25s cubic-bezier(.2,.8,.2,1),
+                box-shadow 0.25s cubic-bezier(.2,.8,.2,1),
+                border-color 0.25s ease;
+  }
+  /* Subtle hover tint + lift (transform/opacity-safe). */
+  @media (prefers-reduced-motion: no-preference) {
+    .svc-feature:hover {
+      transform: translateY(-3px);
+    }
+  }
+  .svc-feature:hover {
+    border-color: var(--gray-300);
+    box-shadow: 0 18px 40px -24px rgba(6, 46, 95, 0.20);
+  }
+  .svc-feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(11, 95, 191, 0.035), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .svc-feature:hover::before {
+    opacity: 1;
+  }
+  .svc-feature-num {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .svc-feature-t {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    margin: 8px 0;
+    letter-spacing: -0.015em;
+  }
+  .svc-feature-d {
+    position: relative;
+    color: var(--gray-700);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ---- Dark CTA --------------------------------------------------------- */
+  .svc-cta-inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .svc-cta-h {
+    font-size: clamp(40px, 6vw, 80px);
+    letter-spacing: -0.03em;
+    margin: 0 auto 24px;
+    max-width: 900px;
+    line-height: 0.98;
+  }
+  .svc-cta-sub {
+    color: var(--gray-300);
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto 32px;
+    line-height: 1.5;
+  }
+  .magnetic {
+    display: inline-block;
+  }
+  .svc-cta .btn-lg {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .magnetic {
+      will-change: transform;
+    }
+  }
+
+  /* ---- Más servicios ---------------------------------------------------- */
+  .svc-more-h {
+    margin-bottom: 32px;
+  }
+  .svc-more-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .svc-more-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 24px;
+    min-height: 132px;
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(.2,.8,.2,1),
+                box-shadow 0.25s cubic-bezier(.2,.8,.2,1),
+                border-color 0.25s ease;
+  }
+  /* Hover tint keyed to each service's own brand color (low alpha). */
+  .svc-more-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--svc-tint);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .svc-more-card:hover::before {
+    opacity: 0.05;
+  }
+  .svc-more-card:hover {
+    border-color: var(--gray-300);
+    box-shadow: 0 18px 40px -24px rgba(6, 46, 95, 0.20);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .svc-more-card:hover {
+      transform: translateY(-3px);
+    }
+  }
+  .svc-more-num {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  .svc-more-t {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    margin: 8px 0 0;
+    letter-spacing: -0.02em;
+  }
+  .svc-more-arrow {
+    position: relative;
+    margin-top: auto;
+    padding-top: 16px;
+    color: var(--gray-300);
+    transition: color 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
+  }
+  .svc-more-card:hover .svc-more-arrow {
+    color: var(--ink);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .svc-more-card:hover .svc-more-arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  /* ---- Mobile collapse -------------------------------------------------- */
+  @media (max-width: 860px) {
+    .svc-includes-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .svc-more-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .svc-hero-stage {
+      aspect-ratio: 4 / 3;
+    }
+  }
+  @media (max-width: 560px) {
+    .svc-more-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Reduced motion: hold the hero at its base scale, no parallax. */
+  @media (prefers-reduced-motion: reduce) {
+    .svc-hero-stage img {
+      transform: scale(1.04);
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/motion';
+
+  initMotion();
+
+  const teardown: Array<() => void> = [];
+
+  if (!prefersReducedMotion()) {
+    // Hero zoom-parallax (transform only), mirroring the homepage Hero scrub.
+    const img = document.querySelector<HTMLElement>('[data-hero-img]');
+    const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
+    if (img && stage) {
+      gsap.fromTo(
+        img,
+        { scale: 1.04 },
+        {
+          scale: 1.14,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: stage,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    // Staggered reveal on the "más servicios" cards.
+    const cards = gsap.utils.toArray<HTMLElement>('.svc-more-card');
+    if (cards.length) {
+      gsap.fromTo(
+        cards,
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          stagger: 0.08,
+          scrollTrigger: { trigger: '.svc-more-grid', start: 'top 85%', once: true },
+        },
+      );
+    }
+
+    // Magnetic CTA — fine-pointer + motion only.
+    const wrap = document.querySelector<HTMLElement>('[data-magnetic]');
+    if (wrap && window.matchMedia('(pointer: fine)').matches) {
+      const xTo = gsap.quickTo(wrap, 'x', { duration: 0.4, ease: 'power3' });
+      const yTo = gsap.quickTo(wrap, 'y', { duration: 0.4, ease: 'power3' });
+      const onMove = (e: PointerEvent) => {
+        const r = wrap.getBoundingClientRect();
+        xTo((e.clientX - (r.left + r.width / 2)) * 0.35);
+        yTo((e.clientY - (r.top + r.height / 2)) * 0.35);
+      };
+      const onLeave = () => { xTo(0); yTo(0); };
+      wrap.addEventListener('pointermove', onMove);
+      wrap.addEventListener('pointerleave', onLeave);
+      teardown.push(() => {
+        wrap.removeEventListener('pointermove', onMove);
+        wrap.removeEventListener('pointerleave', onLeave);
+        gsap.killTweensOf(wrap);
+      });
+    }
+  } else {
+    // Reduced motion: the GSAP reveal never runs, so ensure cards are visible.
+    document.querySelectorAll<HTMLElement>('.svc-more-card').forEach((el) => {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+    });
+  }
+
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+      teardown.forEach((fn) => fn());
+    },
+    { once: true },
+  );
+</script>
+</content>
+</invoke>
