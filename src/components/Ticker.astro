@@ -63,11 +63,14 @@ const words = [...TICKER_WORDS, ...TICKER_WORDS];
 </style>
 
 <script>
-  import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+  initMotion();
 
   const track = document.querySelector<HTMLElement>('[data-marquee]');
+  const ticker = document.querySelector<HTMLElement>('.ticker');
 
-  if (track && !prefersReducedMotion()) {
+  if (track && ticker && !prefersReducedMotion()) {
     // Base perpetual loop: shift one full copy of the list to the left.
     const base = gsap.to(track, {
       xPercent: -50,
@@ -76,9 +79,23 @@ const words = [...TICKER_WORDS, ...TICKER_WORDS];
       ease: 'none',
     });
 
+    // Pause the loop (and skip velocity work) while the ticker is offscreen —
+    // perpetual motion shouldn't burn frames where nobody can see it.
+    let visible = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) base.play();
+        else base.pause();
+      },
+      { threshold: 0 }
+    );
+    io.observe(ticker);
+
     // Speed reacts to scroll velocity, then eases back to its normal pace.
     const st = ScrollTrigger.create({
       onUpdate: (self) => {
+        if (!visible) return;
         const v = 1 + Math.min(Math.abs(self.getVelocity() / 300), 6);
         gsap.to(base, { timeScale: v, overwrite: true, duration: 0.2 });
         gsap.to(base, { timeScale: 1, duration: 1, delay: 0.2, overwrite: false });
@@ -90,6 +107,7 @@ const words = [...TICKER_WORDS, ...TICKER_WORDS];
       () => {
         base.kill();
         st.kill();
+        io.disconnect();
       },
       { once: true }
     );

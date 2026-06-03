@@ -51,15 +51,18 @@ function initials(name: string): string {
   .testi-progress i {
     display: block;
     height: 100%;
-    width: 0;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
     background: var(--ink);
-    will-change: width;
+    will-change: transform;
   }
 </style>
 
 <script>
   import { prefersReducedMotion } from '../lib/motion';
 
+  const root = document.querySelector('[data-carousel]') as HTMLElement | null;
   const track = document.querySelector('.testimonial-track') as HTMLElement | null;
   const bar = document.querySelector('[data-testi-bar]') as HTMLElement | null;
 
@@ -78,10 +81,10 @@ function initials(name: string): string {
       last = now;
       if (!paused) {
         elapsed += dt;
-        bar.style.width = `${Math.min(elapsed / PERIOD, 1) * 100}%`;
+        bar.style.transform = `scaleX(${Math.min(elapsed / PERIOD, 1)})`;
         if (elapsed >= PERIOD) {
           elapsed = 0;
-          bar.style.width = '0%';
+          bar.style.transform = 'scaleX(0)';
           const atEnd =
             track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
           track.scrollTo({
@@ -107,11 +110,14 @@ function initials(name: string): string {
     const resume = () => {
       paused = false;
     };
+    // Bind to the carousel root (not just the track) so focusing the prev/next
+    // buttons — which sit outside the track — also pauses the auto-advance.
+    const interaction = root ?? track;
     ['mouseenter', 'focusin'].forEach((evt) =>
-      track.addEventListener(evt, pause),
+      interaction.addEventListener(evt, pause),
     );
     ['mouseleave', 'focusout'].forEach((evt) =>
-      track.addEventListener(evt, resume),
+      interaction.addEventListener(evt, resume),
     );
 
     rafId = requestAnimationFrame(loop);

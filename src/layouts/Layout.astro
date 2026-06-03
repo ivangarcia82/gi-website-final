@@ -7,11 +7,14 @@ import '../styles/motion.css';
 export interface Props {
   title?: string;
   description?: string;
+  /** Absolute URL of the LCP image to <link rel=preload> for this page (e.g. the homepage hero). */
+  preloadImage?: string;
 }
 
 const {
   title = 'Generando Ideas — Artículos Promocionales',
   description = 'Generando Ideas: la agencia de artículos promocionales que convierte cada pluma, taza, textil o gadget en un embajador de tu marca. Una sola ventanilla para todo lo que necesitas.',
+  preloadImage,
 } = Astro.props;
 ---
 
@@ -29,6 +32,10 @@ const {
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    {preloadImage && (
+      <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+    )}
     <meta name="generator" content={Astro.generator} />
   </head>
   <body>

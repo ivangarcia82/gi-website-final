@@ -9,6 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 let lenis: Lenis | null = null;
 let initialized = false;
 
+// Shared ticker callback so Lenis runs on GSAP's single rAF loop (not a second
+// independent requestAnimationFrame). GSAP passes seconds; Lenis wants ms.
+const tickerCb = (time: number) => { lenis?.raf(time * 1000); };
+
 export function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -27,14 +31,15 @@ export function initMotion(): void {
 
   lenis = new Lenis({ duration: 1.1, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
-  const raf = (time: number) => { lenis?.raf(time); requestAnimationFrame(raf); };
-  requestAnimationFrame(raf);
+  gsap.ticker.add(tickerCb);
+  gsap.ticker.lagSmoothing(0);
   ScrollTrigger.refresh();
 }
 
 /** Tear down all triggers + Lenis. Call on astro:before-swap / unload. */
 export function destroyMotion(): void {
   ScrollTrigger.getAll().forEach((t) => t.kill());
+  gsap.ticker.remove(tickerCb);
   lenis?.destroy();
   lenis = null;
   initialized = false;

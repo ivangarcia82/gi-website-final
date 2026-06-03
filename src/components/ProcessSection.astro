@@ -11,7 +11,7 @@ const steps = [
     <div class="section-head">
       <div>
         <span class="eyebrow">Cómo trabajamos</span>
-        <h2>De la idea a la entrega, <span class="text-grad-word">sin fricción.</span></h2>
+        <h2>De la idea a la entrega, <span class="text-accent">sin fricción.</span></h2>
       </div>
       <p>Un proceso probado con +500 clientes que funciona igual para 100 piezas que para 100,000.</p>
     </div>
@@ -127,6 +127,8 @@ const steps = [
       stagger: 0.12,
       duration: 0.6,
       ease: 'power3.out',
+      // Drop the compositor hint once the one-shot reveal has finished.
+      onComplete: () => gsap.set(steps, { willChange: 'auto' }),
       scrollTrigger: {
         trigger: sec,
         start: 'top 70%',
