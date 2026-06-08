@@ -10,7 +10,11 @@ import TestimonialsCarousel from '../components/TestimonialsCarousel.astro';
 import ClosingCTA from '../components/ClosingCTA.astro';
 import { IMAGES } from '../data/site.ts';
 ---
-<Layout preloadImage={IMAGES.img36}>
+<Layout
+  title="Generando Ideas | Artículos Promocionales"
+  description="Más que promocionales, creamos soluciones para tu marca. Productos personalizados, regalos corporativos, fulfillment y proyectos especiales con atención en todo México."
+  preloadImage={IMAGES.img36}
+>
   <Hero />
   <Ticker />
 
@@ -19,9 +23,9 @@ import { IMAGES } from '../data/site.ts';
       <div class="section-head">
         <div>
           <span class="eyebrow">Servicios</span>
-          <h2>Todo lo que tu marca necesita, <span class="text-accent">bajo un mismo techo.</span></h2>
+          <h2>Cinco servicios, <span class="text-accent">una sola relación.</span></h2>
         </div>
-        <p>Cinco líneas integradas que cubren desde la idea hasta el envío final. Tú eliges dónde empezamos.</p>
+        <p>Tu promocional puede ser una pieza o puede ser una solución integral completa: producción, almacenamiento, envío y experiencia. Elige hasta donde quieras llegar.</p>
       </div>
     </div>
     <ServicesShowcase layout="pinned" />
@@ -32,9 +36,9 @@ import { IMAGES } from '../data/site.ts';
       <div class="section-head">
         <div>
           <span class="eyebrow">Catálogos 2026</span>
-          <h2>11 catálogos, <span class="text-accent">miles</span> de productos.</h2>
+          <h2>Todo para tu marca, <span class="text-accent">miles de ideas.</span></h2>
         </div>
-        <p>Desde clásicos eternos hasta ediciones especiales por temporada. Explora y encuentra lo que necesitas.</p>
+        <p>Explora nuestros catálogos.</p>
       </div>
       <CatalogsCarousel />
     </div>
@@ -50,7 +54,6 @@ import { IMAGES } from '../data/site.ts';
           <span class="eyebrow">Lo que dicen nuestros clientes</span>
           <h2>Relaciones que <span class="text-accent">duran años.</span></h2>
         </div>
-        <p>Más del 80% de nuestros clientes nos recompra en los primeros 12 meses.</p>
       </div>
       <TestimonialsCarousel />
     </div>

@@ -343,4 +343,4 @@ export const JOBS: Job[] = [
 ];
 
 // Ticker words (home)
-export const TICKER_WORDS = ['Plumas', 'Tazas', 'Textiles', 'Agendas', 'Mochilas', 'Gadgets', 'Botellas', 'Proyectos especiales', 'Fulfillment', 'Talabartería'];
+export const TICKER_WORDS = ['Promotional Workshop', 'Print Shop', 'Digital Evolution', 'Promocionales', 'Importaciones'];
