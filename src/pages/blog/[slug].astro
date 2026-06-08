@@ -9,54 +9,319 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const post = BLOG_POSTS.find((p) => p.id === slug);
 if (!post) return Astro.redirect('/blog');
+
+const canonical = new URL(`/blog/${post.id}`, Astro.site).href;
+
+const blogPostingJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": {
+        "@type": "ImageObject",
+        "url": post.img
+      },
+      "datePublished": post.iso,
+      "dateModified": post.iso,
+      "author": { "@id": "https://generandoideas.com/#organization" },
+      "publisher": {
+        "@id": "https://generandoideas.com/#organization",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://generandoideas.com/favicon.svg"
+        }
+      },
+      "inLanguage": "es-MX",
+      "articleSection": post.cat,
+      "mainEntityOfPage": { "@type": "WebPage", "@id": canonical },
+      "url": canonical
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://generandoideas.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://generandoideas.com/blog" },
+        { "@type": "ListItem", "position": 3, "name": post.title, "item": canonical }
+      ]
+    }
+  ]
+};
 ---
 <Layout title={`${post.title} — Blog Generando Ideas`} description={post.excerpt}>
-  <div class="page">
-    <section class="section" style="padding-bottom: 20px;">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(blogPostingJsonLd)} />
+  <article class="page article">
+    <section class="section article-head">
       <div class="wrap">
-        <a class="btn btn-ghost" href={ROUTES.blog} style="margin-bottom: 24px;">
-          ← Volver al blog
+        <a class="btn btn-ghost back-link" href={ROUTES.blog}>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M19 12H5M11 6l-6 6 6 6" />
+          </svg>
+          Volver al blog
         </a>
-        <span class="eyebrow">{post.cat} · {post.date} · {post.read} lectura</span>
-        <h1 class="display" style="font-size: clamp(40px, 6vw, 80px); margin: 20px 0 32px; max-width: 1000px; letter-spacing: -0.03em;">
-          {post.title}
-        </h1>
+        <span class="eyebrow article-meta reveal">{post.cat} · <time datetime={post.iso}>{post.date}</time> · {post.read} lectura</span>
+        <h1 class="display article-title reveal">{post.title}</h1>
       </div>
     </section>
 
-    <section style="padding: 0 0 60px;">
+    <section class="article-figure-wrap">
       <div class="wrap">
-        <img src={post.img} alt={post.title} style="width: 100%; aspect-ratio: 16/8; object-fit: cover; border-radius: var(--radius-lg);" loading="lazy" />
+        <figure class="article-figure" data-figure>
+          <img
+            src={post.img}
+            alt={post.title}
+            width="1400"
+            height="700"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            data-figure-img
+          />
+        </figure>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
-      <div class="wrap" style="max-width: 760px;">
-        <p style="font-size: 22px; line-height: 1.5; color: var(--ink); margin: 0 0 32px;">
-          {post.excerpt}
-        </p>
-        <p style="font-size: 17px; line-height: 1.7; color: var(--gray-700); margin: 0 0 24px;">
-          En Generando Ideas llevamos más de 12 años observando cómo las marcas usan los artículos
-          promocionales para conectar con su audiencia. Este artículo recopila lo que hemos aprendido
-          trabajando con más de 500 marcas en México y LATAM.
-        </p>
-        <h3 class="display" style="font-size: 32px; margin: 40px 0 16px; letter-spacing: -0.02em;">
-          Lo esencial en 30 segundos
-        </h3>
-        <ul style="font-size: 17px; line-height: 1.7; color: var(--gray-700); padding-left: 20px;">
-          <li>Empieza siempre por el objetivo de la campaña, no por el producto.</li>
-          <li>El costo por impresión del promocional vence al CPM digital a los 6 meses.</li>
-          <li>La sustentabilidad ya no es opcional para audiencias menores de 35.</li>
-          <li>Medir retorno es posible — con los tags correctos desde el día 0.</li>
-        </ul>
-        <blockquote style="margin: 40px 0; padding: 24px 32px; border-left: 4px solid var(--orange-500); background: var(--paper-2); border-radius: 0 var(--radius) var(--radius) 0; font-size: 22px; line-height: 1.4; font-family: var(--font-display); font-style: italic;">
-          "El promocional no es un gasto de marketing. Es una inversión que se lleva puesta."
-        </blockquote>
-        <p style="font-size: 17px; line-height: 1.7; color: var(--gray-700);">
-          Si quieres seguir la conversación, escríbenos. Compartimos hallazgos con clientes aliados
-          cada trimestre en sesiones cerradas.
-        </p>
+    <section class="section article-body-section">
+      <div class="wrap">
+        <div class="prose">
+          <p class="prose-lead">{post.excerpt}</p>
+
+          <p>
+            En Generando Ideas llevamos más de 12 años observando cómo las marcas usan los artículos
+            promocionales para conectar con su audiencia. Este artículo recopila lo que hemos aprendido
+            trabajando con <span class="text-accent">más de 500 marcas</span> en México y LATAM.
+          </p>
+
+          <h2 class="display prose-h2">Lo esencial en 30 segundos</h2>
+          <ul class="prose-list">
+            <li>Empieza siempre por el objetivo de la campaña, no por el producto.</li>
+            <li>El costo por impresión del promocional vence al CPM digital a los 6 meses.</li>
+            <li>La sustentabilidad ya no es opcional para audiencias menores de 35.</li>
+            <li>Medir retorno es posible — con los tags correctos desde el día 0.</li>
+          </ul>
+
+          <blockquote class="prose-quote">
+            El promocional no es un gasto de marketing. Es una inversión que se lleva puesta.
+          </blockquote>
+
+          <p>
+            Si quieres seguir la conversación, escríbenos. Compartimos hallazgos con clientes aliados
+            cada trimestre en sesiones cerradas.
+          </p>
+        </div>
       </div>
     </section>
-  </div>
+  </article>
 </Layout>
+
+<style>
+  /* ---- Header ---------------------------------------------------------- */
+  .article-head {
+    padding-bottom: 28px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-bottom: 28px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .back-link svg {
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+  }
+
+  .article-meta {
+    display: block;
+  }
+
+  .article-title {
+    font-size: clamp(38px, 5.5vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin: 18px 0 0;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+
+  /* Slight reveal cadence between the eyebrow and the title. */
+  @media (prefers-reduced-motion: no-preference) {
+    .article-title {
+      transition-delay: 0.08s;
+    }
+  }
+
+  /* ---- Hero figure (zoom-parallax) ------------------------------------- */
+  .article-figure-wrap {
+    padding: 0 0 clamp(48px, 6vw, 72px);
+  }
+
+  .article-figure {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 16 / 8;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--paper-2);
+  }
+  .article-figure img {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.04);
+    will-change: transform;
+  }
+
+  /* ---- Long-form prose ------------------------------------------------- */
+  .article-body-section {
+    padding-top: 0;
+  }
+
+  .prose {
+    max-width: 70ch;
+  }
+
+  .prose > * {
+    margin: 0;
+  }
+  .prose > * + * {
+    margin-top: 1.5em;
+  }
+
+  .prose-lead {
+    font-family: var(--font-display);
+    font-size: clamp(21px, 2.4vw, 26px);
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .prose p {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--gray-700);
+  }
+
+  .prose-h2 {
+    font-size: clamp(28px, 3.4vw, 36px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-top: 2.2em;
+  }
+
+  .prose-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .prose-list li {
+    position: relative;
+    padding-left: 30px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--gray-700);
+  }
+  .prose-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: var(--orange-500);
+  }
+
+  .prose-quote {
+    position: relative;
+    padding: 8px 0 8px 32px;
+    border-left: 4px solid var(--orange-500);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.8vw, 30px);
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .prose-quote::before {
+    content: "\201C";
+  }
+  .prose-quote::after {
+    content: "\201D";
+  }
+
+  @media (max-width: 860px) {
+    .prose-lead {
+      font-size: 20px;
+    }
+    .prose p,
+    .prose-list li {
+      font-size: 17px;
+    }
+    .prose-quote {
+      padding-left: 22px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .article-figure img {
+      transform: scale(1.04);
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/motion';
+
+  initMotion();
+
+  if (!prefersReducedMotion()) {
+    const img = document.querySelector<HTMLElement>('[data-figure-img]');
+    const figure = document.querySelector<HTMLElement>('[data-figure]');
+    if (img && figure) {
+      gsap.fromTo(
+        img,
+        { scale: 1.04 },
+        {
+          scale: 1.14,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: figure,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        },
+      );
+    }
+  }
+
+  document.addEventListener(
+    'astro:before-swap',
+    () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+    { once: true },
+  );
+</script>

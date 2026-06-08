@@ -2,7 +2,7 @@
 import { SERVICES, IMAGES, ROUTES } from '../data/site.ts';
 
 export interface Props {
-  layout?: 'mosaic' | 'list' | 'stacked';
+  layout?: 'mosaic' | 'list' | 'stacked' | 'pinned';
 }
 const { layout = 'mosaic' } = Astro.props;
 
@@ -108,3 +108,132 @@ const stackedImgs = [IMAGES.img25, IMAGES.img26, IMAGES.img27, IMAGES.img28, IMA
     </a>
   </div>
 )}
+
+{layout === 'pinned' && (
+  <div class="svc-pin" data-svc-pin>
+    <div class="pin-viewport">
+      <div class="pin-track" data-svc-track>
+        {SERVICES.map((s) => (
+          <a class={`svc-stage svc-tone-${s.tone}`} href={ROUTES.service(s.id)}>
+            <span class="svc-num">{s.num}</span>
+            <div>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+              <span class="svc-cta-pin">
+                Conocer más
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+<style>
+  /* ===== Pinned layout — horizontal-pan service stages ===== */
+  .svc-pin { position: relative; }
+  .svc-pin .pin-viewport {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .svc-pin .pin-track {
+    gap: 28px;
+    padding: 0 max(32px, calc((100vw - var(--max)) / 2 + 32px));
+  }
+  .svc-stage {
+    flex: 0 0 clamp(320px, 42vw, 560px);
+    min-height: 60vh;
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-lg);
+  }
+  .svc-stage h3 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 3.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    margin: 0;
+  }
+  .svc-stage p {
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 42ch;
+    margin: 16px 0 0;
+  }
+  .svc-stage .svc-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    opacity: 0.85;
+  }
+  .svc-stage .svc-cta-pin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .svc-tone-hero { background: var(--blue-700); color: #fff; }
+  .svc-tone-hero p { color: rgba(255, 255, 255, 0.82); }
+  .svc-tone-a { background: var(--orange-500); color: var(--ink); }
+  .svc-tone-b { background: var(--paper-2); color: var(--ink); }
+  .svc-tone-c { background: var(--ink); color: #fff; }
+  .svc-tone-c p { color: rgba(255, 255, 255, 0.72); }
+  .svc-tone-d { background: var(--mint); color: var(--ink); }
+
+  @media (max-width: 860px) {
+    .svc-pin .pin-viewport {
+      height: auto;
+      display: block;
+    }
+    .svc-pin .pin-track {
+      flex-direction: column;
+      padding: 0 16px;
+      gap: 16px;
+    }
+    .svc-stage {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+  const pin = document.querySelector('[data-svc-pin]') as HTMLElement | null;
+  const track = document.querySelector('[data-svc-track]') as HTMLElement | null;
+  const mq = window.matchMedia('(min-width: 861px)');
+
+  if (pin && track && mq.matches && !prefersReducedMotion()) {
+    const distance = () => track.scrollWidth - window.innerWidth;
+    gsap.to(track, {
+      x: () => -distance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pin,
+        start: 'top top',
+        end: () => `+=${distance()}`,
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true },
+    );
+  }
+</script>

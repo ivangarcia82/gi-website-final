@@ -11,7 +11,7 @@ import { CATALOGS, ROUTES } from '../data/site.ts';
             <img src={c.img} alt={c.name} loading="lazy" />
           </div>
           <div class="cat-card-body">
-            <h4>{c.name}</h4>
+            <h3>{c.name}</h3>
             <span>{c.tag}</span>
           </div>
         </a>
@@ -31,3 +31,124 @@ import { CATALOGS, ROUTES } from '../data/site.ts';
     </button>
   </div>
 </div>
+
+<style>
+  /* Pointer-drag affordance for the catalog strip. Native touch swipe and the
+     Layout-wired prev/next buttons keep working; this only adds grab cues. */
+  [data-carousel-track] {
+    cursor: grab;
+  }
+  [data-carousel-track].is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+  /* While dragging, neutralize image drag-ghosts and accidental text selection. */
+  [data-carousel-track].is-dragging a,
+  [data-carousel-track].is-dragging img {
+    pointer-events: none;
+  }
+  [data-carousel-track] img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+</style>
+
+<script>
+  const root = document.querySelector('[data-carousel]') as HTMLElement | null;
+  const track = root?.querySelector('[data-carousel-track]') as HTMLElement | null;
+
+  if (root && track) {
+    let down = false;
+    let dragged = false;
+    let startX = 0;
+    let startScroll = 0;
+    let lastX = 0;
+    let v = 0;
+    let raf = 0;
+
+    const prev = root.querySelector('[data-carousel-prev]') as HTMLButtonElement | null;
+    const next = root.querySelector('[data-carousel-next]') as HTMLButtonElement | null;
+
+    // ----- prev/next end-state sync (also runs on Layout's smooth scrolls) -----
+    const syncBtns = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= max - 2;
+    };
+
+    // ----- inertia gliding after release -----
+    const glide = () => {
+      if (Math.abs(v) < 0.4) {
+        v = 0;
+        return;
+      }
+      track.scrollLeft -= v;
+      v *= 0.95;
+      raf = requestAnimationFrame(glide);
+    };
+
+    const onMove = (x: number) => {
+      const dx = x - lastX;
+      v = dx;
+      lastX = x;
+      if (Math.abs(x - startX) > 4) dragged = true;
+      track.scrollLeft = startScroll - (x - startX);
+    };
+
+    track.addEventListener('pointerdown', (e) => {
+      // Only react to primary pointer (mouse left button / touch / pen).
+      if (e.button !== undefined && e.button !== 0) return;
+      down = true;
+      dragged = false;
+      startX = lastX = e.clientX;
+      startScroll = track.scrollLeft;
+      v = 0;
+      cancelAnimationFrame(raf);
+      track.setPointerCapture(e.pointerId);
+      track.classList.add('is-dragging');
+    });
+
+    track.addEventListener('pointermove', (e) => {
+      if (down) onMove(e.clientX);
+    });
+
+    const release = (e: PointerEvent) => {
+      if (!down) return;
+      down = false;
+      track.classList.remove('is-dragging');
+      if (track.hasPointerCapture?.(e.pointerId)) track.releasePointerCapture(e.pointerId);
+      raf = requestAnimationFrame(glide);
+    };
+
+    track.addEventListener('pointerup', release);
+    track.addEventListener('pointercancel', release);
+
+    // Suppress the card link navigation if the pointerup ended a real drag.
+    track.addEventListener(
+      'click',
+      (e) => {
+        if (dragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragged = false;
+        }
+      },
+      true,
+    );
+
+    // Prevent native image dragging from hijacking the gesture.
+    track.addEventListener('dragstart', (e) => e.preventDefault());
+
+    track.addEventListener('scroll', syncBtns, { passive: true });
+    // Initial state + re-check after layout settles (images, fonts).
+    syncBtns();
+    window.addEventListener('resize', syncBtns, { passive: true });
+    window.addEventListener('load', syncBtns, { once: true });
+
+    const teardown = () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', syncBtns);
+    };
+    document.addEventListener('astro:before-swap', teardown, { once: true });
+  }
+</script>

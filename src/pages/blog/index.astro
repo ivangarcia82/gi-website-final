@@ -6,24 +6,29 @@ const featured = BLOG_POSTS[0];
 const rest = BLOG_POSTS.slice(1);
 ---
 <Layout title="Blog — Generando Ideas" description="Tendencias, casos reales, guías técnicas y opiniones de nuestro equipo sobre artículos promocionales.">
-  <div class="page">
-    <section class="section" style="padding-bottom: 40px;">
+  <div class="page blog-page">
+    <section class="section blog-hero">
       <div class="wrap">
         <span class="eyebrow">Blog · Ideas en acción</span>
-        <h1 class="display" style="font-size: clamp(56px, 8vw, 120px); margin: 20px 0 32px; max-width: 1100px; letter-spacing: -0.035em;">
-          Lo que aprendemos, <em style="font-style: italic; color: var(--orange-500);">lo compartimos.</em>
+        <h1 class="blog-h1 display">
+          Lo que aprendemos, <span class="text-grad-word">lo compartimos.</span>
         </h1>
-        <p style="font-size: 20px; color: var(--gray-700); line-height: 1.5; max-width: 720px;">
+        <p class="blog-lead">
           Tendencias, casos reales, guías técnicas y opiniones de nuestro equipo.
         </p>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
+    <section class="section blog-body">
       <div class="wrap">
-        <div class="cat-filter" id="blog-filter" style="margin-bottom: 40px;">
+        <div class="cat-filter blog-filter" id="blog-filter" role="group" aria-label="Filtrar artículos por categoría">
           {BLOG_CATEGORIES.map((c, i) => (
-            <button class:list={['chip', { active: i === 0 }]} data-cat={c}>{c}</button>
+            <button
+              class:list={['chip', { active: i === 0 }]}
+              data-cat={c}
+              type="button"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >{c}</button>
           ))}
         </div>
 
@@ -34,25 +39,25 @@ const rest = BLOG_POSTS.slice(1);
             </div>
             <div class="blog-feature-body">
               <span class="eyebrow">Destacado · {featured.cat}</span>
-              <h2 class="display" style="font-size: clamp(36px, 4.5vw, 56px); margin: 12px 0 16px; letter-spacing: -0.025em; line-height: 1;">
+              <h2 class="blog-feature-title display">
                 {featured.title}
               </h2>
-              <p style="color: var(--gray-700); font-size: 17px; line-height: 1.5; margin-bottom: 20px;">{featured.excerpt}</p>
-              <span style="font-family: var(--font-mono); font-size: 12px; color: var(--gray-500); letter-spacing: 0.1em; text-transform: uppercase;">
-                {featured.date} · {featured.read} lectura
+              <p class="blog-feature-excerpt">{featured.excerpt}</p>
+              <span class="blog-meta">
+                <time datetime={featured.iso}>{featured.date}</time> · {featured.read} lectura
               </span>
             </div>
           </a>
 
           <div class="blog-grid reveal">
-            {rest.map((p) => (
-              <a class="blog-card" href={`/blog/${p.id}`}>
+            {rest.map((p, i) => (
+              <a class="blog-card" href={`/blog/${p.id}`} style={`--i:${i}`}>
                 <div class="blog-card-img"><img src={p.img} alt={p.title} loading="lazy" /></div>
                 <div class="blog-card-body">
-                  <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-700);">{p.cat}</span>
-                  <h3 style="font-family: var(--font-display); font-size: 24px; margin: 8px 0 8px; letter-spacing: -0.02em; line-height: 1.1;">{p.title}</h3>
-                  <p style="color: var(--gray-700); font-size: 14px; line-height: 1.5; margin: 0 0 16px;">{p.excerpt}</p>
-                  <span style="font-size: 12px; color: var(--gray-500); font-family: var(--font-mono);">{p.date} · {p.read}</span>
+                  <span class="blog-card-cat">{p.cat}</span>
+                  <h3 class="blog-card-title">{p.title}</h3>
+                  <p class="blog-card-excerpt">{p.excerpt}</p>
+                  <span class="blog-card-meta"><time datetime={p.iso}>{p.date}</time> · {p.read}</span>
                 </div>
               </a>
             ))}
@@ -61,6 +66,123 @@ const rest = BLOG_POSTS.slice(1);
       </div>
     </section>
   </div>
+
+  <style>
+    /* ----- Hero ----- */
+    .blog-hero { padding-bottom: 40px; }
+    .blog-h1 {
+      font-size: clamp(52px, 8vw, 116px);
+      margin: 20px 0 28px;
+      max-width: 16ch;
+      letter-spacing: -0.035em;
+      line-height: 0.94;
+      text-wrap: balance;
+    }
+    .blog-lead {
+      font-size: clamp(18px, 2.2vw, 21px);
+      color: var(--gray-700);
+      line-height: 1.5;
+      max-width: 56ch;
+      margin: 0;
+    }
+
+    /* ----- Body / filter ----- */
+    .blog-body { padding-top: 0; }
+    .blog-filter { margin-bottom: 40px; }
+    /* Tap-target floor: the global .chip is ~40px tall; bring it to >= 44px. */
+    .blog-filter .chip { min-height: 44px; display: inline-flex; align-items: center; }
+
+    /* ----- Featured ----- */
+    .blog-feature-title {
+      font-size: clamp(34px, 4.5vw, 56px);
+      margin: 12px 0 16px;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      text-wrap: balance;
+    }
+    .blog-feature-excerpt {
+      color: var(--gray-700);
+      font-size: 17px;
+      line-height: 1.55;
+      margin: 0 0 22px;
+      max-width: 52ch;
+    }
+    .blog-meta,
+    .blog-card-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gray-700);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    /* Soften the global featured-image hover so inner pages stay calmer. */
+    @media (prefers-reduced-motion: no-preference) {
+      .blog-feature:hover .blog-feature-img img { transform: scale(1.04); }
+    }
+
+    /* ----- Cards ----- */
+    .blog-card-cat {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue-700);
+    }
+    .blog-card-title {
+      font-family: var(--font-display);
+      font-size: 23px;
+      margin: 8px 0 10px;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      font-weight: 600;
+    }
+    .blog-card-excerpt {
+      color: var(--gray-700);
+      font-size: 14px;
+      line-height: 1.55;
+      margin: 0 0 18px;
+      flex: 1;
+    }
+    .blog-card-meta { font-size: 12px; }
+
+    /* Empty state (used when a category has no posts after filtering). */
+    .blog-empty {
+      color: var(--gray-700);
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 40px 0;
+      margin: 0;
+    }
+
+    /* Per-card stagger for the GSAP grid reveal. Purely transform/opacity and
+       only consumed when motion is allowed (see the script guard). The custom
+       property is set inline (--i) so re-rendered nodes inherit it too. */
+    @media (prefers-reduced-motion: no-preference) {
+      .blog-grid .blog-card {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      .blog-grid.in .blog-card {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.6s cubic-bezier(.2, .8, .2, 1),
+          transform 0.6s cubic-bezier(.2, .8, .2, 1);
+        transition-delay: calc(var(--i, 0) * 0.06s);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .blog-h1 { max-width: none; }
+      .blog-feature-excerpt { max-width: none; }
+    }
+
+    /* Reduced-motion: no offsets, no transitions — fully visible immediately.
+       (Backs up the global .reveal reduced-motion reset for the staggered grid.) */
+    @media (prefers-reduced-motion: reduce) {
+      .blog-grid .blog-card { opacity: 1; transform: none; }
+    }
+  </style>
 
   <script define:vars={{ posts: BLOG_POSTS }}>
     const filter = document.getElementById('blog-filter');
@@ -74,20 +196,20 @@ const rest = BLOG_POSTS.slice(1);
         <div class="blog-feature-img"><img src="${esc(p.img)}" alt="${esc(p.title)}" loading="lazy" /></div>
         <div class="blog-feature-body">
           <span class="eyebrow">Destacado · ${esc(p.cat)}</span>
-          <h2 class="display" style="font-size: clamp(36px, 4.5vw, 56px); margin: 12px 0 16px; letter-spacing: -0.025em; line-height: 1;">${esc(p.title)}</h2>
-          <p style="color: var(--gray-700); font-size: 17px; line-height: 1.5; margin-bottom: 20px;">${esc(p.excerpt)}</p>
-          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--gray-500); letter-spacing: 0.1em; text-transform: uppercase;">${esc(p.date)} · ${esc(p.read)} lectura</span>
+          <h2 class="blog-feature-title display">${esc(p.title)}</h2>
+          <p class="blog-feature-excerpt">${esc(p.excerpt)}</p>
+          <span class="blog-meta"><time datetime="${esc(p.iso)}">${esc(p.date)}</time> · ${esc(p.read)} lectura</span>
         </div>
       </a>`;
 
-    const cardHTML = (p) => `
-      <a class="blog-card" href="/blog/${p.id}">
+    const cardHTML = (p, i) => `
+      <a class="blog-card" href="/blog/${p.id}" style="--i:${i}">
         <div class="blog-card-img"><img src="${esc(p.img)}" alt="${esc(p.title)}" loading="lazy" /></div>
         <div class="blog-card-body">
-          <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-700);">${esc(p.cat)}</span>
-          <h3 style="font-family: var(--font-display); font-size: 24px; margin: 8px 0 8px; letter-spacing: -0.02em; line-height: 1.1;">${esc(p.title)}</h3>
-          <p style="color: var(--gray-700); font-size: 14px; line-height: 1.5; margin: 0 0 16px;">${esc(p.excerpt)}</p>
-          <span style="font-size: 12px; color: var(--gray-500); font-family: var(--font-mono);">${esc(p.date)} · ${esc(p.read)}</span>
+          <span class="blog-card-cat">${esc(p.cat)}</span>
+          <h3 class="blog-card-title">${esc(p.title)}</h3>
+          <p class="blog-card-excerpt">${esc(p.excerpt)}</p>
+          <span class="blog-card-meta"><time datetime="${esc(p.iso)}">${esc(p.date)}</time> · ${esc(p.read)}</span>
         </div>
       </a>`;
 
@@ -96,11 +218,15 @@ const rest = BLOG_POSTS.slice(1);
       const featured = filtered[0];
       const rest = filtered.slice(1);
       let html = featured ? featuredHTML(featured) : '';
-      html += `<div class="blog-grid reveal">${rest.map(cardHTML).join('')}</div>`;
+      html += `<div class="blog-grid reveal">${rest.map((p, i) => cardHTML(p, i)).join('')}</div>`;
+      if (!filtered.length) {
+        html += '<p class="blog-empty">Aún no hay artículos en esta categoría. Pronto compartiremos más.</p>';
+      }
       content.innerHTML = html;
       // Freshly injected nodes aren't seen by the load-time reveal observer,
       // so play their fade-up on the next frame (matches the prototype's
       // re-render, which re-ran its IntersectionObserver on filter change).
+      // Adding .in on the grid also fires the per-card staggered transition.
       requestAnimationFrame(() => {
         content.querySelectorAll('.reveal:not(.in)').forEach((el) => el.classList.add('in'));
       });
@@ -108,9 +234,35 @@ const rest = BLOG_POSTS.slice(1);
 
     filter?.querySelectorAll('.chip').forEach((chip) => {
       chip.addEventListener('click', () => {
-        filter.querySelectorAll('.chip').forEach((c) => c.classList.toggle('active', c === chip));
+        filter.querySelectorAll('.chip').forEach((c) => {
+          const active = c === chip;
+          c.classList.toggle('active', active);
+          c.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
         render(chip.dataset.cat);
       });
     });
+  </script>
+
+  <script>
+    import { initMotion, ScrollTrigger } from '../../lib/motion';
+
+    // Smooth scroll (Lenis) to match the homepage feel. The actual fade-up of
+    // the featured block and the card grid is handled by the global reveal
+    // IntersectionObserver in Layout.astro (it adds `.in` to `.reveal` nodes);
+    // the per-card cascade is then driven purely by CSS (--i + .blog-grid.in).
+    // The JS category filter re-adds `.in` on its freshly injected nodes, so the
+    // cascade replays on every filter change. Everything is transform/opacity
+    // only and reduced-motion is honoured by the global rule + the scoped media
+    // queries above.
+    initMotion();
+
+    // Tear down any ScrollTriggers Lenis registered on Astro view transitions so
+    // nothing leaks across pages.
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true },
+    );
   </script>
 </Layout>

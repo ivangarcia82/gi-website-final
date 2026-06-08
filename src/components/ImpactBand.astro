@@ -1,0 +1,125 @@
+---
+// Impact band: a dark stats strip built only from existing brand facts.
+// Big Space-Grotesk numbers separated by 1px hairlines (no card boxes),
+// count-up on scroll-in. Numbers come from src/data/site.ts facts:
+//   - 12+   años amplificando marcas
+//   - +5,000 productos personalizables (catálogo, ver site.ts FAQ)
+//   - 80%   clientes que recompran en 12 meses
+//   - 4     oficinas en México (OFFICES: CDMX, Sonora, Yucatán, BCS)
+const STATS = [
+  { prefix: '', value: 12, suffix: '+', label: 'Años amplificando marcas' },
+  { prefix: '+', value: 5000, suffix: '', label: 'Productos personalizables' },
+  { prefix: '', value: 80, suffix: '%', label: 'Clientes que recompran (12m)' },
+  { prefix: '', value: 4, suffix: '', label: 'Oficinas en México' },
+];
+---
+
+<section class="section section-dark impact" data-impact>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Por qué nos eligen</span>
+        <h2>Números que <span class="text-accent">sostienen</span> la promesa.</h2>
+      </div>
+    </div>
+    <div class="impact-grid">
+      {STATS.map((s) => (
+        <div class="impact-cell">
+          <strong
+            data-count
+            data-prefix={s.prefix}
+            data-value={s.value}
+            data-suffix={s.suffix}
+          >{s.prefix}0{s.suffix}</strong>
+          <span>{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .impact-cell {
+    padding: 40px 28px 8px;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    min-width: 0;
+  }
+  .impact-cell:first-child {
+    border-left: none;
+  }
+  .impact-cell strong {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+    display: block;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .impact-cell span {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-300);
+    display: block;
+    margin-top: 12px;
+  }
+  @media (max-width: 860px) {
+    .impact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* On a 2-column grid, every odd cell starts a new row, so it has no
+       left neighbor and should drop its divider. */
+    .impact-cell:nth-child(odd) {
+      border-left: none;
+    }
+    .impact-cell {
+      padding: 32px 20px 8px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+  import { formatCount } from '../lib/format';
+
+  const cells = document.querySelectorAll<HTMLElement>('[data-count]');
+
+  const set = (el: HTMLElement, v: number) => {
+    el.textContent = formatCount({
+      prefix: el.dataset.prefix || '',
+      value: v,
+      suffix: el.dataset.suffix || '',
+    });
+  };
+
+  if (prefersReducedMotion()) {
+    // Reduced motion: render final numbers immediately, fully visible.
+    cells.forEach((el) => set(el, Number(el.dataset.value)));
+  } else {
+    cells.forEach((el) => {
+      const target = Number(el.dataset.value);
+      const obj = { v: 0 };
+      gsap.to(obj, {
+        v: target,
+        duration: 1.6,
+        ease: 'power2.out',
+        onUpdate: () => set(el, obj.v),
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      });
+    });
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true },
+    );
+  }
+</script>

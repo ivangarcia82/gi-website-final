@@ -2,42 +2,44 @@
 import Layout from '../layouts/Layout.astro';
 import { IMAGES, ROUTES } from '../data/site.ts';
 
+// Value marks are plain digits (01–06) set in the display font inside the
+// existing .mark chip — no Unicode circled glyphs anywhere on the page.
 const values = [
-  { m: '①', t: 'Compromiso', d: 'Nos jugamos el pellejo con cada entrega. Si prometemos algo, se cumple.' },
-  { m: '②', t: 'Creatividad', d: 'No vendemos catálogos, vendemos ideas. Cada brief es un problema nuevo.' },
-  { m: '③', t: 'Integridad', d: 'Precios claros, tiempos reales, calidad prometida. Sin letras chiquitas.' },
-  { m: '④', t: 'Pasión', d: 'Amamos los promocionales. Se nota en cada pluma que sale de producción.' },
-  { m: '⑤', t: 'Innovación', d: 'Siempre un paso adelante: nuevos materiales, nuevas técnicas, nuevas ideas.' },
-  { m: '⑥', t: 'Servicio', d: 'Tu éxito es nuestro éxito. Estamos disponibles cuando nos necesitas.' },
+  { n: '01', t: 'Compromiso', d: 'Nos jugamos el pellejo con cada entrega. Si prometemos algo, se cumple.' },
+  { n: '02', t: 'Creatividad', d: 'No vendemos catálogos, vendemos ideas. Cada brief es un problema nuevo.' },
+  { n: '03', t: 'Integridad', d: 'Precios claros, tiempos reales, calidad prometida. Sin letras chiquitas.' },
+  { n: '04', t: 'Pasión', d: 'Amamos los promocionales. Se nota en cada pluma que sale de producción.' },
+  { n: '05', t: 'Innovación', d: 'Siempre un paso adelante: nuevos materiales, nuevas técnicas, nuevas ideas.' },
+  { n: '06', t: 'Servicio', d: 'Tu éxito es nuestro éxito. Estamos disponibles cuando nos necesitas.' },
 ];
 ---
 <Layout title="Conócenos — Generando Ideas" description="Somos una empresa 100% mexicana que vive, respira y crea promocionales desde 2013. Cuatro oficinas, una sola ventanilla.">
-  <div class="page">
-    <section class="section" style="padding-bottom: 60px;">
+  <div class="page conocenos">
+    <section class="section about-hero">
       <div class="wrap">
         <span class="eyebrow">Conócenos · Desde 2013</span>
-        <h1 class="display" style="font-size: clamp(56px, 8vw, 128px); margin: 20px 0 0; max-width: 1000px;">
-          Somos una empresa <em style="font-style: italic; color: var(--blue-700);">100% mexicana</em> que vive, respira y crea promocionales.
+        <h1 class="display about-h1">
+          Somos una empresa <span class="text-grad-word">100% mexicana</span> que vive, respira y crea promocionales.
         </h1>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 40px;">
-      <div class="wrap reveal" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start;">
-        <div>
-          <img src={IMAGES.img41} alt="Equipo Generando Ideas" style="border-radius: var(--radius-lg); aspect-ratio: 3/4; object-fit: cover; width: 100%;" loading="lazy" />
+    <section class="section about-intro">
+      <div class="wrap about-grid reveal">
+        <div class="about-figure">
+          <img src={IMAGES.img41} alt="Equipo Generando Ideas" loading="lazy" />
         </div>
-        <div>
+        <div class="about-copy">
           <span class="eyebrow">¿Quiénes somos?</span>
-          <h2 class="display" style="font-size: 52px; margin: 16px 0 24px; letter-spacing: -0.02em;">
+          <h2 class="display about-copy-h">
             Líderes en la industria promocional
           </h2>
-          <p style="font-size: 18px; color: var(--gray-700); line-height: 1.6; margin-bottom: 24px;">
+          <p>
             Iniciamos operaciones en 2013 con una idea clara: las marcas necesitan más que un
             producto con logo. Necesitan un socio que entienda su voz, su audiencia y sus
             objetivos — y que convierta cada artículo en una extensión de su identidad.
           </p>
-          <p style="font-size: 18px; color: var(--gray-700); line-height: 1.6;">
+          <p>
             Hoy operamos cuatro oficinas en México (CDMX, Sonora, Yucatán y Baja California Sur),
             producimos localmente, y ofrecemos una ventanilla única: promocionales, fulfillment,
             proyectos especiales, talleres y manufactura textil y de talabartería.
@@ -47,42 +49,42 @@ const values = [
     </section>
 
     <section class="section section-alt">
-      <div class="wrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-        <div class="reveal" style="padding: 48px; background: white; border-radius: var(--radius-lg);">
+      <div class="wrap mv-grid">
+        <article class="mv-card mv-light reveal">
           <span class="eyebrow">Misión</span>
-          <h3 class="display" style="font-size: 40px; margin: 12px 0 16px; letter-spacing: -0.02em;">Amplificar marcas</h3>
-          <p style="color: var(--gray-700); line-height: 1.6; font-size: 16px; margin: 0;">
+          <h3 class="display mv-h">Amplificar marcas</h3>
+          <p>
             Ser el aliado estratégico de las marcas que quieren conectar con su audiencia a
             través de productos memorables, entregados con excelencia y siempre a tiempo.
           </p>
-        </div>
-        <div class="reveal" style="padding: 48px; background: var(--ink); color: white; border-radius: var(--radius-lg);">
-          <span class="eyebrow" style="color: var(--orange-500);">Visión</span>
-          <h3 class="display" style="font-size: 40px; margin: 12px 0 16px; letter-spacing: -0.02em;">Referente LATAM</h3>
-          <p style="color: var(--gray-300); line-height: 1.6; font-size: 16px; margin: 0;">
+        </article>
+        <article class="mv-card mv-ink reveal">
+          <span class="eyebrow">Visión</span>
+          <h3 class="display mv-h">Referente LATAM</h3>
+          <p>
             Convertirnos en el referente de artículos promocionales en Latinoamérica, reconocidos
             por innovación, calidad y el impacto medible que generamos para nuestros clientes.
           </p>
-        </div>
+        </article>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap reveal">
+      <div class="wrap">
         <div class="section-head">
           <div>
             <span class="eyebrow">Nuestros valores</span>
-            <h2 class="display" style="font-size: 64px; margin: 12px 0 0; letter-spacing: -0.03em;">
-              Los principios que <em style="font-style: italic; color: var(--orange-500);">no negociamos.</em>
+            <h2 class="display values-h">
+              Los principios que <span class="text-accent">no negociamos.</span>
             </h2>
           </div>
         </div>
-        <div class="values-grid">
-          {values.map((v) => (
-            <div class="value">
-              <div class="mark">{v.m}</div>
+        <div class="values-grid reveal">
+          {values.map((v, i) => (
+            <div class="value value-mark-fix" style={`--i:${i}`}>
+              <div class="mark">{v.n}</div>
               <div>
-                <h4>{v.t}</h4>
+                <h3 class="value-title">{v.t}</h3>
                 <p>{v.d}</p>
               </div>
             </div>
@@ -91,18 +93,270 @@ const values = [
       </div>
     </section>
 
-    <section class="section section-dark">
-      <div class="wrap" style="text-align: center;">
-        <h2 class="display" style="font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.03em; margin: 0 auto 32px; max-width: 900px;">
+    <section class="section section-dark about-cta">
+      <div class="wrap about-cta-inner">
+        <h2 class="display about-cta-h">
           ¿Listo para amplificar tu marca?
         </h2>
-        <a href={ROUTES.contact} class="btn btn-accent btn-lg">
-          Empecemos a trabajar
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </a>
+        <span class="magnetic" data-magnetic>
+          <a href={ROUTES.contact} class="btn btn-accent btn-lg">
+            Empecemos a trabajar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </span>
       </div>
     </section>
   </div>
 </Layout>
+
+<style>
+  /* ===== About hero ===== */
+  .about-hero {
+    padding-bottom: 60px;
+  }
+  .about-h1 {
+    font-size: clamp(56px, 8vw, 128px);
+    margin: 20px 0 0;
+    max-width: 1000px;
+  }
+
+  /* ===== Intro: ¿Quiénes somos? — asymmetric 2-col, collapses on mobile ===== */
+  .about-intro {
+    padding-top: 40px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-figure {
+    position: relative;
+  }
+  .about-figure img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    box-shadow: 0 28px 60px -28px rgba(6, 46, 95, 0.22);
+  }
+  .about-copy-h {
+    font-size: clamp(36px, 4.4vw, 52px);
+    margin: 16px 0 24px;
+    letter-spacing: -0.02em;
+  }
+  .about-copy p {
+    font-size: 18px;
+    color: var(--gray-700);
+    line-height: 1.65;
+    margin: 0 0 24px;
+    max-width: 56ch;
+  }
+  .about-copy p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ===== Misión / Visión — refined cards, collapses on mobile ===== */
+  .mv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .mv-card {
+    padding: clamp(36px, 4vw, 52px);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .mv-h {
+    font-size: clamp(34px, 3.6vw, 40px);
+    margin: 12px 0 16px;
+    letter-spacing: -0.02em;
+  }
+  .mv-card p {
+    line-height: 1.65;
+    font-size: 16px;
+    margin: 0;
+    max-width: 42ch;
+  }
+  /* Misión: light material with a hairline border and tinted brand shadow. */
+  .mv-light {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 28px 60px -28px rgba(6, 46, 95, 0.16);
+  }
+  .mv-light p {
+    color: var(--gray-700);
+  }
+  /* Visión: ink material; eyebrow shifts to orange for contrast on dark. */
+  .mv-ink {
+    background: var(--ink);
+    color: #fff;
+  }
+  .mv-ink .eyebrow {
+    color: var(--orange-500);
+  }
+  .mv-ink p {
+    color: var(--gray-300);
+  }
+  /* A whisper-soft accent corner so the ink card reads as a deliberate material,
+     not a flat block. Transform-free, decorative only. */
+  .mv-ink::after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    bottom: -90px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(243, 146, 0, 0.22), transparent 62%);
+    pointer-events: none;
+  }
+
+  /* ===== Values ===== */
+  .values-h {
+    font-size: clamp(40px, 5.4vw, 64px);
+    margin: 12px 0 0;
+    letter-spacing: -0.03em;
+  }
+  /* The values title is now an h3 (heading order h2 to h3); the global rule
+     targets `.value h4`, so restate the display type here for the <h3>. */
+  .value-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    margin: 20px 0 8px;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+  /* Digit marks sit comfortably; tabular figures keep 01–06 optically even. */
+  .value-mark-fix .mark {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  /* Single-driver staggered reveal: the global .reveal observer adds .in to the
+     grid; the cards then cascade purely via CSS transition-delay (no GSAP — this
+     avoids a competing-animator race on opacity/transform). */
+  @media (prefers-reduced-motion: no-preference) {
+    .values-grid .value {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .values-grid.in .value {
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.6s cubic-bezier(.2, .8, .2, 1),
+        transform 0.6s cubic-bezier(.2, .8, .2, 1);
+      transition-delay: calc(var(--i, 0) * 0.08s);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .values-grid .value { opacity: 1; transform: none; }
+  }
+
+  /* ===== Dark closing CTA — magnetic button ===== */
+  .about-cta-inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .about-cta-h {
+    font-size: clamp(40px, 6vw, 88px);
+    letter-spacing: -0.03em;
+    margin: 0 auto 32px;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  /* Inline-block so the magnetic transform pulls the button without disturbing
+     the centered flex layout. will-change only when motion is allowed. */
+  .magnetic {
+    display: inline-block;
+  }
+  .magnetic .btn-lg {
+    min-height: 44px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .magnetic {
+      will-change: transform;
+    }
+  }
+
+  /* ===== Mobile collapse (no horizontal overflow < 861px) ===== */
+  @media (max-width: 860px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .about-figure img {
+      aspect-ratio: 4 / 3;
+    }
+    .about-copy p {
+      font-size: 16px;
+    }
+    .mv-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-cta .btn-lg {
+      width: 100%;
+      justify-content: center;
+    }
+    .magnetic {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+  initMotion();
+
+  const reduce = prefersReducedMotion();
+
+  if (!reduce) {
+    // The values cascade is CSS-driven (global .reveal on the grid + per-card
+    // --i transition-delay), so there is no GSAP batch here — only the magnetic
+    // CTA. One system owns opacity/transform on the cards.
+
+    // Magnetic CTA — fine-pointer (mouse) devices only, motion allowed.
+    const wrap = document.querySelector<HTMLElement>('[data-magnetic]');
+    if (wrap && window.matchMedia('(pointer: fine)').matches) {
+      const xTo = gsap.quickTo(wrap, 'x', { duration: 0.4, ease: 'power3' });
+      const yTo = gsap.quickTo(wrap, 'y', { duration: 0.4, ease: 'power3' });
+
+      const onMove = (e: PointerEvent) => {
+        const r = wrap.getBoundingClientRect();
+        xTo((e.clientX - (r.left + r.width / 2)) * 0.35);
+        yTo((e.clientY - (r.top + r.height / 2)) * 0.35);
+      };
+      const onLeave = () => {
+        xTo(0);
+        yTo(0);
+      };
+
+      wrap.addEventListener('pointermove', onMove);
+      wrap.addEventListener('pointerleave', onLeave);
+
+      document.addEventListener(
+        'astro:before-swap',
+        () => {
+          wrap.removeEventListener('pointermove', onMove);
+          wrap.removeEventListener('pointerleave', onLeave);
+          gsap.killTweensOf(wrap);
+        },
+        { once: true },
+      );
+    }
+
+    // Tear down all triggers/tweens on Astro view transitions.
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true },
+    );
+  }
+</script>

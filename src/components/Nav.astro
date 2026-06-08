@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import MobileMenu from './MobileMenu.astro';
 import { NAV_ITEMS, ROUTES } from '../data/site.ts';
 
 // Determine the active nav item from the current path.
@@ -14,9 +15,9 @@ function isActive(href: string): boolean {
   return path === href || path.startsWith(href + '/');
 }
 ---
-<nav class="nav">
+<nav class="nav glass">
   <div class="nav-inner">
-    <a href={ROUTES.home} style="background: none; padding: 0;" aria-label="Inicio">
+    <a href={ROUTES.home} style="background: none; padding: 0;">
       <Logo />
     </a>
     <div class="nav-links">
@@ -28,12 +29,135 @@ function isActive(href: string): boolean {
           {p.label}
         </a>
       ))}
-      <a href={ROUTES.catalog} class="btn btn-accent" style="margin-left: 8px;">
+      <a href={ROUTES.catalog} class="btn btn-accent nav-cta">
         Ver catálogo
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M5 12h14M13 6l6 6-6 6" />
         </svg>
       </a>
+      <button
+        class="nav-burger"
+        data-drawer-open
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="drawer"
+      >
+        <span></span>
+      </button>
     </div>
   </div>
 </nav>
+
+<MobileMenu />
+
+<style>
+  /* Smooth height/background transition on scroll-shrink (no layout-affecting
+     property is animated by motion — height changes are CSS transitions only,
+     not transform/opacity scroll work, and are paused under reduced motion). */
+  .nav {
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .nav-inner {
+    transition: height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .nav.shrink .nav-inner {
+    height: 60px;
+  }
+
+  /* Dock-style hover scale on the desktop links + catalog CTA. */
+  .nav-links .nav-link,
+  .nav-links .nav-cta {
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+      background 0.18s, color 0.18s, box-shadow 0.2s;
+    transform-origin: center bottom;
+  }
+  .nav-links .nav-link:hover,
+  .nav-links .nav-cta:hover {
+    transform: translateY(-1px) scale(1.06);
+  }
+
+  .nav-cta {
+    margin-left: 8px;
+  }
+
+  /* Hamburger button — hidden on desktop, shown below the collapse breakpoint. */
+  .nav-burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background 0.18s;
+    margin-left: 4px;
+  }
+  .nav-burger:hover {
+    background: var(--gray-100);
+  }
+  .nav-burger span {
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+  }
+  .nav-burger span::before,
+  .nav-burger span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+  }
+  .nav-burger span::before {
+    top: -6px;
+  }
+  .nav-burger span::after {
+    top: 6px;
+  }
+
+  /* Collapse breakpoint: hide desktop links + CTA, reveal the burger.
+     Matches the existing global hide-mobile rule (<= 900px) so there is no
+     dead zone where neither the links nor the burger are visible. */
+  @media (max-width: 900px) {
+    .nav-links .nav-link,
+    .nav-links .nav-cta {
+      display: none;
+    }
+    .nav-burger {
+      display: inline-flex;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav,
+    .nav-inner,
+    .nav-links .nav-link,
+    .nav-links .nav-cta {
+      transition: none;
+    }
+    .nav-links .nav-link:hover,
+    .nav-links .nav-cta:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Scroll-shrink: a passive scroll listener that toggles a class. This is a
+  // class toggle, not a motion driver — the no-scroll-listener rule only applies
+  // to animation work (which uses ScrollTrigger). The visual change is a CSS
+  // transition that degrades to instant under prefers-reduced-motion.
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const onScroll = () => nav?.classList.toggle('shrink', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

@@ -1,28 +1,152 @@
 ---
 const steps = [
   { n: '01', t: 'Briefing', d: 'Nos compartes objetivo, target, presupuesto y tiempos. Salimos con un norte claro.' },
-  { n: '02', t: 'Propuesta', d: 'Curamos opciones del catálogo + ideas originales en menos de 48 horas.' },
-  { n: '03', t: 'Producción', d: 'Impresión, bordado, sublimación, láser — todo bajo control de calidad propio.' },
-  { n: '04', t: 'Entrega', d: 'Fulfillment a tu bodega o directo a tus destinatarios, a donde sea que estén.' },
+  { n: '02', t: 'Propuesta', d: 'Cotizamos opciones del catálogo + ideas originales en menos de 48 horas.' },
+  { n: '03', t: 'Producción', d: 'Fabricación y personalización de principio a fin.' },
+  { n: '04', t: 'Entrega', d: 'A tu bodega o directo a tus destinatarios, a donde sea que estén.' },
 ];
 ---
-<section class="section section-dark">
+<section class="section section-dark" data-proc>
   <div class="wrap">
     <div class="section-head">
       <div>
         <span class="eyebrow">Cómo trabajamos</span>
-        <h2>De la idea al <em style="color: var(--orange-500); font-style: italic;">entregable</em>, sin fricciones.</h2>
+        <h2>De la idea <span class="text-accent">al entregable.</span></h2>
       </div>
-      <p>Un proceso probado con +500 clientes que funciona igual para 100 piezas que para 100,000.</p>
+      <p>Un proceso probado que funciona igual para 100 piezas que para 100,000.</p>
     </div>
-    <div class="process-list">
-      {steps.map((s) => (
-        <div class="process-step">
-          <span class="num">{s.n}</span>
-          <h4>{s.t}</h4>
-          <p>{s.d}</p>
-        </div>
-      ))}
+    <div class="proc-rail">
+      <svg class="proc-path" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path
+          d="M20 60 H980"
+          data-proc-line
+          fill="none"
+          stroke="var(--orange-500)"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+      </svg>
+      <div class="process-list">
+        {steps.map((s) => (
+          <div class="process-step" data-proc-step>
+            <span class="num">{s.n}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .proc-rail {
+    position: relative;
+    margin-top: clamp(40px, 6vh, 72px);
+  }
+
+  /* Connecting line sits behind the steps, aligned with the numbers row. */
+  .proc-path {
+    position: absolute;
+    top: -8px;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+  [data-proc-line] {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+
+  /* Keep the steps above the connecting line. */
+  .proc-rail .process-list {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Base hidden state for the scroll stagger (transform/opacity only).
+     Guarded so reduced-motion users see fully-visible steps. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-proc-step] {
+      opacity: 0;
+      transform: translateY(26px);
+      will-change: transform, opacity;
+    }
+  }
+
+  /* Single-column, readable stack on mobile. Overrides the global 2-col rule
+     for this section only (Astro scopes this style). */
+  @media (max-width: 860px) {
+    .proc-rail .process-list {
+      grid-template-columns: 1fr;
+    }
+    .proc-rail .process-step {
+      border-left: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 28px 4px;
+    }
+    .proc-rail .process-step:first-child {
+      border-top: none;
+    }
+    /* The horizontal connecting line has no meaning in a vertical stack. */
+    .proc-path {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
+
+  initMotion();
+
+  const sec = document.querySelector('[data-proc]');
+  const line = sec?.querySelector('[data-proc-line]') as SVGPathElement | null;
+  const steps = sec ? sec.querySelectorAll<HTMLElement>('[data-proc-step]') : [];
+
+  if (sec && !prefersReducedMotion()) {
+    if (line) {
+      gsap.to(line, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sec,
+          start: 'top 70%',
+          end: 'bottom 60%',
+          scrub: true,
+        },
+      });
+    }
+
+    gsap.to(steps, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.12,
+      duration: 0.6,
+      ease: 'power3.out',
+      // Drop the compositor hint once the one-shot reveal has finished.
+      onComplete: () => gsap.set(steps, { willChange: 'auto' }),
+      scrollTrigger: {
+        trigger: sec,
+        start: 'top 70%',
+        once: true,
+      },
+    });
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+      { once: true }
+    );
+  } else {
+    // Reduced motion / no JS guard fallback: line fully drawn, steps visible.
+    if (line) line.setAttribute('stroke-dashoffset', '0');
+    steps.forEach((s) => {
+      s.style.opacity = '1';
+      s.style.transform = 'none';
+    });
+  }
+</script>
