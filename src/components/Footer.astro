@@ -3,6 +3,9 @@ import { BRAND, ROUTES } from '../data/site.ts';
 ---
 <footer class="footer">
   <div class="wrap">
+    <a href={ROUTES.home} class="footer-logo" aria-label="Generando Ideas — inicio">
+      <img src="/brand/logo-horizontal-blanco.svg" alt="Generando Ideas" width="282" height="63" loading="lazy" />
+    </a>
     <div class="footer-brand">
       Vivimos de <em>promocionales.</em>
     </div>
@@ -13,6 +16,9 @@ import { BRAND, ROUTES } from '../data/site.ts';
           {BRAND.phone}<br />
           {BRAND.email}<br />
           CDMX · Sonora · Yucatán · BCS
+        </p>
+        <p class="footer-slogan" aria-label="Your one stop solution">
+          Your one<br />stop<br />solution<span class="r">®</span>
         </p>
       </div>
       <div>
@@ -52,3 +58,29 @@ import { BRAND, ROUTES } from '../data/site.ts';
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-logo {
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .footer-logo img {
+    display: block;
+    width: clamp(200px, 22vw, 282px);
+    height: auto;
+  }
+  /* Eslogan oficial: Bebas Neue, siempre en tres líneas (manual de marca). */
+  .footer-slogan {
+    font-family: var(--font-slogan);
+    font-size: 34px;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--orange-500);
+    margin: 24px 0 0;
+  }
+  .footer-slogan .r {
+    font-size: 0.35em;
+    vertical-align: super;
+  }
+</style>

@@ -68,14 +68,10 @@ import { ROUTES } from '../data/site.ts';
     margin: 0;
   }
 
-  /* Scoped override of the global .text-grad-word so the gradient reads on the
-     blue band (orange-300 to white instead of the on-paper default). */
+  /* Sobre la banda gris oscura el acento va en naranja claro de marca
+     (el manual no contempla degradados). */
   .closing .text-grad-word {
-    background: linear-gradient(100deg, #ffd28a, #fff 65%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: var(--orange-300);
   }
 
   .closing-cta {

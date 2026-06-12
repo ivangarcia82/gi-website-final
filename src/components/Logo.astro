@@ -1,10 +1,25 @@
 ---
-// Brand logo lockup — gradient "G" mark + wordmark.
+// Logotipo oficial Generando Ideas — versión horizontal (manual de marca:
+// "Header principal: Horizontal"). variant="blanco" para fondos oscuros.
+export interface Props {
+  variant?: 'color' | 'blanco';
+}
+const { variant = 'color' } = Astro.props;
+const src = variant === 'blanco' ? '/brand/logo-horizontal-blanco.svg' : '/brand/logo-horizontal.svg';
 ---
-<div class="logo">
-  <div class="logo-mark"><span>G</span></div>
-  <div class="logo-text">
-    <div>Generando Ideas</div>
-    <small>Promocionales · desde 2013</small>
-  </div>
-</div>
+<img
+  class="logo"
+  src={src}
+  alt="Generando Ideas"
+  width="282"
+  height="63"
+/>
+
+<style>
+  /* Mínimo digital del manual: 282 × 60 px para la versión horizontal. */
+  .logo {
+    display: block;
+    width: clamp(200px, 24vw, 282px);
+    height: auto;
+  }
+</style>

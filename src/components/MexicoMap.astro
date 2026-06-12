@@ -7,33 +7,33 @@ const initial = 'cdmx';
   <svg class="map-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa de oficinas de Generando Ideas en México">
     <defs>
       <pattern id="mapdots" width="14" height="14" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1" fill="rgba(11,95,191,0.12)"></circle>
+        <circle cx="2" cy="2" r="1" fill="rgba(99,101,105,0.16)"></circle>
       </pattern>
       <linearGradient id="mapfill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#e4f0fb"></stop>
-        <stop offset="100%" stop-color="#cfe3f7"></stop>
+        <stop offset="0%" stop-color="#f0f0f1"></stop>
+        <stop offset="100%" stop-color="#e2e3e4"></stop>
       </linearGradient>
     </defs>
     <rect width="800" height="500" fill="url(#mapdots)"></rect>
     <path
       d="M 95,215 L 120,175 L 145,165 L 170,155 L 195,145 L 225,135 L 255,130 L 278,130 L 285,155 L 295,180 L 320,175 L 340,180 L 355,195 L 378,210 L 395,225 L 410,245 L 430,270 L 445,295 L 460,320 L 475,345 L 500,360 L 525,370 L 545,378 L 550,395 L 535,405 L 555,415 L 580,405 L 610,390 L 640,380 L 670,378 L 695,380 L 715,390 L 730,400 L 745,398 L 750,385 L 735,370 L 720,360 L 700,352 L 688,345 L 700,340 L 720,335 L 735,325 L 745,310 L 735,305 L 720,315 L 700,318 L 678,312 L 655,308 L 630,305 L 605,305 L 580,308 L 560,305 L 545,295 L 530,275 L 520,255 L 500,240 L 478,228 L 455,215 L 435,200 L 418,185 L 400,170 L 380,155 L 360,140 L 340,128 L 320,120 L 300,115 L 280,115 L 260,110 L 240,105 L 220,100 L 200,98 L 180,100 L 160,108 L 140,118 L 125,128 L 110,142 L 98,158 L 92,175 L 88,195 Z"
-      fill="url(#mapfill)" stroke="#0b5fbf" stroke-width="1.5" stroke-linejoin="round"></path>
+      fill="url(#mapfill)" stroke="#636569" stroke-width="1.5" stroke-linejoin="round"></path>
     <path
       d="M 105,150 L 95,165 L 90,185 L 92,205 L 100,220 L 112,215 L 118,200 L 122,180 L 128,160 L 135,145 L 130,140 L 118,142 Z"
-      fill="url(#mapfill)" stroke="#0b5fbf" stroke-width="1.5" stroke-linejoin="round"></path>
+      fill="url(#mapfill)" stroke="#636569" stroke-width="1.5" stroke-linejoin="round"></path>
     <path
       d="M 688,340 Q 700,320 720,312 Q 735,312 740,325 Q 732,342 718,350 Q 702,352 688,345 Z"
-      fill="url(#mapfill)" stroke="#0b5fbf" stroke-width="1" stroke-linejoin="round" opacity="0.5"></path>
+      fill="url(#mapfill)" stroke="#636569" stroke-width="1" stroke-linejoin="round" opacity="0.5"></path>
 
     {OFFICES.map((o) => (
       <g class:list={['map-pin-group', { active: o.id === initial }]} data-office={o.id} transform={`translate(${o.mx}, ${o.my})`}>
-        <circle class="map-ripple" r="28" fill="rgba(243, 146, 0, 0.15)">
+        <circle class="map-ripple" r="28" fill="rgba(255, 131, 0, 0.15)">
           <animate attributeName="r" from="12" to="32" dur="1.8s" repeatCount="indefinite"></animate>
           <animate attributeName="opacity" from="0.6" to="0" dur="1.8s" repeatCount="indefinite"></animate>
         </circle>
-        <circle class="map-dot" r="14" fill="#f39200" stroke="#101114" stroke-width="3"></circle>
+        <circle class="map-dot" r="14" fill="#ff8300" stroke="#43454a" stroke-width="3"></circle>
         <circle r="5" fill="#fff"></circle>
-        <text y="34" text-anchor="middle" font-size="13" font-family="'Space Grotesk', sans-serif" font-weight="600" fill="#101114">{o.name}</text>
+        <text y="34" text-anchor="middle" font-size="13" font-family="'Gantari', sans-serif" font-weight="600" fill="#43454a">{o.name}</text>
       </g>
     ))}
   </svg>
@@ -51,6 +51,6 @@ const initial = 'cdmx';
     display: block;
   }
   .map-pin-group.active .map-dot {
-    fill: #ff3b8b;
+    fill: #d96f00;
   }
 </style>

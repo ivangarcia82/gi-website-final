@@ -1,28 +1,32 @@
 /* ===== Generando Ideas — Design System ===== */
 /* Ported verbatim from the Claude Design prototype (project/styles.css). */
 :root {
-  /* Brand */
-  --blue-900: #062e5f;
-  --blue-700: #0b5fbf;
-  --blue-500: #1e88e5;
-  --blue-100: #e4f0fb;
-  --orange-700: #e07800;
-  --orange-500: #f39200;
-  --orange-300: #ffb547;
-  --orange-100: #ffe9c7;
-  --magenta: #ff3b8b;
-  --mint: #00c896;
+  /* Brand — Manual de Identidad Corporativa Generando Ideas.
+     Primarios: Naranja Pantone 151 C (#ff8300), Gris Cool Gray 10 C (#636569),
+     blanco. Proporción 70-30: gris para textos/contenido, naranja para
+     destacados y formas específicas. Los tokens "blue-*" históricos se
+     re-mapean al gris de marca para propagar la paleta a todo el sitio. */
+  --blue-900: #43454a;
+  --blue-700: #636569;
+  --blue-500: #85878c;
+  --blue-100: #efeff0;
+  --orange-700: #d96f00;
+  --orange-500: #ff8300;
+  --orange-300: #ffa64d;
+  --orange-100: #ffe6cc;
+  --magenta: #ff8300;
+  --mint: #ffe6cc;
 
-  /* Neutrals (warm) */
-  --ink: #101114;
-  --ink-soft: #2a2c33;
-  --gray-700: #4b4f59;
-  --gray-500: #7a7e88;
-  --gray-300: #d8d9de;
-  --gray-200: #ebecef;
-  --gray-100: #f4f4f6;
-  --paper: #fafaf7;
-  --paper-2: #f1efe8;
+  /* Neutrals (gris de marca) */
+  --ink: #43454a;
+  --ink-soft: #54565b;
+  --gray-700: #636569;
+  --gray-500: #8a8c91;
+  --gray-300: #d9dadc;
+  --gray-200: #e9eaeb;
+  --gray-100: #f4f4f5;
+  --paper: #fafafa;
+  --paper-2: #f1f1f2;
   --white: #ffffff;
 
   --radius-sm: 10px;
@@ -30,13 +34,16 @@
   --radius-lg: 28px;
   --radius-xl: 40px;
 
-  --shadow-sm: 0 2px 8px rgba(6, 46, 95, 0.06);
-  --shadow-md: 0 12px 32px rgba(6, 46, 95, 0.10);
-  --shadow-lg: 0 28px 60px rgba(6, 46, 95, 0.14);
+  --shadow-sm: 0 2px 8px rgba(67, 69, 74, 0.06);
+  --shadow-md: 0 12px 32px rgba(67, 69, 74, 0.10);
+  --shadow-lg: 0 28px 60px rgba(67, 69, 74, 0.14);
 
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'Geist', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Tipografías del manual: Gantari (principal, títulos Semibold/Bold),
+     Open Sans (secundaria, textos), Bebas Neue (exclusiva del eslogan). */
+  --font-display: 'Gantari', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Gantari', ui-sans-serif, system-ui, sans-serif;
+  --font-slogan: 'Bebas Neue', 'Gantari', sans-serif;
 
   --max: 1280px;
 }
@@ -80,7 +87,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 50;
   backdrop-filter: saturate(140%) blur(16px);
   -webkit-backdrop-filter: saturate(140%) blur(16px);
-  background: rgba(250, 250, 247, 0.78);
+  background: rgba(250, 250, 250, 0.78);
   border-bottom: 1px solid var(--gray-200);
 }
 .nav-inner {
@@ -92,37 +99,8 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
   padding: 0 32px;
 }
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-}
-.logo-mark {
-  width: 40px; height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--blue-700) 0%, var(--blue-500) 100%);
-  display: grid; place-items: center;
-  position: relative;
-  overflow: hidden;
-}
-.logo-mark::before {
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at 30% 30%, rgba(243,146,0,0.85), transparent 60%);
-}
-.logo-mark span {
-  position: relative; z-index: 1;
-  color: white; font-family: var(--font-display); font-weight: 700; font-size: 18px;
-}
-.logo-text small {
-  display: block; font-weight: 400; font-size: 11px;
-  color: var(--gray-700); letter-spacing: 0.08em; text-transform: uppercase;
-  font-family: var(--font-mono);
-  margin-top: -2px;
-}
+/* El logotipo es ahora el SVG oficial (ver Logo.astro); aquí solo el contenedor. */
+.logo { display: block; }
 .nav-links {
   display: flex; gap: 4px; align-items: center;
 }
@@ -211,11 +189,9 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
 }
 .hero h1 em {
-  font-style: normal;
-  background: linear-gradient(100deg, var(--orange-500), var(--magenta) 60%, var(--blue-700));
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* Acento de marca: naranja sólido (el manual no contempla degradados). */
   font-style: italic;
+  color: var(--orange-500);
 }
 .hero-sub {
   font-size: 20px;
@@ -648,7 +624,7 @@ a { color: inherit; text-decoration: none; }
 }
 .avatar {
   width: 44px; height: 44px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue-500), var(--orange-500));
+  background: var(--orange-500);
   color: white;
   font-family: var(--font-display);
   font-weight: 700;
@@ -672,7 +648,7 @@ a { color: inherit; text-decoration: none; }
 .map-container {
   position: relative;
   aspect-ratio: 8/5;
-  background: linear-gradient(180deg, #fafaf7, #f1efe8);
+  background: linear-gradient(180deg, var(--paper), var(--paper-2));
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -697,7 +673,7 @@ a { color: inherit; text-decoration: none; }
   animation: pulse 2s ease-out infinite;
 }
 .map-pin.active {
-  background: var(--magenta);
+  background: var(--orange-700);
   transform: translate(-50%, -50%) scale(1.35);
 }
 .map-pin:hover { transform: translate(-50%, -50%) scale(1.2); }
@@ -825,7 +801,7 @@ a { color: inherit; text-decoration: none; }
 /* ===== Lightbox ===== */
 .lightbox {
   position: fixed; inset: 0;
-  background: rgba(16, 17, 20, 0.92);
+  background: rgba(67, 69, 74, 0.92);
   display: grid; place-items: center;
   z-index: 100;
   padding: 40px;
@@ -1075,19 +1051,16 @@ a { color: inherit; text-decoration: none; }
 
 /* ===== Redesign utilities ===== */
 .glass {
-  background: rgba(250, 250, 247, 0.72);
+  background: rgba(250, 250, 250, 0.72);
   backdrop-filter: saturate(150%) blur(18px);
   -webkit-backdrop-filter: saturate(150%) blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), var(--shadow-sm);
 }
-.shadow-diffuse { box-shadow: 0 28px 60px -28px rgba(6, 46, 95, 0.22); }
+.shadow-diffuse { box-shadow: 0 28px 60px -28px rgba(67, 69, 74, 0.22); }
 .section-pad-lg { padding: clamp(96px, 14vh, 180px) 0; }
 .text-grad-word {
-  background: linear-gradient(100deg, var(--orange-500), var(--magenta) 60%, var(--blue-700));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--orange-500);
   font-style: italic;
 }
 
@@ -1102,7 +1075,7 @@ a { color: inherit; text-decoration: none; }
 /* Focus-visible rings (none existed before). Keyboard users get a clear ring;
    mouse users (:focus:not(:focus-visible)) are unaffected. Orange on dark/tinted
    surfaces for contrast. */
-:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--orange-700); outline-offset: 2px; }
 .section-dark :focus-visible,
 .closing :focus-visible,
 .ticker :focus-visible,
