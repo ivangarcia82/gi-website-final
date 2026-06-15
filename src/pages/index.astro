@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import Ticker from '../components/Ticker.astro';
 import ServicesShowcase from '../components/ServicesShowcase.astro';
 import ProcessSection from '../components/ProcessSection.astro';
 import ImpactBand from '../components/ImpactBand.astro';
@@ -19,7 +18,6 @@ const homeCatalogs = [...CATALOGS].sort(() => Math.random() - 0.5).slice(0, 4);
   preloadImage="/bannerupdated.jpg"
 >
   <Hero />
-  <Ticker />
 
   <section class="section">
     <div class="wrap reveal">
