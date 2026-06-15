@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import MexicoMap from '../components/MexicoMap.astro';
-import { OFFICES } from '../data/site.ts';
+import { OFFICES, BUSINESS_HOURS, ROUTES } from '../data/site.ts';
 const initial = 'cdmx';
 
 const phoneMap: Record<string, string> = {
   cdmx: '+52-55-7098-8100',
-  bcs: '+52-612-123-4500',
+  morelos: '+52-55-7098-8100',
   sonora: '+52-662-789-0012',
   yucatan: '+52-999-456-7890',
 };
@@ -34,17 +34,21 @@ const localBusinessGraph = {
   }))
 };
 ---
-<Layout title="Contacto — Generando Ideas" description="Platícanos tu idea. Respondemos en menos de 24 horas hábiles con propuesta, tiempos y presupuesto estimado.">
+<Layout
+  title="Contacto | Productos Promocionales y Regalos Corporativos | Generando Ideas"
+  description="Cuéntanos tu idea. Te ayudamos a encontrar la mejor solución para tu marca y respondemos en menos de 48 horas hábiles."
+>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessGraph)} />
   <div class="page contacto">
     <section class="section" style="padding-bottom: 40px;">
       <div class="wrap">
         <span class="eyebrow reveal">Contacto</span>
         <h1 class="contact-h1 display reveal">
-          Platícanos tu <span class="text-grad-word">idea.</span>
+          Cuéntanos tu <span class="text-grad-word">idea.</span>
         </h1>
         <p class="contact-lead reveal">
-          Respondemos en menos de 24 horas hábiles con propuesta, tiempos y presupuesto estimado.
+          Te ayudaremos a encontrar la mejor solución para tu marca. Respondemos en menos de 48 horas
+          hábiles con una propuesta inicial, tiempos de entrega y presupuesto estimado.
         </p>
       </div>
     </section>
@@ -65,7 +69,8 @@ const localBusinessGraph = {
             </span>
             <h3 class="display success-title">¡Gracias, <span id="success-name"></span>!</h3>
             <p class="success-copy">
-              Recibimos tu mensaje. Un ejecutivo te contactará en menos de 24 horas hábiles con una propuesta inicial.
+              Hemos recibido tu mensaje y uno de nuestros especialistas se pondrá en contacto contigo
+              lo antes posible para dar seguimiento a tu solicitud.
             </p>
           </div>
 
@@ -94,11 +99,11 @@ const localBusinessGraph = {
               <select id="cf-service" name="service">
                 <option value="">Selecciona...</option>
                 <option>Promocionales</option>
-                <option>Fulfillment</option>
-                <option>Proyectos Especiales</option>
-                <option>Talleres de Personalizado</option>
-                <option>Textil y Talabartería</option>
-                <option>Aún no sé</option>
+                <option>Promotional Workshop</option>
+                <option>Print Shop</option>
+                <option>Digital Evolution</option>
+                <option>Importaciones</option>
+                <option>Otro</option>
               </select>
               <span class="err-msg" id="cf-service-err" hidden></span>
             </div>
@@ -124,12 +129,18 @@ const localBusinessGraph = {
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </button>
+              <p class="form-privacy">
+                Tus datos están seguros con nosotros y únicamente serán utilizados para atender tu solicitud.
+                No compartimos tu información con terceros.
+                Consulta nuestro <a href={ROUTES.privacy} target="_blank" rel="noopener noreferrer">aviso de privacidad</a>.
+              </p>
             </div>
           </form>
         </div>
 
         <div class="contact-col">
-          <h2 class="contact-h2 display">Nuestras oficinas</h2>
+          <h2 class="contact-h2 display">Nuestras sucursales</h2>
+          <p class="contact-hours">{BUSINESS_HOURS}</p>
           <div class="offices-wrap" style="grid-template-columns: 1fr; gap: 24px;">
             <MexicoMap />
             <div class="offices-list">
@@ -222,6 +233,22 @@ const localBusinessGraph = {
     .contacto .field select,
     .contacto .field .btn {
       min-height: 48px;
+    }
+    .contacto .form-privacy {
+      margin: 16px 0 0;
+      font-size: 13px;
+      color: var(--gray-700);
+      line-height: 1.5;
+      max-width: 48ch;
+    }
+    .contacto .form-privacy a {
+      color: var(--blue-700);
+      font-weight: 600;
+    }
+    .contacto .contact-hours {
+      margin: -12px 0 20px;
+      font-size: 14px;
+      color: var(--gray-700);
     }
 
     @media (max-width: 860px) {

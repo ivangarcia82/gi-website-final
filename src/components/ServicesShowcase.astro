@@ -49,63 +49,20 @@ const stackedImgs = [IMAGES.img25, IMAGES.img26, IMAGES.img27, IMAGES.img28, IMA
 
 {layout === 'mosaic' && (
   <div class="services-grid">
-    <a class="svc svc-hero" href={ROUTES.service('promo')}>
-      <div class="svc-decoration"></div>
-      <div>
-        <span class="svc-num" style="color: rgba(255,255,255,0.7);">{SERVICES[0].num} — Servicio principal</span>
-        <h3 style="margin-top: 12px;">{SERVICES[0].title}</h3>
-        <p>{SERVICES[0].desc}</p>
-      </div>
-      <span class="svc-cta">
-        Explorar línea
-        <Fragment set:html={arrow} />
-      </span>
-    </a>
-    <a class="svc svc-a" href={ROUTES.service('fulfillment')}>
-      <div class="svc-decoration"></div>
-      <div>
-        <span class="svc-num">{SERVICES[1].num}</span>
-        <h3 style="margin-top: 12px;">{SERVICES[1].title}</h3>
-        <p style="color: rgba(16,17,20,0.7);">{SERVICES[1].desc}</p>
-      </div>
-      <span class="svc-cta">
-        Ver más
-        <Fragment set:html={arrow} />
-      </span>
-    </a>
-    <a class="svc svc-b" href={ROUTES.service('proyectos')}>
-      <div>
-        <span class="svc-num">{SERVICES[2].num}</span>
-        <h3 style="margin-top: 12px;">{SERVICES[2].title}</h3>
-        <p>{SERVICES[2].desc}</p>
-      </div>
-      <span class="svc-cta">
-        Ver más
-        <Fragment set:html={arrow} />
-      </span>
-    </a>
-    <a class="svc svc-c" href={ROUTES.service('talleres')}>
-      <div>
-        <span class="svc-num" style="color: var(--orange-500);">{SERVICES[3].num}</span>
-        <h3 style="margin-top: 12px;">{SERVICES[3].title}</h3>
-        <p>{SERVICES[3].desc}</p>
-      </div>
-      <span class="svc-cta">
-        Ver más
-        <Fragment set:html={arrow} />
-      </span>
-    </a>
-    <a class="svc svc-d" href={ROUTES.service('textiles')}>
-      <div>
-        <span class="svc-num">{SERVICES[4].num}</span>
-        <h3 style="margin-top: 12px;">{SERVICES[4].title}</h3>
-        <p>{SERVICES[4].desc}</p>
-      </div>
-      <span class="svc-cta">
-        Ver más
-        <Fragment set:html={arrow} />
-      </span>
-    </a>
+    {SERVICES.map((s, i) => (
+      <a class:list={['svc', i === 0 ? 'svc-hero' : `svc-${String.fromCharCode(96 + i)}`]} href={ROUTES.service(s.id)}>
+        <div class="svc-decoration"></div>
+        <div>
+          <span class:list={['svc-num', { 'svc-num-hero': i === 0 }]}>{i === 0 ? `${s.num} — Servicio principal` : s.num}</span>
+          <h3 style="margin-top: 12px;">{s.title}</h3>
+          <p style={i === 1 ? 'color: rgba(16,17,20,0.7);' : undefined}>{s.desc}</p>
+        </div>
+        <span class="svc-cta">
+          {i === 0 ? 'Explorar línea' : 'Ver más'}
+          <Fragment set:html={arrow} />
+        </span>
+      </a>
+    ))}
   </div>
 )}
 
@@ -134,7 +91,9 @@ const stackedImgs = [IMAGES.img25, IMAGES.img26, IMAGES.img27, IMAGES.img28, IMA
 )}
 
 <style>
-  /* ===== Pinned layout — horizontal-pan service stages ===== */
+  .svc-num-hero {
+    color: rgba(255, 255, 255, 0.7);
+  }
   .svc-pin { position: relative; }
   .svc-pin .pin-viewport {
     height: 100dvh;

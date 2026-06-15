@@ -1,5 +1,5 @@
 ---
-import { BRAND, ROUTES } from '../data/site.ts';
+import { BRAND, ROUTES, SERVICES, SOCIAL_LINKS } from '../data/site.ts';
 ---
 <footer class="footer">
   <div class="wrap">
@@ -15,8 +15,14 @@ import { BRAND, ROUTES } from '../data/site.ts';
         <p style="color: var(--gray-300); font-size: 14px; line-height: 1.6; margin: 0;">
           {BRAND.phone}<br />
           {BRAND.email}<br />
-          CDMX · Sonora · Yucatán · BCS
+          CDMX · Morelos · Sonora · Yucatán
         </p>
+        <div class="footer-social">
+          <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        </div>
         <p class="footer-slogan" aria-label="Your one stop solution">
           Your one<br />stop<br />solution<span class="r">®</span>
         </p>
@@ -33,11 +39,9 @@ import { BRAND, ROUTES } from '../data/site.ts';
       <div>
         <h3>Servicios</h3>
         <ul>
-          <li><a href={ROUTES.services}>Promocionales</a></li>
-          <li><a href={ROUTES.services}>Fulfillment</a></li>
-          <li><a href={ROUTES.services}>Proyectos Especiales</a></li>
-          <li><a href={ROUTES.services}>Talleres</a></li>
-          <li><a href={ROUTES.services}>Textiles</a></li>
+          {SERVICES.map((s) => (
+            <li><a href={ROUTES.service(s.id)}>{s.title}</a></li>
+          ))}
         </ul>
       </div>
       <div>
@@ -46,15 +50,16 @@ import { BRAND, ROUTES } from '../data/site.ts';
           <li><a href={ROUTES.catalog}>Catálogos</a></li>
           <li><a href={ROUTES.blog}>Blog</a></li>
           <li><a href={ROUTES.careers}>Bolsa de trabajo</a></li>
-          <li><a>e-Store</a></li>
-          <li><a>Responsabilidad social</a></li>
-          <li><a>Aviso de privacidad</a></li>
+          <li><a href="https://api.generandoideas.com" target="_blank" rel="noopener noreferrer">e-Store</a></li>
+          <li>
+            <a href={ROUTES.privacy} target="_blank" rel="noopener noreferrer">Aviso de privacidad</a>
+          </li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Generando Ideas · 100% Empresa Mexicana</span>
-      <span>Hecho con ideas · <svg width="7" height="7" viewBox="0 0 8 8" aria-hidden="true" style="display:inline-block;vertical-align:middle;"><circle cx="4" cy="4" r="4" fill="var(--orange-500)" /></svg> MX</span>
+      <span>© 2026 Generando Ideas. Todos los derechos reservados.</span>
+      <span>100% Empresa Mexicana · <svg width="7" height="7" viewBox="0 0 8 8" aria-hidden="true" style="display:inline-block;vertical-align:middle;"><circle cx="4" cy="4" r="4" fill="var(--orange-500)" /></svg> MX</span>
     </div>
   </div>
 </footer>
@@ -69,7 +74,20 @@ import { BRAND, ROUTES } from '../data/site.ts';
     width: clamp(200px, 22vw, 282px);
     height: auto;
   }
-  /* Eslogan oficial: Bebas Neue, siempre en tres líneas (manual de marca). */
+  .footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    margin-top: 16px;
+  }
+  .footer-social a {
+    font-size: 13px;
+    color: var(--gray-300);
+    text-decoration: none;
+  }
+  .footer-social a:hover {
+    color: #fff;
+  }
   .footer-slogan {
     font-family: var(--font-slogan);
     font-size: 34px;

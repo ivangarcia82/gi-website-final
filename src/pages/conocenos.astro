@@ -13,7 +13,10 @@ const values = [
   { n: '06', t: 'Servicio', d: 'Tu éxito es nuestro éxito. Estamos disponibles cuando nos necesitas.' },
 ];
 ---
-<Layout title="Conócenos — Generando Ideas" description="Somos una empresa 100% mexicana que vive, respira y crea promocionales desde 2013. Cuatro oficinas, una sola ventanilla.">
+<Layout
+  title="Conócenos | Generando Ideas - Expertos en Artículos Promocionales y Branding"
+  description="Conoce Generando Ideas, empresa con más de 12 años de experiencia en artículos promocionales, regalos corporativos y soluciones de branding para fortalecer tu marca."
+>
   <div class="page conocenos">
     <section class="section about-hero">
       <div class="wrap">
@@ -40,9 +43,9 @@ const values = [
             objetivos — y que convierta cada artículo en una extensión de su identidad.
           </p>
           <p>
-            Hoy operamos cuatro oficinas en México (CDMX, Sonora, Yucatán y Baja California Sur),
-            producimos localmente, y ofrecemos una ventanilla única: promocionales, fulfillment,
-            proyectos especiales, talleres y manufactura textil y de talabartería.
+            Hoy operamos cuatro sucursales en México (CDMX, Yucatán, Morelos y Sonora),
+            ofreciendo alternativas únicas: promocionales, Promotional Workshop, Print Shop,
+            Digital Evolution e importaciones.
           </p>
         </div>
       </div>
@@ -60,9 +63,9 @@ const values = [
         </article>
         <article class="mv-card mv-ink reveal">
           <span class="eyebrow">Visión</span>
-          <h3 class="display mv-h">Referente LATAM</h3>
+          <h3 class="display mv-h">Referente en México</h3>
           <p>
-            Convertirnos en el referente de artículos promocionales en Latinoamérica, reconocidos
+            Convertirnos en el referente de artículos promocionales en México, reconocidos
             por innovación, calidad y el impacto medible que generamos para nuestros clientes.
           </p>
         </article>
@@ -70,6 +73,37 @@ const values = [
     </section>
 
     <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Por qué nosotros</span>
+            <h2 class="display values-h">
+              Lo que nos <span class="text-accent">diferencia.</span>
+            </h2>
+          </div>
+        </div>
+        <div class="diff-grid reveal">
+          <article class="diff-card">
+            <h3 class="value-title">Más de 12 años de experiencia</h3>
+            <p>Ayudamos a empresas a fortalecer su marca mediante soluciones promocionales efectivas y adaptadas a sus objetivos.</p>
+          </article>
+          <article class="diff-card">
+            <h3 class="value-title">Amplio catálogo de soluciones</h3>
+            <p>Ofrecemos una amplia variedad de artículos promocionales, regalos corporativos y productos para campañas, eventos y reconocimientos.</p>
+          </article>
+          <article class="diff-card">
+            <h3 class="value-title">Personalización y branding</h3>
+            <p>Transformamos cada producto en una herramienta de comunicación, aplicando técnicas de personalización que potencian la identidad y visibilidad de tu marca.</p>
+          </article>
+          <article class="diff-card">
+            <h3 class="value-title">Compromiso en cada proyecto</h3>
+            <p>Brindamos acompañamiento personalizado, atención cercana y seguimiento continuo para garantizar calidad, cumplimiento y satisfacción en cada entrega.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
       <div class="wrap">
         <div class="section-head">
           <div>
@@ -216,6 +250,25 @@ const values = [
     pointer-events: none;
   }
 
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .diff-card {
+    padding: 28px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    background: #fff;
+    min-width: 0;
+  }
+  .diff-card p {
+    color: var(--gray-700);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 16px;
+  }
+
   /* ===== Values ===== */
   .values-h {
     font-size: clamp(40px, 5.4vw, 64px);
@@ -298,6 +351,9 @@ const values = [
       font-size: 16px;
     }
     .mv-grid {
+      grid-template-columns: 1fr;
+    }
+    .diff-grid {
       grid-template-columns: 1fr;
     }
     .about-cta .btn-lg {

@@ -89,6 +89,7 @@ export const ROUTES = {
   blog: '/blog',
   contact: '/contacto',
   careers: '/bolsa-de-trabajo',
+  privacy: '/legal/aviso-de-privacidad-esi-2026.pdf',
   service: (id: string) => `/servicios/${id}`,
 };
 
@@ -100,20 +101,22 @@ export interface Catalog {
   name: string;
   tag: string;
   img: string;
+  flipbook: string;
 }
 
 export const CATALOGS: Catalog[] = [
-  { id: 'maxema', name: 'Maxema', tag: 'Premium', img: IMAGES.img0 },
-  { id: 'collection', name: 'Collection Brands', tag: 'Colección 2026', img: IMAGES.img1 },
-  { id: 'mundial', name: 'Mundial 2026', tag: 'Edición Especial', img: IMAGES.img2 },
-  { id: 'nino', name: 'Día del Niño', tag: 'Estacional', img: IMAGES.img3 },
-  { id: 'mama', name: 'Mamá', tag: 'Estacional', img: IMAGES.img4 },
-  { id: 'gray', name: 'Gray', tag: 'Clásicos', img: IMAGES.img5 },
-  { id: 'blue', name: 'Blue', tag: 'Clásicos', img: IMAGES.img6 },
-  { id: 'green', name: 'Green', tag: 'Eco', img: IMAGES.img7 },
-  { id: 'black', name: 'Black', tag: 'Ejecutivo', img: IMAGES.img8 },
-  { id: 'agendas', name: 'Agendas', tag: 'Corporativo', img: IMAGES.img9 },
-  { id: 'textiles', name: 'Textiles', tag: 'Uniformes', img: IMAGES.img10 },
+  { id: 'maxema', name: 'Maxema', tag: 'Premium', img: '/catalogos/37_maxema.jpg', flipbook: 'https://online.flippingbook.com/view/30788643/' },
+  { id: 'collection', name: 'Collection Brands', tag: 'Premium', img: '/catalogos/22_brands.jpg', flipbook: 'https://online.flippingbook.com/view/729100962/' },
+  { id: 'pride', name: 'Pride', tag: 'Temporalidad', img: '/catalogos/41_pride.jpg', flipbook: 'https://online.flippingbook.com/view/378868073/' },
+  { id: 'verano', name: 'Verano', tag: 'Temporalidad', img: '/catalogos/42_verano.jpg', flipbook: 'https://online.flippingbook.com/view/685265373/' },
+  { id: 'padre', name: 'Día del Padre', tag: 'Temporalidad', img: '/catalogos/40_papa.jpg', flipbook: 'https://online.flippingbook.com/view/1013412702/' },
+  { id: 'mundial', name: 'Mundial 2026', tag: 'Temporalidad', img: '/catalogos/34_mundial.jpg', flipbook: 'https://online.flippingbook.com/view/50161211/' },
+  { id: 'gray', name: 'Gray', tag: 'De línea', img: '/catalogos/26_gray.jpg', flipbook: 'https://online.flippingbook.com/view/853887/' },
+  { id: 'blue', name: 'Blue', tag: 'De línea', img: '/catalogos/19_blue.jpg', flipbook: 'https://online.flippingbook.com/view/218226174/' },
+  { id: 'green', name: 'Green', tag: 'De línea', img: '/catalogos/01_green.jpg', flipbook: 'https://online.flippingbook.com/view/531357/' },
+  { id: 'black', name: 'Black', tag: 'De línea', img: '/catalogos/18_black.jpg', flipbook: 'https://online.flippingbook.com/view/858261604/' },
+  { id: 'agendas', name: 'Agendas', tag: 'De línea', img: '/catalogos/13_agendas.jpg', flipbook: 'https://online.flippingbook.com/view/128628634/' },
+  { id: 'textiles', name: 'Textiles', tag: 'De línea', img: '/catalogos/07_textiles.png', flipbook: 'https://online.flippingbook.com/view/373069594/' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -128,11 +131,11 @@ export interface Service {
 }
 
 export const SERVICES: Service[] = [
-  { id: 'promo', num: '01', title: 'Promocionales', desc: 'El core de nuestro negocio: miles de productos personalizables para amplificar tu marca — desde plumas y tazas hasta gadgets tech.', tone: 'hero' },
-  { id: 'fulfillment', num: '02', title: 'Fulfillment', desc: 'Almacenamiento, empaque y envío a la medida. Tú enfócate en tu marca, nosotros en logística.', tone: 'a' },
-  { id: 'proyectos', num: '03', title: 'Proyectos Especiales', desc: 'Desarrollos 100% a medida para campañas únicas. Si te lo imaginas, lo producimos.', tone: 'b' },
-  { id: 'talleres', num: '04', title: 'Talleres de Personalizado', desc: 'Experiencias en vivo: eventos donde tus clientes personalizan su producto en el momento.', tone: 'c' },
-  { id: 'textiles', num: '05', title: 'Textil y Talabartería', desc: 'Fabricación propia de uniformes, bolsos y accesorios en piel y tela, con control total de calidad.', tone: 'd' },
+  { id: 'promo', num: '01', title: 'Promocionales', desc: 'Amplio portafolio de productos promocionales diseñados para incrementar la visibilidad de tu marca.', tone: 'hero' },
+  { id: 'print-shop', num: '02', title: 'Print Shop', desc: 'Soluciones de decorado de alta calidad para materiales promocionales y corporativos.', tone: 'a' },
+  { id: 'promotional-workshop', num: '03', title: 'Promotional Workshop', desc: 'Showrooms interactivos y demostraciones en vivo para vivir la experiencia de tu marca.', tone: 'b' },
+  { id: 'digital-evolution', num: '04', title: 'Digital Evolution', desc: 'Desarrollo e integración de APIs para conectar sistemas y optimizar procesos.', tone: 'c' },
+  { id: 'importaciones', num: '05', title: 'Importaciones', desc: 'Gestión integral de importaciones para proyectos personalizados y a gran escala.', tone: 'd' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -192,11 +195,20 @@ export interface Office {
 }
 
 export const OFFICES: Office[] = [
-  { id: 'cdmx', name: 'CDMX', state: 'Ciudad de México', address: 'Av. Insurgentes Sur 1234, Col. Del Valle', phone: '(55) 7098 8100', mx: 470, my: 290 },
-  { id: 'bcs', name: 'BCS', state: 'La Paz, Baja California Sur', address: 'Blvd. Forjadores 450', phone: '(612) 123 4500', mx: 150, my: 210 },
-  { id: 'sonora', name: 'Sonora', state: 'Hermosillo, Sonora', address: 'Blvd. Navarrete 201, Col. Valle Verde', phone: '(662) 789 0012', mx: 255, my: 160 },
-  { id: 'yucatan', name: 'Yucatán', state: 'Mérida, Yucatán', address: 'Calle 60 Norte 299-E, Col. Residencial', phone: '(999) 456 7890', mx: 680, my: 310 },
+  { id: 'cdmx', name: 'CDMX', state: 'Ciudad de México', address: 'Cda. Antonio Maceo 67, Col. Escandón I Secc, Alc. Miguel Hidalgo, CP 11800', phone: '(55) 7098 8100', mx: 605, my: 672 },
+  { id: 'morelos', name: 'Morelos', state: 'Cuernavaca, Morelos', address: 'Morelos', phone: '(55) 7098 8100', mx: 590, my: 712 },
+  { id: 'sonora', name: 'Sonora', state: 'Hermosillo, Sonora', address: 'Blvd. Navarrete 201, Col. Valle Verde', phone: '(662) 789 0012', mx: 210, my: 300 },
+  { id: 'yucatan', name: 'Yucatán', state: 'Mérida, Yucatán', address: 'Calle 60 Norte 299-E, Col. Residencial', phone: '(999) 456 7890', mx: 920, my: 612 },
 ];
+
+export const SOCIAL_LINKS = {
+  instagram: 'https://www.instagram.com/generandoideasgi/',
+  facebook: 'https://www.facebook.com/generandoideasesi/',
+  linkedin: 'https://www.linkedin.com/company/generandoideasesi/',
+  whatsapp: 'https://wa.me/message/EJKZVVRVSYWLD1',
+};
+
+export const BUSINESS_HOURS = 'Lunes a viernes · 8:30 a 18:00 h';
 
 // ---------------------------------------------------------------------------
 // Blog posts
@@ -240,83 +252,95 @@ export interface ServiceDetail {
   color: string;
   features: ServiceFeature[];
   examples: string[];
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   promo: {
     num: '01',
     title: 'Promocionales',
-    tagline: 'Miles de productos, un solo aliado.',
-    hero: IMAGES.img36,
-    intro: 'El corazón de Generando Ideas. Desde artículos básicos hasta ediciones especiales, ofrecemos la curaduría más amplia de promocionales en México — todos personalizables, todos con control de calidad propio.',
+    tagline: 'Productos que convierten marcas en experiencias.',
+    hero: 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1400&q=80',
+    intro: 'Ofrecemos un amplio portafolio de artículos promocionales para fortalecer la conexión entre tu marca y tu audiencia. Seleccionamos soluciones innovadoras, funcionales y alineadas con los objetivos de cada campaña.',
     color: 'var(--orange-500)',
     features: [
-      { t: 'Catálogo de +5,000 productos', d: 'Desde plumas hasta drones. Si existe, probablemente lo tenemos o lo producimos.' },
-      { t: 'Pedidos desde 50 piezas', d: 'No te obligamos a órdenes gigantes. Empezamos donde empiezas tú.' },
-      { t: 'Técnicas de decorado propias', d: 'Serigrafía, bordado, sublimación, láser, UV digital — todo bajo un solo techo.' },
-      { t: 'Producción en México', d: 'Menor tiempo de entrega, menor huella de carbono, mayor control.' },
+      { t: 'Amplio catálogo', d: 'Miles de opciones para diferentes industrias y objetivos.' },
+      { t: 'Personalización', d: 'Técnicas de decorado adaptadas a cada producto.' },
+      { t: 'Asesoría especializada', d: 'Recomendaciones basadas en tu estrategia de marca.' },
+      { t: 'Soluciones integrales', d: 'Desde la selección hasta la entrega de los productos.' },
     ],
-    examples: ['Plumas metálicas', 'Tazas cerámicas', 'Mochilas eco', 'Power banks', 'Agendas piel', 'Gorras bordadas'],
+    examples: ['Tecnología', 'Oficina', 'Bebidas', 'Bolsas y textiles', 'Regalos corporativos'],
+    seoTitle: 'Productos Promocionales para Empresas | Generando Ideas',
+    seoDescription: 'Artículos promocionales personalizados para campañas, eventos y estrategias de branding que generan impacto.',
   },
-  fulfillment: {
+  'print-shop': {
     num: '02',
-    title: 'Fulfillment',
-    tagline: 'Tú diseñas. Nosotros entregamos.',
-    hero: IMAGES.img37,
-    intro: 'Almacenamiento, empaque, pick & pack, y envío a escala nacional. Perfecto para programas de loyalty, onboardings masivos y kits corporativos recurrentes.',
-    color: 'var(--blue-700)',
+    title: 'Print Shop',
+    tagline: 'Decorados que dan vida a tus ideas.',
+    hero: 'https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=1400&q=80',
+    intro: 'Convertimos conceptos en materiales impresos de alta calidad. Desde piezas promocionales hasta comunicación corporativa, ofrecemos soluciones de impresión que reflejan la identidad de tu marca con acabados profesionales y atención al detalle.',
+    color: 'var(--orange-500)',
     features: [
-      { t: 'Bodegas en 4 puntos de MX', d: 'CDMX, Sonora, Yucatán y BCS — reduce tiempos y costos de envío.' },
-      { t: 'Integración con tus sistemas', d: 'APIs para que tu plataforma dispare órdenes automáticamente.' },
-      { t: 'Dashboard en tiempo real', d: 'Inventario, envíos en tránsito y reportes, 24/7.' },
-      { t: 'Kits personalizados', d: 'Onboarding kits, welcome packs, rewards — armados a tu especificación.' },
+      { t: 'Decorado comercial', d: 'Producción de materiales para campañas y comunicación corporativa.' },
+      { t: 'Acabados especiales', d: 'Opciones que agregan valor y diferenciación a cada proyecto.' },
+      { t: 'Personalización', d: 'Adaptamos cada pieza a las necesidades de tu marca.' },
+      { t: 'Producción integral', d: 'Acompañamiento desde la preparación hasta la entrega final.' },
     ],
-    examples: ['Kits onboarding', 'Programas loyalty', 'Welcome packs', 'Rewards fulfillment', 'Gifting B2B'],
+    examples: ['Folletos', 'Packaging', 'Material POP', 'Material corporativo'],
+    seoTitle: 'Soluciones de Impresión para Empresas | Generando Ideas',
+    seoDescription: 'Impresión comercial, materiales promocionales y acabados especiales para fortalecer la imagen de tu marca.',
   },
-  proyectos: {
+  'promotional-workshop': {
     num: '03',
-    title: 'Proyectos Especiales',
-    tagline: 'Si te lo imaginas, lo producimos.',
-    hero: IMAGES.img38,
-    intro: 'Para cuando el catálogo no basta. Desarrollamos productos 100% a medida: empaques, piezas únicas, ediciones limitadas, activaciones especiales.',
-    color: 'var(--magenta)',
+    title: 'Promotional Workshop',
+    tagline: 'Experiencias que conectan marcas y personas.',
+    hero: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80',
+    intro: 'Transformamos la presentación de productos promocionales en una experiencia interactiva. A través de showrooms, demostraciones en vivo y recorridos especializados, acercamos a tus colaboradores y clientes al universo de posibilidades que tu marca puede crear.',
+    color: 'var(--orange-500)',
     features: [
-      { t: 'Diseño industrial a medida', d: 'Co-creamos producto desde el sketch hasta la producción.' },
-      { t: 'Prototipado rápido', d: 'Impresión 3D, CNC y muestras físicas en menos de 2 semanas.' },
-      { t: 'Materiales exóticos', d: 'Maderas, metales, textiles técnicos, acabados únicos.' },
-      { t: 'Producción boutique', d: 'Tiradas pequeñas con calidad de alta gama.' },
+      { t: 'Showrooms personalizados', d: 'Experiencias diseñadas según las necesidades y objetivos de cada cliente.' },
+      { t: 'Activaciones en sitio', d: 'Llevamos la experiencia directamente a tus oficinas o eventos corporativos.' },
+      { t: 'Personalización en vivo', d: 'Demostraciones con maquinaria de decorado para conocer el proceso en tiempo real.' },
+      { t: 'Recorridos especializados', d: 'Visitas guiadas por nuestros talleres para conocer materiales y técnicas.' },
     ],
-    examples: ['Empaques a medida', 'Ediciones limitadas', 'Activaciones BTL', 'Corporate gifting premium'],
+    examples: ['Showroom corporativo', 'Activaciones internas', 'Eventos para colaboradores', 'Demostraciones de personalización'],
+    seoTitle: 'Showrooms y Experiencias de Marca | Generando Ideas',
+    seoDescription: 'Creamos showrooms interactivos, activaciones y demostraciones en vivo para acercar tus productos promocionales a clientes y colaboradores.',
   },
-  talleres: {
+  'digital-evolution': {
     num: '04',
-    title: 'Talleres de Personalizado',
-    tagline: 'Experiencias en vivo, marca en acción.',
-    hero: IMAGES.img39,
-    intro: 'Eventos donde tus clientes, empleados o prospectos personalizan su producto en el momento. Serigrafía en vivo, bordado in-situ, grabado láser. Amplifica el engagement de tu activación.',
-    color: 'var(--mint)',
+    title: 'Digital Evolution',
+    tagline: 'Conectamos sistemas, impulsamos resultados.',
+    hero: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1400&q=80',
+    intro: 'Desarrollamos soluciones tecnológicas mediante API e integraciones que optimizan procesos, automatizan flujos de trabajo y mejoran la comunicación entre plataformas para impulsar la transformación digital de las empresas.',
+    color: 'var(--orange-500)',
     features: [
-      { t: 'Equipo portátil profesional', d: 'Llevamos la producción completa a tu evento, trade show o pop-up.' },
-      { t: 'Operadores capacitados', d: 'Nuestro equipo — no tú — opera todo el día.' },
-      { t: 'Materiales incluidos', d: 'Productos, tintas, hilos, paneles. Tú solo pones el lugar.' },
-      { t: 'Branding total', d: 'Diseñamos stand, señalética y brief del operador a tu marca.' },
+      { t: 'Desarrollo de API', d: 'Soluciones personalizadas para conectar aplicaciones y plataformas.' },
+      { t: 'Integraciones', d: 'Unificamos sistemas para optimizar el flujo de información.' },
+      { t: 'Automatización', d: 'Reducimos tareas manuales y mejoramos la eficiencia operativa.' },
+      { t: 'Escalabilidad', d: 'Soluciones preparadas para crecer junto con tu negocio.' },
     ],
-    examples: ['Trade shows', 'Pop-up stores', 'Activaciones BTL', 'Team building', 'Eventos corporativos'],
+    examples: ['Tiendas personalizadas', 'Consulta de catálogo', 'E-commerce B2B'],
+    seoTitle: 'Desarrollo de API e Integraciones | Generando Ideas',
+    seoDescription: 'Desarrollamos API e integraciones para automatizar procesos, conectar sistemas y acelerar la transformación digital de tu empresa.',
   },
-  textiles: {
+  importaciones: {
     num: '05',
-    title: 'Textil y Talabartería',
-    tagline: 'Fabricación propia, calidad garantizada.',
-    hero: IMAGES.img40,
-    intro: 'Producimos uniformes, bolsos, mochilas y accesorios en piel y tela desde nuestro taller. Control total del proceso: patronaje, corte, costura, acabado y QC.',
-    color: 'var(--blue-700)',
+    title: 'Importaciones',
+    tagline: 'Soluciones globales para proyectos únicos.',
+    hero: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?w=1400&q=80',
+    intro: 'Gestionamos importaciones de productos personalizados y desarrollos especiales para satisfacer necesidades específicas. Supervisamos cada etapa del proceso para garantizar calidad, cumplimiento y entregas oportunas.',
+    color: 'var(--orange-500)',
     features: [
-      { t: 'Taller propio en MX', d: 'Patronistas, cortadores y costureras con 10+ años de experiencia.' },
-      { t: 'Pedidos desde 100 piezas', d: 'Mínimos accesibles incluso para marcas pequeñas.' },
-      { t: 'Piel auténtica y vegana', d: 'Trabajamos cuero, piel sintética, lona, nylon 1680D y más.' },
-      { t: 'Tech packs a medida', d: 'Entregamos fichas técnicas completas para cada diseño.' },
+      { t: 'Búsqueda internacional', d: 'Localizamos productos de acuerdo con tus requerimientos.' },
+      { t: 'Desarrollo a medida', d: 'Creamos productos exclusivos para tu marca.' },
+      { t: 'Gestión logística', d: 'Coordinamos el proceso de importación de principio a fin.' },
+      { t: 'Control de calidad', d: 'Verificamos cada detalle antes de la entrega.' },
     ],
-    examples: ['Uniformes corporativos', 'Mochilas a medida', 'Portafolios en piel', 'Bolsos de mano', 'Accesorios de viaje'],
+    examples: ['Productos exclusivos', 'Kits corporativos', 'Merchandising personalizado', 'Desarrollos especiales', 'Producción internacional'],
+    seoTitle: 'Importación de Productos Promocionales | Generando Ideas',
+    seoDescription: 'Gestionamos importaciones y desarrollos especiales para ofrecer productos personalizados con alcance global.',
   },
 };
 
