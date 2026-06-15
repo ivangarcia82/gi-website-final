@@ -1,12 +1,18 @@
 ---
-import { CATALOGS, ROUTES } from '../data/site.ts';
-// Home preview: each card links to the full catalog page.
+import { CATALOGS } from '../data/site.ts';
+// Home preview: each card opens its catalog flipbook directly in a new tab.
 ---
 <div data-carousel data-scroll="320">
   <div class="carousel">
     <div class="carousel-track" data-carousel-track>
       {CATALOGS.map((c) => (
-        <a class="cat-card" href={ROUTES.catalog}>
+        <a
+          class="cat-card"
+          href={c.flipbook}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Abrir el catálogo ${c.name} en una nueva pestaña`}
+        >
           <div class="cat-card-img">
             <img src={c.img} alt={c.name} loading="lazy" />
           </div>

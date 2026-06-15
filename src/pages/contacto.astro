@@ -6,7 +6,6 @@ const initial = 'cdmx';
 
 const phoneMap: Record<string, string> = {
   cdmx: '+52-55-7098-8100',
-  morelos: '+52-55-7098-8100',
   sonora: '+52-662-789-0012',
   yucatan: '+52-999-456-7890',
 };
@@ -57,7 +56,7 @@ const localBusinessGraph = {
       <div class="wrap contact-grid reveal">
         <div class="contact-col">
           <h2 class="contact-h2 display">
-            Cuéntanos de tu proyecto
+            Cuéntanos tu idea
           </h2>
 
           <!-- Success message (hidden until valid submit) -->
@@ -85,14 +84,20 @@ const localBusinessGraph = {
               <input id="cf-company" name="company" placeholder="Grupo Lumen" autocomplete="organization" />
               <span class="err-msg" id="cf-company-err" hidden></span>
             </div>
+            <div class="field" data-field="role">
+              <label for="cf-role">Cargo / Área *</label>
+              <input id="cf-role" name="role" placeholder="Marketing" autocomplete="organization-title" />
+              <span class="err-msg" id="cf-role-err" hidden></span>
+            </div>
             <div class="field" data-field="email">
-              <label for="cf-email">Email *</label>
+              <label for="cf-email">Correo *</label>
               <input id="cf-email" type="email" name="email" placeholder="mariana@grupolumen.mx" autocomplete="email" />
               <span class="err-msg" id="cf-email-err" hidden></span>
             </div>
             <div class="field" data-field="phone">
-              <label for="cf-phone">Teléfono</label>
+              <label for="cf-phone">Celular *</label>
               <input id="cf-phone" name="phone" type="tel" placeholder="+52 55 1234 5678" autocomplete="tel" />
+              <span class="err-msg" id="cf-phone-err" hidden></span>
             </div>
             <div class="field" data-field="service">
               <label for="cf-service">Servicio *</label>
@@ -107,18 +112,19 @@ const localBusinessGraph = {
               </select>
               <span class="err-msg" id="cf-service-err" hidden></span>
             </div>
-            <div class="field" data-field="budget">
-              <label for="cf-budget">Presupuesto aprox.</label>
-              <select id="cf-budget" name="budget">
-                <option value="">Opcional</option>
-                <option>Menos de $25,000 MXN</option>
-                <option>$25,000 – $100,000</option>
-                <option>$100,000 – $500,000</option>
-                <option>Más de $500,000</option>
+            <div class="field" data-field="source">
+              <label for="cf-source">¿Cómo llegó con nosotros? *</label>
+              <select id="cf-source" name="source">
+                <option value="">Selecciona...</option>
+                <option>Recomendación</option>
+                <option>Internet</option>
+                <option>Redes Sociales</option>
+                <option>Otro</option>
               </select>
+              <span class="err-msg" id="cf-source-err" hidden></span>
             </div>
             <div class="field full" data-field="message">
-              <label for="cf-message">Cuéntanos sobre tu proyecto *</label>
+              <label for="cf-message">Mensaje *</label>
               <textarea id="cf-message" name="message" placeholder="Volumen estimado, fechas clave, objetivo de la campaña..."></textarea>
               <span class="err-msg" id="cf-message-err" hidden></span>
             </div>
@@ -144,7 +150,7 @@ const localBusinessGraph = {
           <div class="offices-wrap" style="grid-template-columns: 1fr; gap: 24px;">
             <MexicoMap />
             <div class="offices-list">
-              {OFFICES.map((o) => (
+              {OFFICES.filter((o) => o.id === 'cdmx').map((o) => (
                 <div class:list={['office', { active: o.id === initial }]} data-office={o.id}>
                   <h3 class="office-name">{o.name}</h3>
                   <p>{o.state}</p>
@@ -336,18 +342,24 @@ const localBusinessGraph = {
       const name = get('name');
       const email = get('email');
       const company = get('company');
+      const role = get('role');
+      const phone = get('phone');
       const service = get('service');
+      const source = get('source');
       const message = get('message');
 
       const errors: Record<string, string> = {};
       if (!name) errors.name = 'Nombre requerido';
-      if (!email) errors.email = 'Email requerido';
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Email inválido';
       if (!company) errors.company = 'Empresa requerida';
+      if (!role) errors.role = 'Cargo o área requerido';
+      if (!email) errors.email = 'Correo requerido';
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Correo inválido';
+      if (!phone) errors.phone = 'Celular requerido';
       if (!service) errors.service = 'Selecciona un servicio';
+      if (!source) errors.source = 'Selecciona una opción';
       if (!message || message.length < 10) errors.message = 'Cuéntanos un poco más (min 10 caracteres)';
 
-      ['name', 'email', 'company', 'service', 'message'].forEach((f) => setError(f, errors[f] ?? null));
+      ['name', 'company', 'role', 'email', 'phone', 'service', 'source', 'message'].forEach((f) => setError(f, errors[f] ?? null));
 
       if (Object.keys(errors).length === 0) {
         if (successName) successName.textContent = name.split(' ')[0];

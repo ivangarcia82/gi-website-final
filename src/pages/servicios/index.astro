@@ -32,12 +32,20 @@ const offerCatalogJsonLd = {
           Servicios que transforman ideas en <span class="text-grad-word">experiencias</span> de marca.
         </h1>
         <div class="svc-hero-foot">
-          <p class="svc-lede svc-rev" data-svc-rev>
-            En Generando Ideas convertimos objetivos de negocio en soluciones promocionales que generan impacto.
-            Desde la selección estratégica de productos y el desarrollo de campañas hasta la personalización y entrega,
-            acompañamos a nuestros clientes en cada etapa del proceso. Nuestro enfoque combina creatividad, experiencia
-            y atención al detalle para crear experiencias memorables que fortalecen la conexión entre las marcas y sus audiencias.
-          </p>
+          <div class="svc-lede svc-rev" data-svc-rev>
+            <p>
+              En Generando Ideas convertimos objetivos de negocio en soluciones promocionales
+              que generan impacto.
+            </p>
+            <p>
+              Desde la selección estratégica de productos y el desarrollo de campañas hasta la
+              personalización y entrega, acompañamos a nuestros clientes en cada etapa del proceso.
+            </p>
+            <p>
+              Nuestro enfoque combina creatividad, experiencia y atención al detalle para crear
+              experiencias memorables que fortalecen la conexión entre las marcas y sus audiencias.
+            </p>
+          </div>
           <ul class="svc-index-list svc-rev" data-svc-rev aria-label="Índice de servicios">
             {SERVICES.map((s) => (
               <li>
@@ -102,7 +110,12 @@ const offerCatalogJsonLd = {
     color: var(--gray-700);
     line-height: 1.5;
     max-width: 36ch;
+  }
+  .svc-lede p {
     margin: 0;
+  }
+  .svc-lede p + p {
+    margin-top: 1em;
   }
 
   /* Editorial service index — hairline list, no card boxes */

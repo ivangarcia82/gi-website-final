@@ -1,17 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { ROUTES } from '../data/site.ts';
-
-// Value marks are plain digits (01–06) set in the display font inside the
-// existing .mark chip — no Unicode circled glyphs anywhere on the page.
-const values = [
-  { n: '01', t: 'Compromiso', d: 'Nos jugamos el pellejo con cada entrega. Si prometemos algo, se cumple.' },
-  { n: '02', t: 'Creatividad', d: 'No vendemos catálogos, vendemos ideas. Cada brief es un problema nuevo.' },
-  { n: '03', t: 'Integridad', d: 'Precios claros, tiempos reales, calidad prometida. Sin letras chiquitas.' },
-  { n: '04', t: 'Pasión', d: 'Amamos los promocionales. Se nota en cada pluma que sale de producción.' },
-  { n: '05', t: 'Innovación', d: 'Siempre un paso adelante: nuevos materiales, nuevas técnicas, nuevas ideas.' },
-  { n: '06', t: 'Servicio', d: 'Tu éxito es nuestro éxito. Estamos disponibles cuando nos necesitas.' },
-];
 ---
 <Layout
   title="Conócenos | Generando Ideas - Expertos en Artículos Promocionales y Branding"
@@ -45,7 +34,7 @@ const values = [
             objetivos — y que convierta cada artículo en una extensión de su identidad.
           </p>
           <p>
-            Hoy operamos cuatro sucursales en México (CDMX, Yucatán, Morelos y Sonora),
+            Hoy operamos tres sucursales en México (CDMX, Yucatán y Sonora),
             ofreciendo alternativas únicas: promocionales, Promotional Workshop, Print Shop,
             Digital Evolution e importaciones.
           </p>
@@ -56,20 +45,21 @@ const values = [
     <section class="section section-alt">
       <div class="wrap mv-grid">
         <article class="mv-card mv-light reveal">
-          <span class="eyebrow">Misión</span>
-          <h3 class="display mv-h">Amplificar marcas</h3>
+          <span class="eyebrow">Propósito</span>
+          <h3 class="display mv-h">Ideas en resultados</h3>
           <p>
-            Ser el aliado estratégico de las marcas que quieren conectar con su audiencia a
-            través de productos memorables, entregados con excelencia y siempre a tiempo.
+            Convertimos ideas en resultados concretos, con prácticas honestas que generan un
+            impacto positivo en nuestra sociedad.
           </p>
         </article>
         <article class="mv-card mv-ink reveal">
-          <span class="eyebrow">Visión</span>
-          <h3 class="display mv-h">Referente en México</h3>
-          <p>
-            Convertirnos en el referente de artículos promocionales en México, reconocidos
-            por innovación, calidad y el impacto medible que generamos para nuestros clientes.
-          </p>
+          <span class="eyebrow">Principios</span>
+          <h3 class="display mv-h">En lo que creemos</h3>
+          <ul class="mv-principles">
+            <li>Resultados reales, compromisos cumplidos.</li>
+            <li>Ideas estratégicas, actitud correcta.</li>
+            <li>La integridad es parte del resultado.</li>
+          </ul>
         </article>
       </div>
     </section>
@@ -101,30 +91,6 @@ const values = [
             <h3 class="value-title">Compromiso en cada proyecto</h3>
             <p>Brindamos acompañamiento personalizado, atención cercana y seguimiento continuo para garantizar calidad, cumplimiento y satisfacción en cada entrega.</p>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-alt">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Nuestros valores</span>
-            <h2 class="display values-h">
-              Los principios que <span class="text-accent">no negociamos.</span>
-            </h2>
-          </div>
-        </div>
-        <div class="values-grid reveal">
-          {values.map((v, i) => (
-            <div class="value value-mark-fix" style={`--i:${i}`}>
-              <div class="mark">{v.n}</div>
-              <div>
-                <h3 class="value-title">{v.t}</h3>
-                <p>{v.d}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -222,6 +188,32 @@ const values = [
     margin: 0;
     max-width: 42ch;
   }
+  /* Principios: a clean list with brand-orange dashes instead of a paragraph. */
+  .mv-principles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 42ch;
+  }
+  .mv-principles li {
+    position: relative;
+    padding-left: 24px;
+    line-height: 1.6;
+    font-size: 16px;
+    color: var(--gray-300);
+  }
+  .mv-principles li + li {
+    margin-top: 12px;
+  }
+  .mv-principles li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 12px;
+    height: 2px;
+    background: var(--orange-500);
+  }
   /* Misión: light material with a hairline border and tinted brand shadow. */
   .mv-light {
     background: var(--white);
@@ -290,32 +282,6 @@ const values = [
     letter-spacing: -0.02em;
     font-weight: 600;
   }
-  /* Digit marks sit comfortably; tabular figures keep 01–06 optically even. */
-  .value-mark-fix .mark {
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
-  }
-  /* Single-driver staggered reveal: the global .reveal observer adds .in to the
-     grid; the cards then cascade purely via CSS transition-delay (no GSAP — this
-     avoids a competing-animator race on opacity/transform). */
-  @media (prefers-reduced-motion: no-preference) {
-    .values-grid .value {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    .values-grid.in .value {
-      opacity: 1;
-      transform: none;
-      transition:
-        opacity 0.6s cubic-bezier(.2, .8, .2, 1),
-        transform 0.6s cubic-bezier(.2, .8, .2, 1);
-      transition-delay: calc(var(--i, 0) * 0.08s);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .values-grid .value { opacity: 1; transform: none; }
-  }
-
   /* ===== Dark closing CTA — magnetic button ===== */
   .about-cta-inner {
     text-align: center;
@@ -379,10 +345,6 @@ const values = [
   const reduce = prefersReducedMotion();
 
   if (!reduce) {
-    // The values cascade is CSS-driven (global .reveal on the grid + per-card
-    // --i transition-delay), so there is no GSAP batch here — only the magnetic
-    // CTA. One system owns opacity/transform on the cards.
-
     // Magnetic CTA — fine-pointer (mouse) devices only, motion allowed.
     const wrap = document.querySelector<HTMLElement>('[data-magnetic]');
     if (wrap && window.matchMedia('(pointer: fine)').matches) {

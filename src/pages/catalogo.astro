@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { CATALOGS } from '../data/site.ts';
+import { CATALOGS, CATALOG_CATEGORIES } from '../data/site.ts';
 ---
 <Layout
   title="Generando Ideas | Catálogo de Productos Promocionales"
@@ -26,10 +26,23 @@ import { CATALOGS } from '../data/site.ts';
           <h2 class="display cat-sec-title">Explora nuestros catálogos</h2>
           <span class="cat-sec-hint">Haz clic para abrir</span>
         </div>
-        <div class="cat-grid">
+
+        <div class="cat-filter catalog-filter" id="catalog-filter" role="group" aria-label="Filtrar catálogos por categoría">
+          {CATALOG_CATEGORIES.map((c, i) => (
+            <button
+              class:list={['chip', { active: i === 0 }]}
+              data-cat={c}
+              type="button"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >{c}</button>
+          ))}
+        </div>
+
+        <div class="cat-grid" id="catalog-grid">
           {CATALOGS.map((c) => (
             <a
               class="cat-card"
+              data-tag={c.tag}
               href={c.flipbook}
               target="_blank"
               rel="noopener noreferrer"
@@ -88,6 +101,18 @@ import { CATALOGS } from '../data/site.ts';
       color: var(--gray-700);
       flex: 0 0 auto;
     }
+    .catalog-filter {
+      margin: 0 0 28px;
+    }
+    /* Tap-target floor: bring the global .chip to >= 44px. */
+    .catalog-filter .chip {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .cat-card.is-hidden {
+      display: none;
+    }
     .cat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -120,6 +145,26 @@ import { CATALOGS } from '../data/site.ts';
       .cat-lead { transition-delay: 0.12s; }
     }
   </style>
+
+  <script>
+    // Category filter: toggle catalog cards by their tag (no re-render needed).
+    const filter = document.getElementById('catalog-filter');
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('#catalog-grid .cat-card'));
+
+    filter?.querySelectorAll<HTMLButtonElement>('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.cat ?? 'Todos';
+        filter.querySelectorAll('.chip').forEach((c) => {
+          const active = c === chip;
+          c.classList.toggle('active', active);
+          c.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        cards.forEach((card) => {
+          card.classList.toggle('is-hidden', cat !== 'Todos' && card.dataset.tag !== cat);
+        });
+      });
+    });
+  </script>
 
   <script>
     import { initMotion, ScrollTrigger } from '../lib/motion';

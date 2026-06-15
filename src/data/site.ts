@@ -119,6 +119,9 @@ export const CATALOGS: Catalog[] = [
   { id: 'textiles', name: 'Textiles', tag: 'De línea', img: '/catalogos/07_textiles.png', flipbook: 'https://online.flippingbook.com/view/373069594/' },
 ];
 
+// Catalog filter categories (mirror the tags above; order is intentional).
+export const CATALOG_CATEGORIES = ['Todos', 'De línea', 'Temporalidad', 'Premium'];
+
 // ---------------------------------------------------------------------------
 // Services (summary cards)
 // ---------------------------------------------------------------------------
@@ -196,7 +199,6 @@ export interface Office {
 
 export const OFFICES: Office[] = [
   { id: 'cdmx', name: 'CDMX', state: 'Ciudad de México', address: 'Cda. Antonio Maceo 67, Col. Escandón I Secc, Alc. Miguel Hidalgo, CP 11800', phone: '(55) 7098 8100', mx: 605, my: 672 },
-  { id: 'morelos', name: 'Morelos', state: 'Cuernavaca, Morelos', address: 'Morelos', phone: '(55) 7098 8100', mx: 590, my: 712 },
   { id: 'sonora', name: 'Sonora', state: 'Hermosillo, Sonora', address: 'Blvd. Navarrete 201, Col. Valle Verde', phone: '(662) 789 0012', mx: 210, my: 300 },
   { id: 'yucatan', name: 'Yucatán', state: 'Mérida, Yucatán', address: 'Calle 60 Norte 299-E, Col. Residencial', phone: '(999) 456 7890', mx: 920, my: 612 },
 ];

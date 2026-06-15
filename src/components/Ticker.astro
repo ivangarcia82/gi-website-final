@@ -1,14 +1,14 @@
 ---
 import { TICKER_WORDS } from '../data/site.ts';
-// Duplicate the list once so a -50% transform lands exactly on the start of the
-// second copy, producing a seamless, jump-free loop.
-const words = [...TICKER_WORDS, ...TICKER_WORDS];
+// Static band: a single centered row that wraps instead of scrolling, so no
+// word (e.g. "Promotional Workshop") is ever clipped at the container edge.
+const words = TICKER_WORDS;
 ---
 <div class="ticker" aria-hidden="true">
-  <div class="ticker-marquee" data-marquee>
-    {words.map((w) => (
+  <div class="ticker-marquee">
+    {words.map((w, i) => (
       <span class="ticker-item">
-        {w}<b class="ticker-dot"> · </b>
+        {w}{i < words.length - 1 && <b class="ticker-dot"> · </b>}
       </span>
     ))}
   </div>
@@ -19,18 +19,17 @@ const words = [...TICKER_WORDS, ...TICKER_WORDS];
     position: relative;
     background: var(--ink);
     color: var(--paper);
-    padding: 20px 0;
-    overflow: hidden;
-    white-space: nowrap;
+    padding: 20px 24px;
   }
 
-  /* Inline-flex keeps the two copies on a single unbroken line so xPercent: -50
-     wraps seamlessly. */
+  /* Centered, wrapping row — static (no transform), so nothing is clipped. */
   .ticker-marquee {
-    display: inline-flex;
-    flex-wrap: nowrap;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    will-change: transform;
+    justify-content: center;
+    max-width: var(--max);
+    margin: 0 auto;
   }
 
   .ticker-item {
@@ -41,7 +40,7 @@ const words = [...TICKER_WORDS, ...TICKER_WORDS];
     font-size: 28px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    margin: 0 8px;
+    margin: 4px 8px;
     line-height: 1;
   }
 
@@ -52,64 +51,7 @@ const words = [...TICKER_WORDS, ...TICKER_WORDS];
   }
 
   @media (max-width: 860px) {
-    .ticker { padding: 16px 0; }
+    .ticker { padding: 16px 20px; }
     .ticker-item { font-size: 22px; }
   }
-
-  /* Reduced motion: no transform, fully visible static row. */
-  @media (prefers-reduced-motion: reduce) {
-    .ticker-marquee { will-change: auto; }
-  }
 </style>
-
-<script>
-  import { initMotion, gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion';
-
-  initMotion();
-
-  const track = document.querySelector<HTMLElement>('[data-marquee]');
-  const ticker = document.querySelector<HTMLElement>('.ticker');
-
-  if (track && ticker && !prefersReducedMotion()) {
-    // Base perpetual loop: shift one full copy of the list to the left.
-    const base = gsap.to(track, {
-      xPercent: -50,
-      repeat: -1,
-      duration: 24,
-      ease: 'none',
-    });
-
-    // Pause the loop (and skip velocity work) while the ticker is offscreen —
-    // perpetual motion shouldn't burn frames where nobody can see it.
-    let visible = true;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        if (visible) base.play();
-        else base.pause();
-      },
-      { threshold: 0 }
-    );
-    io.observe(ticker);
-
-    // Speed reacts to scroll velocity, then eases back to its normal pace.
-    const st = ScrollTrigger.create({
-      onUpdate: (self) => {
-        if (!visible) return;
-        const v = 1 + Math.min(Math.abs(self.getVelocity() / 300), 6);
-        gsap.to(base, { timeScale: v, overwrite: true, duration: 0.2 });
-        gsap.to(base, { timeScale: 1, duration: 1, delay: 0.2, overwrite: false });
-      },
-    });
-
-    document.addEventListener(
-      'astro:before-swap',
-      () => {
-        base.kill();
-        st.kill();
-        io.disconnect();
-      },
-      { once: true }
-    );
-  }
-</script>
