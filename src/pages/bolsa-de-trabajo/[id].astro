@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { JOBS, ROUTES } from '../../data/site.ts';
+import { JOBS, ROUTES, RECRUITMENT, RECRUITMENT_DISCLAIMER } from '../../data/site.ts';
 
 export function getStaticPaths() {
   return JOBS.map((j) => ({ params: { id: String(j.id) } }));
@@ -10,28 +10,13 @@ const { id } = Astro.params;
 const job = JOBS.find((j) => String(j.id) === id);
 if (!job) return Astro.redirect('/bolsa-de-trabajo');
 
-// Section content preserved verbatim from the shipped page (real copy/data).
-const RESPONSIBILITIES = [
-  'Colaborar con clientes desde el brief inicial hasta la entrega final.',
-  'Desarrollar propuestas creativas y comerciales dentro del presupuesto y tiempos.',
-  'Coordinar con producción interna y proveedores aliados.',
-  'Medir el desempeño de cada campaña y proponer mejoras.',
-];
+// Per-job content from src/data/site.ts (sourced from the official vacancy docs).
+const RESPONSIBILITIES = job.responsibilities;
+const REQUIREMENTS = job.requirements;
+const BENEFITS = job.offer;
 
-const REQUIREMENTS = [
-  '3+ años de experiencia en roles similares (industria promocional, publicidad o marketing).',
-  'Excelente comunicación escrita y verbal.',
-  'Organización, atención al detalle y capacidad para gestionar múltiples proyectos.',
-  'Pasión por las ideas creativas y la ejecución impecable.',
-];
-
-const BENEFITS = [
-  'Sueldo competitivo + esquema de comisiones / bonos.',
-  'Prestaciones superiores a la ley.',
-  'Seguro de gastos médicos menores.',
-  'Capacitación continua y plan de carrera.',
-  'Ambiente creativo, colaborativo y sin formalismos.',
-];
+// Apply via the recruitment inbox, with the role pre-filled in the subject.
+const applyHref = `mailto:${RECRUITMENT.email}?subject=${encodeURIComponent('Postulación: ' + job.title)}`;
 
 const jobCanonical = new URL(`/bolsa-de-trabajo/${id}`, Astro.site).href;
 
@@ -71,9 +56,10 @@ const breadcrumbJsonLd = {
           <div class="prose-block reveal">
             <h2 class="prose-h">Sobre el rol</h2>
             <p class="prose-lede">
-              Buscamos una persona que quiera unirse al equipo que está redefiniendo la industria
-              promocional en México. Trabajarás cerca de marcas que retan el status quo y con un
-              equipo que celebra las <span class="text-accent">buenas ideas</span>.
+              Somos una empresa mexicana, líder en la importación, fabricación y comercialización de
+              artículos promocionales, con clientes como Grupo Modelo, AT&amp;T, Grupo Salinas, Abbott y
+              Jaguar Land Rover. Estamos en búsqueda de tu talento para unirte a nuestro equipo como
+              <span class="text-accent">{job.title}</span>.
             </p>
           </div>
 
@@ -130,17 +116,23 @@ const breadcrumbJsonLd = {
           <div class="apply-box reveal">
             <h2 class="apply-h">¿Listo para postularte?</h2>
             <p class="apply-p">
-              Envía tu CV y un mensaje contándonos por qué te interesa este rol a
-              <a class="apply-mail" href={`mailto:talento@generandoideas.com?subject=${encodeURIComponent('Postulación: ' + job.title)}`}>talento@generandoideas.com</a>
+              Envía tu CV actualizado a
+              <a class="apply-mail" href={applyHref}>{RECRUITMENT.email}</a>
             </p>
             <span class="magnetic" data-magnetic>
-              <a class="btn btn-primary btn-lg apply-btn" href={`mailto:talento@generandoideas.com?subject=${encodeURIComponent('Postulación: ' + job.title)}`}>
+              <a class="btn btn-primary btn-lg apply-btn" href={applyHref}>
                 Enviar aplicación
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </a>
             </span>
+            <p class="apply-alt">
+              También puedes escribir a
+              <a href={`mailto:${RECRUITMENT.altEmail}?subject=${encodeURIComponent('Postulación: ' + job.title)}`}>{RECRUITMENT.altEmail}</a>
+              o llamar al
+              <a href={`tel:+52${RECRUITMENT.phone.replace(/\s+/g, '')}`}>{RECRUITMENT.phone}</a>.
+            </p>
             <dl class="apply-meta">
               <div>
                 <dt>Área</dt>
@@ -154,7 +146,12 @@ const breadcrumbJsonLd = {
                 <dt>Modalidad</dt>
                 <dd>{job.type}</dd>
               </div>
+              <div>
+                <dt>Sueldo</dt>
+                <dd>{job.salary}</dd>
+              </div>
             </dl>
+            <p class="apply-note">{RECRUITMENT_DISCLAIMER}</p>
           </div>
         </aside>
       </div>
@@ -327,6 +324,29 @@ const breadcrumbJsonLd = {
   .apply-mail:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+  .apply-alt {
+    margin: 16px 0 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--gray-700);
+  }
+  .apply-alt a {
+    color: var(--blue-700);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .apply-alt a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .apply-note {
+    margin: 20px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--gray-300);
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--gray-700);
   }
   /* Magnetic wrapper: inline-block so its transform doesn't disturb the layout
      (mirrors ClosingCTA / the careers index CTA). */

@@ -1,13 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { JOBS } from '../../data/site.ts';
+import { JOBS, RECRUITMENT } from '../../data/site.ts';
+
+const openCvHref = `mailto:${RECRUITMENT.email}?subject=${encodeURIComponent('CV abierto — Generando Ideas')}`;
 
 // Hairline stat band (no card boxes) — modeled on ImpactBand. Only the clean
 // integer (6) counts up; non-integers (140+, 4.7/5) render statically.
 const STATS = [
   { value: 6, suffix: '', display: '6', count: true, label: 'Vacantes abiertas' },
   { value: 140, suffix: '+', display: '140+', count: false, label: 'Colaboradores actuales' },
-  { value: 4.7, suffix: '/5', display: '4.7/5', count: false, label: 'Rating en Glassdoor' },
 ];
 ---
 <Layout
@@ -83,7 +84,7 @@ const STATS = [
             Envíanos tu CV de cualquier forma. Estamos creciendo y abrimos nuevas posiciones cada mes.
           </p>
           <span class="magnetic" data-magnetic>
-            <a class="btn btn-accent btn-lg open-cv-btn" href="/contacto">
+            <a class="btn btn-accent btn-lg open-cv-btn" href={openCvHref}>
               Enviar CV abierto
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
@@ -123,7 +124,7 @@ const STATS = [
   }
   .stat-band {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0;
     border-top: 1px solid var(--gray-200);
   }

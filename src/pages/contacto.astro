@@ -135,6 +135,10 @@ const localBusinessGraph = {
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </button>
+              <p class="form-error" id="form-error" role="alert" hidden>
+                No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos a
+                <a href="mailto:marketing@generandoideas.com">marketing@generandoideas.com</a>.
+              </p>
               <p class="form-privacy">
                 Tus datos están seguros con nosotros y únicamente serán utilizados para atender tu solicitud.
                 No compartimos tu información con terceros.
@@ -240,6 +244,22 @@ const localBusinessGraph = {
     .contacto .field .btn {
       min-height: 48px;
     }
+    .contacto .form-error {
+      margin: 16px 0 0;
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #8a1c1c;
+      background: #fdeaea;
+      border: 1px solid #f3c2c2;
+      border-radius: var(--radius-sm);
+      max-width: 48ch;
+    }
+    .contacto .form-error a {
+      color: #8a1c1c;
+      font-weight: 600;
+      text-decoration: underline;
+    }
     .contacto .form-privacy {
       margin: 16px 0 0;
       font-size: 13px;
@@ -334,9 +354,19 @@ const localBusinessGraph = {
       }
     }
 
-    form?.addEventListener('submit', (ev) => {
+    const formError = document.getElementById('form-error') as HTMLElement | null;
+    const submitBtn = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    function showFormError(show: boolean) {
+      if (!formError) return;
+      formError.hidden = !show;
+    }
+
+    form?.addEventListener('submit', async (ev) => {
       ev.preventDefault();
       if (!form) return;
+      showFormError(false);
+
       const data = new FormData(form);
       const get = (k: string) => String(data.get(k) ?? '').trim();
       const name = get('name');
@@ -361,19 +391,52 @@ const localBusinessGraph = {
 
       ['name', 'company', 'role', 'email', 'phone', 'service', 'source', 'message'].forEach((f) => setError(f, errors[f] ?? null));
 
-      if (Object.keys(errors).length === 0) {
-        if (successName) successName.textContent = name.split(' ')[0];
-        form.style.display = 'none';
-        if (success) {
-          success.hidden = false;
-          success.style.display = 'block';
-        }
-      } else {
+      if (Object.keys(errors).length > 0) {
         // Move focus to the first field with an error for keyboard/SR users.
         const firstErr = Object.keys(errors)[0];
         form
           .querySelector<HTMLElement>(`.field[data-field="${firstErr}"] input, .field[data-field="${firstErr}"] select, .field[data-field="${firstErr}"] textarea`)
           ?.focus();
+        return;
+      }
+
+      // Submit to the serverless endpoint (sends mail via Resend).
+      const originalLabel = submitBtn?.innerHTML;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+      }
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, company, role, email, phone, service, source, message }),
+        });
+        const result = await res.json().catch(() => ({}));
+
+        if (res.ok && result.ok) {
+          if (successName) successName.textContent = name.split(' ')[0];
+          form.style.display = 'none';
+          if (success) {
+            success.hidden = false;
+            success.style.display = 'block';
+          }
+          return;
+        }
+
+        // Server-side validation bounced something back — surface per field.
+        if (res.status === 422 && result.fields) {
+          Object.entries(result.fields).forEach(([f]) => setError(f, 'Revisa este campo'));
+        }
+        showFormError(true);
+      } catch {
+        showFormError(true);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          if (originalLabel) submitBtn.innerHTML = originalLabel;
+        }
       }
     });
   </script>

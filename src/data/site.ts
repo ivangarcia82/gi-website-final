@@ -228,7 +228,7 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   { id: 'tendencias-2026', cat: 'Tendencias', title: '10 artículos promocionales que dominarán 2026', excerpt: 'De los wearables sustentables a los gadgets IoT personalizados. Esto es lo que veremos en el próximo año.', img: IMAGES.img30, date: 'Ene 15, 2026', iso: '2026-01-15', read: '6 min' },
-  { id: 'fulfillment-escala', cat: 'Operaciones', title: 'Cómo escalamos fulfillment para 4 ciudades sin contratar un operador más', excerpt: 'Un caso real: operamos 15,000 kits corporativos mensuales con el mismo equipo de 2023.', img: IMAGES.img31, date: 'Ene 8, 2026', iso: '2026-01-08', read: '8 min' },
+  { id: 'fulfillment-escala', cat: 'Operaciones', title: 'Cómo escalamos fulfillment para 4 ciudades sin contratar un operador más', excerpt: 'Un caso real: operamos 15,000 kits corporativos mensuales con el mismo equipo de 2023.', img: '/fulfillment.jpg', date: 'Ene 8, 2026', iso: '2026-01-08', read: '8 min' },
   { id: 'textiles-sustentables', cat: 'Sustentabilidad', title: 'Textiles sustentables: más allá del algodón orgánico', excerpt: 'rPET, tencel, cáñamo y bambú. Guía práctica para elegir el material correcto según tu marca.', img: IMAGES.img32, date: 'Dic 20, 2025', iso: '2025-12-20', read: '5 min' },
   { id: 'mundial-2026', cat: 'Casos de estudio', title: 'Kits promocionales para el Mundial 2026: qué funciona y qué no', excerpt: 'Colaboramos con marcas locales en activaciones durante el Mundial. Lo que aprendimos.', img: IMAGES.img33, date: 'Dic 10, 2025', iso: '2025-12-10', read: '7 min' },
   { id: 'impresion-tecnicas', cat: 'Técnicas', title: 'Serigrafía vs sublimación vs DTF: cuándo usar cada una', excerpt: 'Las tres técnicas más comunes en textil promocional, comparadas por costo, durabilidad y volumen.', img: IMAGES.img34, date: 'Nov 28, 2025', iso: '2025-11-28', read: '9 min' },
@@ -280,7 +280,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     num: '02',
     title: 'Print Shop',
     tagline: 'Decorados que dan vida a tus ideas.',
-    hero: 'https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=1400&q=80',
+    hero: '/printshop.jpg',
     intro: 'Convertimos conceptos en materiales impresos de alta calidad. Desde piezas promocionales hasta comunicación corporativa, ofrecemos soluciones de impresión que reflejan la identidad de tu marca con acabados profesionales y atención al detalle.',
     color: 'var(--orange-500)',
     features: [
@@ -357,15 +357,205 @@ export interface Job {
   dept: string;
   location: string;
   type: string;
+  salary: string;
+  offer: string[];
+  requirements: string[];
+  responsibilities: string[];
 }
 
+// Datos de contacto de reclutamiento (vacantes).
+export const RECRUITMENT = {
+  email: 'reclutamiento@generandoideas.com',
+  altEmail: 'mfarela@generandoideas.com',
+  phone: '56 1013 8387',
+};
+
+// Aviso anti-fraude que aparece en todas las vacantes.
+export const RECRUITMENT_DISCLAIMER =
+  'La participación en cualquiera de nuestros procesos de selección de talento no tiene ningún costo, por lo que queda prohibido que cualquiera de nuestros colaboradores del área de reclutamiento solicite algún tipo de remuneración a los candidatos.';
+
 export const JOBS: Job[] = [
-  { id: 1, title: 'Ejecutivo(a) Comercial', dept: 'Ventas', location: 'CDMX · Presencial', type: 'Tiempo completo' },
-  { id: 2, title: 'Diseñador(a) Gráfico Senior', dept: 'Diseño', location: 'Híbrido', type: 'Tiempo completo' },
-  { id: 3, title: 'Operador(a) de Bordadora', dept: 'Producción', location: 'Sonora · Presencial', type: 'Tiempo completo' },
-  { id: 4, title: 'Especialista Fulfillment', dept: 'Operaciones', location: 'Yucatán · Presencial', type: 'Tiempo completo' },
-  { id: 5, title: 'Project Manager Proyectos Especiales', dept: 'PM', location: 'CDMX · Híbrido', type: 'Tiempo completo' },
-  { id: 6, title: 'Becario(a) de Marketing', dept: 'Marketing', location: 'CDMX · Híbrido', type: 'Medio tiempo' },
+  {
+    id: 1,
+    title: 'Analista de Logística y Distribución',
+    dept: 'Logística',
+    location: 'CDMX · Presencial',
+    type: 'Tiempo completo',
+    salary: '$13,833.01 brutos / mes',
+    offer: [
+      'Sueldo mensual $13,833.01 brutos',
+      'Prestaciones de ley (a partir del primer día) + servicio de comedor subsidiado',
+      'A partir de contrato indeterminado: vales de despensa, check-up médico, fondo de ahorro y más beneficios',
+      'Horario: lunes a viernes de 8:30 a.m. a 6:00 p.m.',
+      'Nos encontramos a 10 minutos del metro Xola',
+    ],
+    requirements: [
+      'Escolaridad: Lic. trunca o en curso en Logística, Administración, Ing. Industrial o afín',
+      'Experiencia mínima de 2 años en puesto similar (comprobable)',
+      'Manejo de Excel intermedio y ERP',
+      'Manejo y mantenimiento de flotilla',
+      'Conocer la CDMX y Zona Metropolitana, manejo de apps de GPS',
+      'Contar con licencia de conducir tipo D (indispensable)',
+    ],
+    responsibilities: [
+      'Planificar y coordinar el flujo de productos desde los centros de distribución hacia los clientes, garantizando entregas oportunas y eficientes',
+      'Monitorear el servicio que brindan los operadores al entregar y recolectar mercancía',
+      'Elaborar y analizar reportes de tiempo de entrega, costos logísticos y niveles de servicio',
+      'Mantenimiento completo de la flotilla',
+      'Atención a clientes internos y externos',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Coordinador de Compras',
+    dept: 'Compras',
+    location: 'CDMX · Híbrido',
+    type: 'Tiempo completo',
+    salary: '$11,650.80 brutos / mes',
+    offer: [
+      'Sueldo mensual $11,650.80 brutos',
+      'Prestaciones de ley (a partir del primer día) + servicio de comedor subsidiado',
+      'A partir de contrato indeterminado: vales de despensa, check-up médico, fondo de ahorro y más beneficios',
+      'Modalidad híbrida de trabajo (70% home office, 30% oficina)',
+      'Horario: lunes a viernes de 8:30 a.m. a 6:00 p.m.',
+      'Nos encontramos a 10 minutos del metro Patriotismo y/o Tacubaya',
+    ],
+    requirements: [
+      'Escolaridad: Licenciatura terminada en carreras administrativas, comerciales, financieras o afines',
+      'Experiencia: 2 años mínimo en área de compras (indispensable)',
+      'Gusto por la atención a clientes y proveedores',
+      'Manejo de algún ERP y Excel intermedio',
+      'Haber estado en sector de Marketing, Publicidad, Impresos o Promocionales (deseable)',
+    ],
+    responsibilities: [
+      'Activación y seguimiento de pedidos de venta / supervisión de proyectos',
+      'Apoyo al área comercial para cotizaciones',
+      'Actualización y regularización de documentación de proveedores (NDA, líneas de crédito y contratos)',
+      'Apoyo en capacitaciones internas sobre procesos de compras y proveedores',
+      'Seguimiento a incidencias postventa relacionadas con proveedores o producción',
+      'Seguimiento y cumplimiento de rebate con proveedores',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Analista de Almacén',
+    dept: 'Almacén',
+    location: 'CDMX · Presencial',
+    type: 'Tiempo completo',
+    salary: '$11,650.80 brutos / mes',
+    offer: [
+      'Sueldo mensual $11,650.80 brutos',
+      'Prestaciones de ley (a partir del primer día) + servicio de comedor subsidiado',
+      'A partir de contrato indeterminado: vales de despensa, check-up médico, fondo de ahorro y más beneficios',
+      'Horario: lunes a viernes de 8:30 a.m. a 6:00 p.m.',
+      'Nos encontramos a 10 minutos del metro Xola',
+    ],
+    requirements: [
+      'Escolaridad: Lic. trunca o en curso en Logística, Comercio, Administración, Ing. Industrial o afín',
+      'Experiencia mínima de 2 años en puesto similar en almacén (comprobable)',
+      'Manejo de Excel intermedio y ERP',
+      'Manejo de personal',
+      "Manejo de KPI's",
+    ],
+    responsibilities: [
+      'Supervisar al personal a cargo para el cumplimiento de sus actividades',
+      'Registro de incidencias con clientes y/o proveedores',
+      'Verificar que la calidad de los productos recibidos y para entrega correspondan con la solicitud del cliente',
+      'Control de insumos (inventario, mínimos y solicitudes)',
+      'Control y gestión de reportes de excedentes y merma',
+      'Garantizar el orden y limpieza del almacén',
+    ],
+  },
+  {
+    id: 4,
+    title: 'Ventas y Atención a Clientes',
+    dept: 'Ventas',
+    location: 'CDMX · Presencial',
+    type: 'Tiempo completo',
+    salary: '$9,582.47 brutos / mes + comisiones',
+    offer: [
+      'Sueldo mensual $9,582.47 brutos',
+      'Prestaciones de ley (a partir del primer día)',
+      'A partir de contrato indeterminado: vales de despensa, check-up médico, fondo de ahorro y más beneficios',
+      'Comisiones sin tope a partir de los 3 meses',
+      'Horario: lunes a viernes de 8:30 a.m. a 6:00 p.m.',
+      'Zona para laborar: Av. Insurgentes Sur, a 10 minutos del Metrobús Villa Olímpica',
+    ],
+    requirements: [
+      'Escolaridad: Bachillerato concluido',
+      'Experiencia: 6 meses a 1 año de experiencia',
+      'Excelente trato con clientes',
+      'Cobro en efectivo y con terminal bancaria, manejo de caja chica y de artículos de valor',
+      'Vivir a no más de una hora de la zona para laborar',
+      'Alto sentido de honestidad',
+    ],
+    responsibilities: [
+      'Apertura y cierre de tienda',
+      'Labor de venta y atención al cliente',
+      'Limpieza y acomodo de mercancía',
+      'Inventarios / solicitud de resurtido de mercancía',
+      'Arqueo y corte de caja',
+      'Reportes de venta semanal y mensual',
+    ],
+  },
+  {
+    id: 5,
+    title: 'Auxiliar de Almacén',
+    dept: 'Almacén',
+    location: 'CDMX · Presencial',
+    type: 'Tiempo completo',
+    salary: '$9,582.47 brutos / mes',
+    offer: [
+      'Sueldo mensual $9,582.47 brutos',
+      'Prestaciones de ley (a partir del primer día) + servicio de comedor subsidiado',
+      'A partir de contrato indeterminado: vales de despensa, check-up médico, fondo de ahorro y más beneficios',
+      'Horario: lunes a viernes de 8:30 a.m. a 6:00 p.m.',
+      'Nos encontramos a 10 minutos del metro Xola',
+    ],
+    requirements: [
+      'Escolaridad: Bachillerato concluido',
+      'Experiencia 6 meses a 1 año en puesto similar',
+      'Manejo básico de computadora',
+      'Excelente organización y atención al detalle',
+      'Responsable y puntual',
+    ],
+    responsibilities: [
+      'Empaque y maquila de materiales',
+      'Levantamiento de inventarios',
+      'Realizar etiquetado de identificación para materiales',
+      'Carga y descarga de mercancía',
+      'Mantener el orden y limpieza dentro del almacén',
+    ],
+  },
+  {
+    id: 6,
+    title: 'Auxiliar de Reparto',
+    dept: 'Reparto',
+    location: 'CDMX · Presencial',
+    type: 'Tiempo completo',
+    salary: '$9,582.47 brutos / mes',
+    offer: [
+      'Sueldo mensual $9,582.47 brutos',
+      'Prestaciones de ley (a partir del primer día) + servicio de comedor subsidiado',
+      'A partir de contrato indeterminado: vales de despensa, check-up médico, fondo de ahorro y más beneficios',
+      'Horario: lunes a viernes de 8:30 a.m. a 6:00 p.m.',
+      'Nos encontramos a 10 minutos del metro Xola',
+    ],
+    requirements: [
+      'Escolaridad: Bachillerato concluido',
+      'Experiencia: 1 año mínimo en reparto de paquetería (indispensable)',
+      'Manejo de aplicaciones GPS como Google Maps y Waze',
+      'Conocimiento amplio de la Ciudad de México y del reglamento de tránsito',
+      'Contar con licencia de conducir vigente (indispensable)',
+    ],
+    responsibilities: [
+      'Carga y descarga de las unidades',
+      'Entrega y recolección de mercancía en diferentes puntos de la CDMX',
+      'Revisión de mercancía',
+      'Entrega de reporte de incidencias',
+      'Mantener las unidades de reparto en óptimas condiciones de limpieza',
+    ],
+  },
 ];
 
 // Ticker words (home)
