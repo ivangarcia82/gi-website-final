@@ -1,9 +1,8 @@
-import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 
-// On-demand (server) route: runs as a Vercel serverless function so it can hold
-// the Resend secret and send mail. Everything else in the site stays static.
-export const prerender = false;
+// Native Vercel Serverless Function (auto-detected from /api). Keeps the secret
+// server-side and sends the contact form via Resend. The Astro site stays 100%
+// static; this endpoint is independent of the framework.
 
 // Verified sending domain in Resend: notificaciones.generandoideas.com
 const FROM = 'Generando Ideas <formulario@notificaciones.generandoideas.com>';
@@ -11,39 +10,35 @@ const TO = 'marketing@generandoideas.com';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const json = (data: unknown, status = 200) =>
-  new Response(JSON.stringify(data), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-const esc = (s: string) =>
-  s.replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string),
+const esc = (s) =>
+  String(s).replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]),
   );
 
-export const POST: APIRoute = async ({ request }) => {
-  const apiKey = process.env.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ ok: false, error: 'method_not_allowed' });
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error('RESEND_API_KEY is not configured');
-    return json({ ok: false, error: 'server_misconfigured' }, 500);
+    return res.status(500).json({ ok: false, error: 'server_misconfigured' });
   }
 
-  // Accept both JSON and form-encoded submissions.
-  let body: Record<string, string> = {};
-  try {
-    const ct = request.headers.get('content-type') ?? '';
-    if (ct.includes('application/json')) {
-      body = await request.json();
-    } else {
-      const form = await request.formData();
-      form.forEach((v, k) => (body[k] = String(v)));
+  // Vercel parses JSON bodies into req.body; tolerate a raw string too.
+  let body = req.body;
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      return res.status(400).json({ ok: false, error: 'bad_request' });
     }
-  } catch {
-    return json({ ok: false, error: 'bad_request' }, 400);
   }
+  body = body || {};
 
-  const get = (k: string) => String(body[k] ?? '').trim();
+  const get = (k) => String(body[k] ?? '').trim();
   const name = get('name');
   const company = get('company');
   const role = get('role');
@@ -54,7 +49,7 @@ export const POST: APIRoute = async ({ request }) => {
   const message = get('message');
 
   // Server-side validation mirrors the client rules (never trust the client).
-  const errors: Record<string, string> = {};
+  const errors = {};
   if (!name) errors.name = 'requerido';
   if (!company) errors.company = 'requerido';
   if (!role) errors.role = 'requerido';
@@ -66,10 +61,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (!message || message.length < 10) errors.message = 'muy corto';
 
   if (Object.keys(errors).length > 0) {
-    return json({ ok: false, error: 'validation', fields: errors }, 422);
+    return res.status(422).json({ ok: false, error: 'validation', fields: errors });
   }
 
-  const rows: Array<[string, string]> = [
+  const rows = [
     ['Nombre', name],
     ['Empresa', company],
     ['Cargo / Área', role],
@@ -97,12 +92,7 @@ export const POST: APIRoute = async ({ request }) => {
       <p style="white-space:pre-wrap;margin:0;padding:12px;border:1px solid #e5e5e6;border-radius:8px;background:#fafafa">${esc(message)}</p>
     </div>`;
 
-  const text = [
-    ...rows.map(([k, v]) => `${k}: ${v}`),
-    '',
-    `Mensaje:`,
-    message,
-  ].join('\n');
+  const text = [...rows.map(([k, v]) => `${k}: ${v}`), '', 'Mensaje:', message].join('\n');
 
   try {
     const resend = new Resend(apiKey);
@@ -117,11 +107,11 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (error) {
       console.error('Resend error:', error);
-      return json({ ok: false, error: 'send_failed' }, 502);
+      return res.status(502).json({ ok: false, error: 'send_failed' });
     }
-    return json({ ok: true });
+    return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Unexpected error sending email:', err);
-    return json({ ok: false, error: 'send_failed' }, 502);
+    return res.status(502).json({ ok: false, error: 'send_failed' });
   }
-};
+}
