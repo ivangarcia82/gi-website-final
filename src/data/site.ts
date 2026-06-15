@@ -263,7 +263,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     num: '01',
     title: 'Promocionales',
     tagline: 'Productos que convierten marcas en experiencias.',
-    hero: 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1400&q=80',
+    hero: '/promocionales.jpg',
     intro: 'Ofrecemos un amplio portafolio de artículos promocionales para fortalecer la conexión entre tu marca y tu audiencia. Seleccionamos soluciones innovadoras, funcionales y alineadas con los objetivos de cada campaña.',
     color: 'var(--orange-500)',
     features: [
@@ -297,7 +297,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     num: '03',
     title: 'Promotional Workshop',
     tagline: 'Experiencias que conectan marcas y personas.',
-    hero: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80',
+    hero: '/workshop.jpg',
     intro: 'Transformamos la presentación de productos promocionales en una experiencia interactiva. A través de showrooms, demostraciones en vivo y recorridos especializados, acercamos a tus colaboradores y clientes al universo de posibilidades que tu marca puede crear.',
     color: 'var(--orange-500)',
     features: [
