@@ -3,11 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Ticker from '../components/Ticker.astro';
 import ServicesShowcase from '../components/ServicesShowcase.astro';
-import CatalogsCarousel from '../components/CatalogsCarousel.astro';
 import ProcessSection from '../components/ProcessSection.astro';
 import ImpactBand from '../components/ImpactBand.astro';
 import TestimonialsCarousel from '../components/TestimonialsCarousel.astro';
 import ClosingCTA from '../components/ClosingCTA.astro';
+import { CATALOGS, ROUTES } from '../data/site.ts';
+
+// Home preview: 4 random catalogs (shuffled at build time). "Ver más" links to
+// the full catalog page.
+const homeCatalogs = [...CATALOGS].sort(() => Math.random() - 0.5).slice(0, 4);
 ---
 <Layout
   title="Generando Ideas - Your one stop solution"
@@ -26,8 +30,8 @@ import ClosingCTA from '../components/ClosingCTA.astro';
         </div>
         <p>Tu promocional puede ser una pieza o puede ser una solución integral completa: producción, almacenamiento, envío y experiencia. Elige hasta donde quieras llegar.</p>
       </div>
+      <ServicesShowcase layout="mosaic" />
     </div>
-    <ServicesShowcase layout="pinned" />
   </section>
 
   <section class="section section-alt">
@@ -39,7 +43,31 @@ import ClosingCTA from '../components/ClosingCTA.astro';
         </div>
         <p>Explora nuestros catálogos.</p>
       </div>
-      <CatalogsCarousel />
+      <div class="home-cat-grid">
+        {homeCatalogs.map((c) => (
+          <a
+            class="cat-card"
+            href={c.flipbook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Abrir el catálogo ${c.name} en una nueva pestaña`}
+          >
+            <div class="cat-card-img"><img src={c.img} alt={`Portada del catálogo ${c.name}`} loading="lazy" /></div>
+            <div class="cat-card-body">
+              <h3>{c.name}</h3>
+              <span>{c.tag}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="home-cat-more">
+        <a href={ROUTES.catalog} class="btn btn-primary btn-lg">
+          Ver más catálogos
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -60,3 +88,27 @@ import ClosingCTA from '../components/ClosingCTA.astro';
 
   <ClosingCTA />
 </Layout>
+
+<style>
+  /* Clickable catalog grid (replaces the home carousel). The global .cat-card is
+     sized for a flex carousel (flex: 0 0 300px); reset that so it fills the grid. */
+  .home-cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(16px, 2vw, 24px);
+  }
+  .home-cat-grid .cat-card {
+    flex: initial;
+  }
+  @media (max-width: 980px) {
+    .home-cat-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .home-cat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .home-cat-more {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(32px, 4vw, 48px);
+  }
+</style>
