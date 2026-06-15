@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { IMAGES, ROUTES } from '../data/site.ts';
+import { ROUTES } from '../data/site.ts';
 
 // Value marks are plain digits (01–06) set in the display font inside the
 // existing .mark chip — no Unicode circled glyphs anywhere on the page.
@@ -28,15 +28,17 @@ const values = [
     </section>
 
     <section class="section about-intro">
-      <div class="wrap about-grid reveal">
-        <div class="about-figure">
-          <img src={IMAGES.img41} alt="Equipo Generando Ideas" loading="lazy" />
-        </div>
-        <div class="about-copy">
+      <div class="wrap reveal">
+        <div class="about-head">
           <span class="eyebrow">¿Quiénes somos?</span>
           <h2 class="display about-copy-h">
             Líderes en la industria promocional
           </h2>
+        </div>
+        <figure class="about-figure">
+          <img src="/publicitas.jpg" alt="El equipo de Generando Ideas en una expo de la industria promocional" loading="lazy" />
+        </figure>
+        <div class="about-copy">
           <p>
             Iniciamos operaciones en 2013 con una idea clara: las marcas necesitan más que un
             producto con logo. Necesitan un socio que entienda su voz, su audiencia y sus
@@ -156,40 +158,44 @@ const values = [
     max-width: 1000px;
   }
 
-  /* ===== Intro: ¿Quiénes somos? — asymmetric 2-col, collapses on mobile ===== */
+  /* ===== Intro: ¿Quiénes somos? — editorial stacked layout ===== */
   .about-intro {
     padding-top: 40px;
   }
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 80px;
-    align-items: start;
+  .about-head {
+    max-width: 900px;
+    margin: 0 0 clamp(28px, 4vw, 44px);
+  }
+  .about-copy-h {
+    font-size: clamp(36px, 5vw, 60px);
+    margin: 14px 0 0;
+    letter-spacing: -0.025em;
+    line-height: 1.02;
   }
   .about-figure {
     position: relative;
+    margin: 0 0 clamp(32px, 4vw, 48px);
   }
   .about-figure img {
+    display: block;
     width: 100%;
-    border-radius: var(--radius-lg);
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 2 / 1;
     object-fit: cover;
+    object-position: center 42%;
+    border-radius: var(--radius-lg);
     box-shadow: 0 28px 60px -28px rgba(67, 69, 74, 0.22);
   }
-  .about-copy-h {
-    font-size: clamp(36px, 4.4vw, 52px);
-    margin: 16px 0 24px;
-    letter-spacing: -0.02em;
+  .about-copy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 4vw, 64px);
+    max-width: 1000px;
   }
   .about-copy p {
     font-size: 18px;
     color: var(--gray-700);
     line-height: 1.65;
-    margin: 0 0 24px;
-    max-width: 56ch;
-  }
-  .about-copy p:last-child {
-    margin-bottom: 0;
+    margin: 0;
   }
 
   /* ===== Misión / Visión — refined cards, collapses on mobile ===== */
@@ -340,9 +346,8 @@ const values = [
 
   /* ===== Mobile collapse (no horizontal overflow < 861px) ===== */
   @media (max-width: 860px) {
-    .about-grid {
+    .about-copy {
       grid-template-columns: 1fr;
-      gap: 32px;
     }
     .about-figure img {
       aspect-ratio: 4 / 3;
