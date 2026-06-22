@@ -3,10 +3,40 @@ import Layout from '../layouts/Layout.astro';
 import { ROUTES } from '../data/site.ts';
 
 // Certificaciones y distintivos. Cuando se cuente con los logotipos oficiales,
-// agregar `logo: '/brand/certs/...'` a cada item y mostrarlos en lugar del badge.
+// agregar `logo: '/brand/certs/...'` a cada item y mostrarlos junto al nombre.
 const CERTIFICATIONS = [
-  { name: 'ESR', desc: 'Distintivo Empresa Socialmente Responsable.' },
-  { name: 'ESMETA', desc: 'Certificación de calidad y buenas prácticas.' },
+  {
+    name: 'Principios Rectores Coca-Cola',
+    desc: 'Certificamos nuestras operaciones bajo los Principios Rectores, mediante una auditoría externa que ratifica buenas prácticas éticas, laborales y ambientales en la cadena de valor.',
+  },
+  {
+    name: 'SMETA',
+    desc: 'Cumplimiento de los estándares de los 4 pilares, demostrando nuestro compromiso con prácticas éticas, responsabilidad social, seguridad y sostenibilidad.',
+  },
+  {
+    name: 'Certificate FAMA Disney',
+    desc: 'Nuestras instalaciones cuentan con la aprobación FAMA, cumpliendo con los estándares de calidad, seguridad y cumplimiento social exigidos por The Walt Disney Company. Esta auditoría nos faculta para la manufactura y distribución de productos bajo licencias globales.',
+  },
+  {
+    name: 'PPAI',
+    desc: 'Socios activos de la red Promotional Products Association International (PPAI), para garantizar estándares de calidad y ética en cada proyecto.',
+  },
+  {
+    name: 'AMPPRO',
+    desc: 'Asociación Mexicana de Profesionales de la Promoción. Miembros activos desde nuestra fundación en 2013 hasta la actualidad, con participación en el comité 2025-2026.',
+  },
+  {
+    name: 'ESR',
+    desc: '5 años consecutivos como Empresa Socialmente Responsable, otorgado por el Centro Mexicano para la Filantropía.',
+  },
+  {
+    name: 'Círculo de Proveedores',
+    desc: 'Cumplimiento en la evaluación de aspectos legales, financieros, operativos y comerciales.',
+  },
+  {
+    name: 'Certificación Integral de Empresas',
+    desc: 'Cumplimiento de los estándares requeridos por Grupo Salinas con nivel oro, que indica excelencia operativa y el cumplimiento total o superior de las normas estratégicas, de gobernabilidad y técnicas.',
+  },
 ];
 ---
 <Layout
@@ -106,19 +136,19 @@ const CERTIFICATIONS = [
       <div class="wrap">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Respaldo</span>
+            <span class="eyebrow">Certificaciones</span>
             <h2 class="display certs-h">
-              Certificaciones que nos <span class="text-accent">respaldan.</span>
+              Respaldos que <span class="text-accent">nos distinguen.</span>
             </h2>
           </div>
           <p>
-            Operamos bajo estándares que avalan nuestra calidad y nuestro compromiso social.
+            Operamos bajo estándares y auditorías que avalan nuestra calidad, ética y compromiso social.
           </p>
         </div>
         <ul class="certs-grid reveal" aria-label="Certificaciones y distintivos">
           {CERTIFICATIONS.map((c) => (
             <li class="cert-card">
-              <span class="cert-badge">{c.name}</span>
+              <h3 class="cert-name">{c.name}</h3>
               <p>{c.desc}</p>
             </li>
           ))}
@@ -335,32 +365,36 @@ const CERTIFICATIONS = [
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
   .cert-card {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 32px;
+    padding: 28px;
     background: #fff;
     border: 1px solid var(--gray-200);
     border-radius: var(--radius);
     min-width: 0;
   }
-  .cert-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 18px;
-    border-radius: var(--radius-sm);
-    background: var(--orange-100);
-    color: var(--orange-700);
+  /* Acento de marca: filete naranja superior. */
+  .cert-card .cert-name {
+    position: relative;
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 26px;
+    font-size: 22px;
     letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    padding-top: 16px;
+    color: var(--ink);
+  }
+  .cert-card .cert-name::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--orange-500);
   }
   .cert-card p {
     color: var(--gray-700);
@@ -420,6 +454,9 @@ const CERTIFICATIONS = [
       grid-template-columns: 1fr;
     }
     .diff-grid {
+      grid-template-columns: 1fr;
+    }
+    .certs-grid {
       grid-template-columns: 1fr;
     }
     .about-cta .btn-lg {
