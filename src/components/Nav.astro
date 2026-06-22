@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import MobileMenu from './MobileMenu.astro';
+import SocialIcons from './SocialIcons.astro';
 import { NAV_ITEMS, ROUTES } from '../data/site.ts';
 
 // Determine the active nav item from the current path.
@@ -29,6 +30,7 @@ function isActive(href: string): boolean {
           {p.label}
         </a>
       ))}
+      <SocialIcons variant="nav" class="hide-mobile" />
       <a href={ROUTES.catalog} class="btn btn-accent nav-cta">
         Ver e-store
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">

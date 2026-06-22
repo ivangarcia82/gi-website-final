@@ -1,5 +1,6 @@
 ---
-import { BRAND, ROUTES, SERVICES, SOCIAL_LINKS } from '../data/site.ts';
+import { BRAND, ROUTES, SERVICES } from '../data/site.ts';
+import SocialIcons from './SocialIcons.astro';
 ---
 <footer class="footer">
   <div class="wrap">
@@ -17,12 +18,7 @@ import { BRAND, ROUTES, SERVICES, SOCIAL_LINKS } from '../data/site.ts';
           {BRAND.email}<br />
           CDMX · Sonora · Yucatán
         </p>
-        <div class="footer-social">
-          <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>
-          <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-        </div>
+        <SocialIcons variant="footer" />
         <p class="footer-slogan" aria-label="Your one stop solution">
           Your one<br />stop<br />solution<span class="r">®</span>
         </p>
@@ -31,9 +27,8 @@ import { BRAND, ROUTES, SERVICES, SOCIAL_LINKS } from '../data/site.ts';
         <h3>Empresa</h3>
         <ul>
           <li><a href={ROUTES.about}>Conócenos</a></li>
-          <li><a href={ROUTES.about}>Misión</a></li>
-          <li><a href={ROUTES.about}>Visión</a></li>
-          <li><a href={ROUTES.about}>Valores</a></li>
+          <li><a href={ROUTES.about}>Propósito</a></li>
+          <li><a href={ROUTES.about}>Principios</a></li>
         </ul>
       </div>
       <div>
@@ -73,20 +68,6 @@ import { BRAND, ROUTES, SERVICES, SOCIAL_LINKS } from '../data/site.ts';
     display: block;
     width: clamp(160px, 17.6vw, 226px);
     height: auto;
-  }
-  .footer-social {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 16px;
-    margin-top: 16px;
-  }
-  .footer-social a {
-    font-size: 13px;
-    color: var(--gray-300);
-    text-decoration: none;
-  }
-  .footer-social a:hover {
-    color: #fff;
   }
   .footer-slogan {
     font-family: var(--font-slogan);

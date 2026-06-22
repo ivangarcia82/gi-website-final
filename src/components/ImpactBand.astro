@@ -2,15 +2,15 @@
 // Impact band: a dark stats strip built only from existing brand facts.
 // Big Space-Grotesk numbers separated by 1px hairlines (no card boxes),
 // count-up on scroll-in. Numbers come from src/data/site.ts facts:
-//   - +12  años amplificando marcas
-//   - +2,700 clientes activos
-//   - 9    clientes con servicio de Fulfillment
-//   - 3    sucursales en México (OFFICES: CDMX, Sonora, Yucatán)
+//   - +12     años amplificando marcas
+//   - +2,700  clientes activos
+//   - +67,000 decorados diarios
+//   - 4.9     nivel de satisfacción
 const STATS = [
-  { prefix: '+', value: 12, suffix: '', label: 'Años amplificando marcas' },
-  { prefix: '+', value: 2700, suffix: '', label: 'Clientes activos' },
-  { prefix: '', value: 9, suffix: '', label: 'Clientes con servicio de Fulfillment' },
-  { prefix: '', value: 3, suffix: '', label: 'Sucursales en México' },
+  { prefix: '+', value: 12, suffix: '', decimals: 0, label: 'Años amplificando marcas' },
+  { prefix: '+', value: 2700, suffix: '', decimals: 0, label: 'Clientes activos' },
+  { prefix: '+', value: 67000, suffix: '', decimals: 0, label: 'Decorados diarios' },
+  { prefix: '', value: 4.9, suffix: '', decimals: 1, label: 'Nivel de satisfacción' },
 ];
 ---
 
@@ -30,6 +30,7 @@ const STATS = [
             data-prefix={s.prefix}
             data-value={s.value}
             data-suffix={s.suffix}
+            data-decimals={s.decimals}
           >{s.prefix}0{s.suffix}</strong>
           <span>{s.label}</span>
         </div>
@@ -98,6 +99,7 @@ const STATS = [
       prefix: el.dataset.prefix || '',
       value: v,
       suffix: el.dataset.suffix || '',
+      decimals: Number(el.dataset.decimals) || 0,
     });
   };
 

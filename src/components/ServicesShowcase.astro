@@ -55,10 +55,10 @@ const stackedImgs = [IMAGES.img25, IMAGES.img26, IMAGES.img27, IMAGES.img28, IMA
         <div>
           <span class:list={['svc-num', { 'svc-num-hero': i === 0 }]}>{i === 0 ? `${s.num} — Servicio principal` : s.num}</span>
           <h3 style="margin-top: 12px;">{s.title}</h3>
-          <p style={i === 1 ? 'color: rgba(16,17,20,0.7);' : undefined}>{s.desc}</p>
+          <p>{s.desc}</p>
         </div>
         <span class="svc-cta">
-          {i === 0 ? 'Explorar línea' : 'Ver más'}
+          Ver más
           <Fragment set:html={arrow} />
         </span>
       </a>

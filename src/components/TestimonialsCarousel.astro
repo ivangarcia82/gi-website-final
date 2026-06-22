@@ -3,9 +3,11 @@ import { TESTIMONIALS } from '../data/site.ts';
 
 function initials(name: string): string {
   return name
-    .split(' ')
+    .split(/\s+/)
     .map((n) => n[0])
-    .join('');
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 }
 ---
 <div data-carousel data-scroll="460">
@@ -15,10 +17,9 @@ function initials(name: string): string {
         <div class="testimonial">
           <blockquote>"{t.quote}"</blockquote>
           <cite>
-            <div class="avatar">{initials(t.name)}</div>
+            <div class="avatar">{initials(t.company)}</div>
             <div class="testimonial-meta">
-              <strong>{t.name}</strong>
-              <span>{t.role}</span>
+              <strong>{t.company}</strong>
             </div>
           </cite>
         </div>

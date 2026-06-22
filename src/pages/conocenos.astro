@@ -1,6 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { ROUTES } from '../data/site.ts';
+
+// Certificaciones y distintivos. Cuando se cuente con los logotipos oficiales,
+// agregar `logo: '/brand/certs/...'` a cada item y mostrarlos en lugar del badge.
+const CERTIFICATIONS = [
+  { name: 'ESR', desc: 'Distintivo Empresa Socialmente Responsable.' },
+  { name: 'ESMETA', desc: 'Certificación de calidad y buenas prácticas.' },
+];
 ---
 <Layout
   title="Conócenos | Generando Ideas - Expertos en Artículos Promocionales y Branding"
@@ -21,7 +28,7 @@ import { ROUTES } from '../data/site.ts';
         <div class="about-head">
           <span class="eyebrow">¿Quiénes somos?</span>
           <h2 class="display about-copy-h">
-            Líderes en la industria promocional
+            <span class="text-accent">Líderes</span> en la industria promocional
           </h2>
         </div>
         <figure class="about-figure">
@@ -95,6 +102,30 @@ import { ROUTES } from '../data/site.ts';
       </div>
     </section>
 
+    <section class="section section-alt certs">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Respaldo</span>
+            <h2 class="display certs-h">
+              Certificaciones que nos <span class="text-accent">respaldan.</span>
+            </h2>
+          </div>
+          <p>
+            Operamos bajo estándares que avalan nuestra calidad y nuestro compromiso social.
+          </p>
+        </div>
+        <ul class="certs-grid reveal" aria-label="Certificaciones y distintivos">
+          {CERTIFICATIONS.map((c) => (
+            <li class="cert-card">
+              <span class="cert-badge">{c.name}</span>
+              <p>{c.desc}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
     <section class="section section-dark about-cta">
       <div class="wrap about-cta-inner">
         <h2 class="display about-cta-h">
@@ -118,10 +149,13 @@ import { ROUTES } from '../data/site.ts';
   .about-hero {
     padding-bottom: 60px;
   }
+  /* Mismo tamaño que el título de la página de Servicios (.svc-h1). */
   .about-h1 {
-    font-size: clamp(56px, 8vw, 128px);
+    font-size: clamp(48px, 8vw, 120px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
     margin: 20px 0 0;
-    max-width: 1000px;
+    max-width: 1100px;
   }
 
   /* ===== Intro: ¿Quiénes somos? — editorial stacked layout ===== */
@@ -214,7 +248,7 @@ import { ROUTES } from '../data/site.ts';
     height: 2px;
     background: var(--orange-500);
   }
-  /* Misión: light material with a hairline border and tinted brand shadow. */
+  /* Propósito: light material with a hairline border and tinted brand shadow. */
   .mv-light {
     background: var(--white);
     border: 1px solid var(--gray-200);
@@ -222,6 +256,22 @@ import { ROUTES } from '../data/site.ts';
   }
   .mv-light p {
     color: var(--gray-700);
+  }
+  /* Eyebrow "Propósito" en naranja de marca. */
+  .mv-light .eyebrow {
+    color: var(--orange-500);
+  }
+  /* Mismo círculo de acento que el bloque de Principios. */
+  .mv-light::after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    bottom: -90px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 131, 0, 0.16), transparent 62%);
+    pointer-events: none;
   }
   /* Visión: ink material; eyebrow shifts to orange for contrast on dark. */
   .mv-ink {
@@ -272,6 +322,51 @@ import { ROUTES } from '../data/site.ts';
     font-size: clamp(40px, 5.4vw, 64px);
     margin: 12px 0 0;
     letter-spacing: -0.03em;
+  }
+
+  /* ===== Certificaciones ===== */
+  .certs-h {
+    font-size: clamp(40px, 5.4vw, 64px);
+    margin: 12px 0 0;
+    letter-spacing: -0.03em;
+  }
+  .certs-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .cert-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    min-width: 0;
+  }
+  .cert-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    background: var(--orange-100);
+    color: var(--orange-700);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+  }
+  .cert-card p {
+    color: var(--gray-700);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 15px;
   }
   /* The values title is now an h3 (heading order h2 to h3); the global rule
      targets `.value h4`, so restate the display type here for the <h3>. */

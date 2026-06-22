@@ -372,7 +372,9 @@ a { color: inherit; text-decoration: none; }
 .svc-hero { grid-column: span 7; background: var(--blue-700); color: white; min-height: 420px; }
 .svc-hero h3 { font-size: 52px; max-width: 460px; }
 .svc-hero p { color: rgba(255,255,255,0.8); max-width: 420px; }
-.svc-a { grid-column: span 5; background: var(--orange-500); color: var(--ink); }
+/* Texto en blanco sobre el fondo naranja (Print Shop). */
+.svc-a { grid-column: span 5; background: var(--orange-500); color: #fff; }
+.svc-a p { color: rgba(255,255,255,0.85); }
 .svc-b { grid-column: span 4; background: var(--paper-2); }
 .svc-c { grid-column: span 4; background: var(--ink); color: white; }
 .svc-c p { color: rgba(255,255,255,0.7); }
@@ -383,6 +385,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0.25;
   pointer-events: none;
 }
+/* Todos los bloques llevan el círculo decorativo, afinado a su fondo. */
 .svc-hero .svc-decoration {
   top: -60px; right: -60px;
   width: 300px; height: 300px;
@@ -393,9 +396,30 @@ a { color: inherit; text-decoration: none; }
 .svc-a .svc-decoration {
   bottom: -80px; left: -40px;
   width: 220px; height: 220px;
-  background: var(--ink);
+  background: #fff;
   border-radius: 50%;
-  opacity: 0.08;
+  opacity: 0.12;
+}
+.svc-b .svc-decoration {
+  bottom: -70px; right: -50px;
+  width: 200px; height: 200px;
+  background: var(--orange-500);
+  border-radius: 50%;
+  opacity: 0.1;
+}
+.svc-c .svc-decoration {
+  top: -60px; right: -50px;
+  width: 220px; height: 220px;
+  background: var(--orange-500);
+  border-radius: 50%;
+  opacity: 0.18;
+}
+.svc-d .svc-decoration {
+  bottom: -70px; left: -50px;
+  width: 200px; height: 200px;
+  background: var(--orange-500);
+  border-radius: 50%;
+  opacity: 0.16;
 }
 
 /* Alt layout: list (tweakable) */
@@ -1035,6 +1059,7 @@ a { color: inherit; text-decoration: none; }
   .field.full { grid-column: span 1; }
   .process-list { grid-template-columns: 1fr 1fr; }
   .nav-links .nav-link.hide-mobile { display: none; }
+  .nav-links .social-icons-nav.hide-mobile { display: none; }
   .section { padding: 80px 0; }
   .hero { padding: 60px 0 80px; }
 }
@@ -1064,10 +1089,9 @@ a { color: inherit; text-decoration: none; }
 
 /* ===== Review-pass refinements ===== */
 
-/* Restrained accent system: the multi-hue gradient is reserved for the hero and
-   closing bookends; interior section headings use one solid brand accent
-   (blue on light surfaces, orange on the dark sections). */
-.text-accent { color: var(--blue-700); font-weight: inherit; }
+/* Accent system: una sola palabra destacada en naranja de marca (#ff8300),
+   tanto en superficies claras como en las secciones oscuras. */
+.text-accent { color: var(--orange-500); font-weight: inherit; }
 .section-dark .text-accent { color: var(--orange-500); }
 
 /* Focus-visible rings (none existed before). Keyboard users get a clear ring;

@@ -173,15 +173,23 @@ export const PRODUCT_CATEGORIES = ['Todos', 'Oficina', 'Drinkware', 'Textiles', 
 // ---------------------------------------------------------------------------
 export interface Testimonial {
   quote: string;
-  name: string;
-  role: string;
+  company: string;
 }
 
 export const TESTIMONIALS: Testimonial[] = [
-  { quote: 'Llevan 5 años siendo nuestros aliados en promocionales. Cada entrega impecable, siempre dentro de tiempo.', name: 'María López', role: 'Marketing Director, Grupo Alea' },
-  { quote: 'El nivel de propuesta creativa es otro nivel. No venden productos, venden ideas que amplifican marcas.', name: 'Carlos Vera', role: 'CMO, Vivero Digital' },
-  { quote: 'Producimos 15,000 kits corporativos con ellos en 3 semanas. Logística perfecta, calidad consistente.', name: 'Andrea Ruiz', role: 'HR Lead, Tech Nova' },
-  { quote: 'Su fulfillment nos permitió escalar a 4 ciudades sin contratar un solo operador extra.', name: 'Jorge Mendoza', role: 'COO, Retail México' },
+  { quote: 'Su atención es excelente y la calidad de sus productos es muy buena. ¡Gracias por siempre sacarnos del apuro!', company: 'Banco Azteca' },
+  { quote: 'Excelente servicio por parte de los ejecutivos, muy profesional. Los productos de muy buena calidad cumpliendo con las expectativas.', company: 'Santander' },
+  { quote: 'Excelente trabajo en todo lo que hacen, muchas gracias por hacer tan ameno el trabajo con proveedores y excelentes propuestas de los equipos.', company: 'Mercado Pago' },
+  { quote: 'Muy agradecida por muchos años creando sinergias.', company: 'Canon' },
+  { quote: 'Me encanta el servicio que nos brindan, siempre muy comprometidos y atentos desde el momento uno de la negociación, nos encanta trabajar con ustedes porque sabemos que es seguridad de éxito en nuestros proyectos.', company: 'Vidanta' },
+  { quote: 'Sigan haciendo el extraordinario trabajo que han hecho hasta ahora.', company: 'AT&T' },
+  { quote: 'Estoy muy satisfecha con los servicios y material recibidos.', company: 'Banjercito' },
+  { quote: 'Todo está muy bien en la comunicación y servicio con mi agente, tiempo de entrega perfecto.', company: 'Cruz Roja' },
+  { quote: 'Excelente trato por Carlos Marmolejo, calidad en el servicio y eficacia. ¡¡Muchas gracias!!', company: 'Caffenio' },
+  { quote: 'Me parece una empresa comprometida con quien no hemos tenido ningún inconveniente en entregas.', company: 'Totalplay' },
+  { quote: 'Son una empresa que se preocupa por sus clientes y siempre hacen algo diferente.', company: 'Grupo Salinas' },
+  { quote: 'Me encanta la cercanía con Generando Ideas y la cantidad de propuestas que tienen para satisfacer cualquier necesidad del negocio.', company: 'Mercado Pago' },
+  { quote: 'Me gusta mucho su forma de trabajar, son muy innovadores, la respuesta de sus asesores excelente.', company: 'Roshfrans' },
 ];
 
 // ---------------------------------------------------------------------------
