@@ -17,10 +17,10 @@ const src = variant === 'blanco' ? '/brand/logo-horizontal-blanco.svg' : '/brand
 
 <style>
   /* Mínimo digital del manual: 282 × 60 px para la versión horizontal.
-     Reducido un 20% para la navegación. */
+     Reducido para dejar más aire (safe space) alrededor del logo en el header. */
   .logo {
     display: block;
-    width: clamp(160px, 19.2vw, 226px);
+    width: clamp(140px, 16vw, 196px);
     height: auto;
   }
 </style>

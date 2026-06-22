@@ -133,9 +133,10 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-primary:hover { background: var(--blue-700); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-accent {
-  background: var(--orange-500); color: var(--ink);
+  background: var(--orange-500); color: #fff;
 }
-.btn-accent:hover { background: var(--orange-300); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+/* Se oscurece en hover (no se aclara) para mantener el texto blanco legible. */
+.btn-accent:hover { background: var(--orange-700); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-ghost {
   background: transparent; color: var(--ink);
   border: 1.5px solid var(--gray-300);
