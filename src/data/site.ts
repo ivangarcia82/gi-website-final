@@ -90,6 +90,7 @@ export const ROUTES = {
   contact: '/contacto',
   careers: '/bolsa-de-trabajo',
   privacy: '/legal/aviso-de-privacidad-esi-2026.pdf',
+  estore: 'https://api.generandoideas.com',
   service: (id: string) => `/servicios/${id}`,
 };
 
